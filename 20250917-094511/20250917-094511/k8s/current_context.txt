@@ -1,1 +1,0 @@
-arn:aws:eks:us-west-2:595443389404:cluster/mg-sbx-eks

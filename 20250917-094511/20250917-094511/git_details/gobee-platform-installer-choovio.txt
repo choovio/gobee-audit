@@ -1,9 +1,0 @@
-== C:\Users\fhdar\Documents\choovio\gobee-platform-installer ==
-origin	https://github.com/choovio/gobee-platform-installer.git (fetch)
-origin	https://github.com/choovio/gobee-platform-installer.git (push)
-sbx-matrix-scout
-e9ac941 SBX: pin live image digests for bootstrap/provision/postgres-reader/re to match cluster (2025-09-10_154842)
-b534eaf docs: add SBX backend handover status report (2025-09-10)
-8203a6d ops: add sbx-matrix-inputs.csv (scouted Dockerfile/context/EXPOSE for users/things/domains/certs/http-adapter/ws-adapter)
-abf543b docs: add HANDOFF_SWITCHPOINT for safe thread switch (state, missing, next command)
-9302161 docs: update ECR matrix

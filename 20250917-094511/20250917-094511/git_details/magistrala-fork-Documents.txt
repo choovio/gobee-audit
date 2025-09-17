@@ -1,9 +1,0 @@
-== C:\Users\fhdar\Documents\magistrala-fork ==
-origin	https://github.com/choovio/magistrala-fork.git (fetch)
-origin	https://github.com/choovio/magistrala-fork.git (push)
-main
-f940259a ci: trigger ECR adapter push
-117ed9b2 ci(license): add Abstract Machines SPDX header to SBX adapter manifests
-e0ef5b3c feat(sbx): deploy http/ws adapters (ghcr by main sha) with verified ports & /health probes (#46)
-3553c494 Update CI build contexts and adapter Dockerfiles (#45)
-10d06731 Update adapter build workflow and Dockerfiles (#44)

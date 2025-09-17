@@ -1,9 +1,0 @@
-== C:\Users\fhdar\Documents\choovio\gobee-platform-console ==
-origin	https://github.com/choovio/gobee-platform-console.git (fetch)
-origin	https://github.com/choovio/gobee-platform-console.git (push)
-codex/stabilize-tests-and-schemas
-6256d20 SBX: pin images for users/things/certs/domains to ECR digests; add ingresses; add deploy snapshots (2025-09-10_163747)
-316be3a SBX: pin live images by digest for bootstrap/provision/postgres-reader/re; add deploy snapshots 2025-09-10_154731
-0f22507 SBX: apply users/things/certs (deploy/svc/ing); rollout + health snapshots @ 2025-09-10_145046
-86d9996 SBX: scaffold base manifests for certs service @ 2025-09-10_144620
-acadbac SBX: scaffold base manifests for domains service @ 2025-09-10_144409

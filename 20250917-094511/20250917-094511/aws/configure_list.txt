@@ -1,6 +1,0 @@
-      Name                    Value             Type    Location
-      ----                    -----             ----    --------
-   profile                <not set>             None    None
-access_key     ****************H6HI shared-credentials-file    
-secret_key     ****************vsE7 shared-credentials-file    
-    region                us-west-2      config-file    ~/.aws/config
