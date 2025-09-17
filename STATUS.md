@@ -49,3 +49,6 @@
 - Frontend console repo has **no deploy artifacts**; frontend delivery is **out-of-repo** (recorded as finding).
 - Local repo scan flagged **CloudFront** and **console refs** inside *audit docs* → informational strings, not a deploy pipeline.
 - **Plan adjustment:** backend-first. Next work focuses on **magistrala-fork → choovio images → ECR → EKS (SBX)** before any frontend steps.
+
+## Decisions Update (20250917-153039)
+- Rule update: every PowerShell script must end with a **RESULTS** block (see ADR: docs/decisions/ADR-2025-09-17-deployment-pipeline-and-results-tail.md).

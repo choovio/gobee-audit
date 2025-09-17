@@ -32,3 +32,10 @@ Every PowerShell script ends with a short RESULTS block (copy-paste friendly).
 - Never use sbx.api.gobee.io or /v1
 - SPDX headers in first 5 lines
 - PowerShell 7 only; one action per message
+
+## Enforcement
+
+- Every PowerShell script used in audit or deployment **MUST** end with a RESULTS: section.
+- The section summarizes facts only (no verbose logs), in a clean copy/paste format.
+- Operators and agents should paste **only** the RESULTS block into chat for verification.
+- This rule is permanent and applies to **all** audits, cleanups, and backend/frontend deployments.
