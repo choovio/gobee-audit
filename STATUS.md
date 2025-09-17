@@ -43,3 +43,9 @@
 
 ## Findings (updated 20250917-145717)
 - Console repo has no deployment artifacts; frontend pipeline is out-of-repo (see docs/findings/2025-09-17-console-repo-no-deploy-artifacts.md).
+
+## Audit Status Update (20250917-150514)
+- PC cleanup complete; audit repo synced and ADR in place (RESULTS-tail rule).
+- Frontend console repo has **no deploy artifacts**; frontend delivery is **out-of-repo** (recorded as finding).
+- Local repo scan flagged **CloudFront** and **console refs** inside *audit docs* → informational strings, not a deploy pipeline.
+- **Plan adjustment:** backend-first. Next work focuses on **magistrala-fork → choovio images → ECR → EKS (SBX)** before any frontend steps.
