@@ -1,0 +1,12 @@
+== https://sbx.gobee.io/api ==
+https://sbx.gobee.io/api/bootstrap/health  200  ok
+https://sbx.gobee.io/api/readers/health  200  ok
+https://sbx.gobee.io/api/reports/health  200  reports service up
+https://sbx.gobee.io/api/rules/health  200  re service up
+https://sbx.gobee.io/api/provision/health  200  System.Object[]
+https://sbx.gobee.io/api/users/health  200  reports service up
+https://sbx.gobee.io/api/things/health  200  reports service up
+https://sbx.gobee.io/api/certs/health  200  reports service up
+https://sbx.gobee.io/api/domains/health  200  reports service up
+https://sbx.gobee.io/api/http-adapter/health  ERROR  Response status code does not indicate success: 503 (Service Temporarily Unavailable).
+https://sbx.gobee.io/api/ws-adapter/health  ERROR  Response status code does not indicate success: 503 (Service Temporarily Unavailable).

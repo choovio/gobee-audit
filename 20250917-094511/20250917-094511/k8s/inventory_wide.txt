@@ -1,0 +1,83 @@
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS         IMAGES                                                                                                                                                                             SELECTOR
+deployment.apps/alarms             1/1     1            1           22d     alarms             595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:alarms-a4ab87d2bb4bdd28f6557c9f2b2c9cfca51a7cfa                                                                            app=alarms
+deployment.apps/bootstrap          1/1     1            1           22d     bootstrap          595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:7726575f96b70b9ec9743a582659f09435484e636f4b053398e2d6365ec9d7a9                                                    app=bootstrap
+deployment.apps/certs              2/2     2            2           6d18h   certs              595443389404.dkr.ecr.us-west-2.amazonaws.com/certs@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536                                                         app=certs
+deployment.apps/domains            2/2     2            2           6d18h   domains            595443389404.dkr.ecr.us-west-2.amazonaws.com/domains@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536                                                       app=domains
+deployment.apps/http-adapter       0/1     1            0           17h     http-adapter       <12-digit-account>.dkr.ecr.us-west-2.amazonaws.com/choovio/magistrala/http-adapter:f940259a08b94b5f3e53d10610352ba8ef9f2cfa                                                        app.kubernetes.io/name=http-adapter
+deployment.apps/mqtt-adapter       1/1     1            1           18d     mqtt-adapter       595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:mqtt-adapter-6ef9ab76ddc260750347cbeebe5614db703cfae9                                                                      app=mqtt-adapter
+deployment.apps/nats               1/1     1            1           18d     nats               nats:2.10-alpine                                                                                                                                                                   app=nats
+deployment.apps/nginx              1/1     1            1           22d     nginx              595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:nginx-1.25                                                                                                                 app=nginx
+deployment.apps/pgreader           0/0     0            0           18d     pgreader           595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:                                                                                                                           app=pgreader
+deployment.apps/postgres-reader    1/1     0            1           22d     postgres-reader    595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:f5b71ac9c14b91d86ac5855d01983a00a14a5a951eed6417352cd8562c47288c                                                    app=postgres-reader
+deployment.apps/postgres-writer    1/1     1            1           22d     postgres-writer    595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:pgwriter-ce92372c901432a3b207577dbb8fe8a36a376585                                                                          app=postgres-writer
+deployment.apps/provision          1/1     1            1           22d     provision          595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:8fdee43e9bad1028ba5a91438eb6292454b96f76cf27bdaac590cd2ce0c98f08                                                    app=provision
+deployment.apps/re                 1/1     1            1           22d     re                 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:85ac2283375a019d5cb4ba9478139a06c33a80cbf71a2c7c5b188a128ee4e597                                                    app=re
+deployment.apps/reports            1/1     1            1           22d     reports            595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:reports-45075eec054539fa282129e171c954a264cc845d@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536   app=reports
+deployment.apps/things             2/2     2            2           6d18h   things             595443389404.dkr.ecr.us-west-2.amazonaws.com/things@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536                                                        app=things
+deployment.apps/timescale-reader   0/0     0            0           18d     timescale-reader   595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:timescale-reader-dev                                                                                                       app=timescale-reader
+deployment.apps/timescale-writer   0/0     0            0           18d     timescale-writer   595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:timescale-writer-dev                                                                                                       app=timescale-writer
+deployment.apps/users              2/2     2            2           6d18h   users              595443389404.dkr.ecr.us-west-2.amazonaws.com/users@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536                                                         app=users
+deployment.apps/ws-adapter         0/1     1            0           17h     ws-adapter         <12-digit-account>.dkr.ecr.us-west-2.amazonaws.com/choovio/magistrala/ws-adapter:f940259a08b94b5f3e53d10610352ba8ef9f2cfa                                                          app.kubernetes.io/name=ws-adapter
+
+NAME                                   READY   STATUS             RESTARTS   AGE     IP              NODE                                          NOMINATED NODE   READINESS GATES
+pod/alarms-7644bddbb7-4d74j            1/1     Running            0          14d     10.20.141.192   ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/bootstrap-66b8496c7c-c4lqt         1/1     Running            0          43h     10.20.166.176   ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/certs-867cb68cdd-lv7tv             1/1     Running            0          5d21h   10.20.165.137   ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/certs-867cb68cdd-t92pw             1/1     Running            0          5d21h   10.20.135.119   ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/domains-76b54c98f4-4tlq6           1/1     Running            0          5d21h   10.20.174.162   ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/domains-76b54c98f4-5hnz9           1/1     Running            0          5d21h   10.20.138.178   ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/http-adapter-5bbc6cd87d-vzc5q      0/1     InvalidImageName   0          16h     10.20.167.202   ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/http-adapter-6dc94d5585-ttz6t      0/1     InvalidImageName   0          16h     10.20.131.114   ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/mqtt-adapter-66f5f6d97c-x8tms      1/1     Running            0          15d     10.20.128.217   ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/nats-777457986d-h99nd              1/1     Running            0          18d     10.20.168.124   ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/nginx-6668bff74f-klw2p             1/1     Running            0          22d     10.20.168.197   ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/postgres-reader-868bf4f6d-bvt85    1/1     Running            0          6d18h   10.20.135.76    ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/postgres-writer-56b4cfb9d7-zzlj5   1/1     Running            0          7d22h   10.20.134.137   ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/provision-749d885b49-5w4xh         1/1     Running            0          6d18h   10.20.164.181   ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/re-57f55dd5d6-lcj64                1/1     Running            0          6d18h   10.20.161.65    ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/reports-5ffb87cffc-n6rtc           1/1     Running            0          6d19h   10.20.140.38    ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/things-fcc59dbdd-7svfv             1/1     Running            0          5d21h   10.20.175.209   ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/things-fcc59dbdd-krg6f             1/1     Running            0          5d21h   10.20.138.230   ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/users-85f6f8b797-d628j             1/1     Running            0          5d21h   10.20.135.12    ip-10-20-131-145.us-west-2.compute.internal   <none>           <none>
+pod/users-85f6f8b797-xjpzd             1/1     Running            0          5d21h   10.20.161.61    ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+pod/ws-adapter-6674654d87-v97j7        0/1     Pending            0          16h     <none>          <none>                                        <none>           <none>
+pod/ws-adapter-77875b57dd-hfh72        0/1     InvalidImageName   0          16h     10.20.161.46    ip-10-20-161-42.us-west-2.compute.internal    <none>           <none>
+
+NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE     SELECTOR
+service/alarms             ClusterIP   172.20.177.59    <none>        8080/TCP            22d     app=alarms
+service/bootstrap          ClusterIP   172.20.204.202   <none>        8080/TCP            25d     app=bootstrap
+service/certs              ClusterIP   172.20.33.250    <none>        8080/TCP            6d18h   app=certs
+service/domains            ClusterIP   172.20.43.191    <none>        8080/TCP            6d18h   app=domains
+service/http-adapter       ClusterIP   172.20.176.49    <none>        80/TCP              45h     app.kubernetes.io/name=http-adapter
+service/mqtt-adapter       ClusterIP   172.20.195.133   <none>        8080/TCP            18d     app=mqtt-adapter
+service/nats               ClusterIP   172.20.110.84    <none>        4222/TCP,8222/TCP   18d     app=nats
+service/nginx              ClusterIP   172.20.73.77     <none>        80/TCP              22d     app=nginx
+service/pgreader           ClusterIP   172.20.21.54     <none>        8080/TCP            18d     app=pgreader
+service/postgres-reader    ClusterIP   172.20.129.37    <none>        8080/TCP            22d     app=postgres-reader
+service/postgres-writer    ClusterIP   172.20.78.174    <none>        8080/TCP            22d     app=postgres-writer
+service/provision          ClusterIP   172.20.3.64      <none>        8080/TCP            22d     app=provision
+service/re                 ClusterIP   172.20.49.53     <none>        8080/TCP            22d     app=re
+service/reports            ClusterIP   172.20.245.25    <none>        8080/TCP            22d     app=reports
+service/things             ClusterIP   172.20.189.14    <none>        8080/TCP            6d18h   app=things
+service/timescale-reader   ClusterIP   172.20.15.189    <none>        8080/TCP            18d     app=timescale-reader
+service/timescale-writer   ClusterIP   172.20.161.208   <none>        8080/TCP            18d     app=timescale-writer
+service/users              ClusterIP   172.20.148.158   <none>        8080/TCP            6d18h   app=users
+service/ws-adapter         ClusterIP   172.20.158.116   <none>        8190/TCP            45h     app.kubernetes.io/name=ws-adapter
+
+NAME                                                   CLASS    HOSTS          ADDRESS                                                                  PORTS     AGE
+ingress.networking.k8s.io/api-bootstrap                nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   12d
+ingress.networking.k8s.io/api-bootstrap-health-alias   nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   45h
+ingress.networking.k8s.io/api-certs                    nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   6d17h
+ingress.networking.k8s.io/api-domains                  nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   6d17h
+ingress.networking.k8s.io/api-http                     nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   45h
+ingress.networking.k8s.io/api-provision                nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   8d
+ingress.networking.k8s.io/api-readers                  nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   12d
+ingress.networking.k8s.io/api-readers-health-alias     nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   44h
+ingress.networking.k8s.io/api-reports                  nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   12d
+ingress.networking.k8s.io/api-rules                    nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   12d
+ingress.networking.k8s.io/api-things                   nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   6d17h
+ingress.networking.k8s.io/api-users                    nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   6d17h
+ingress.networking.k8s.io/api-ws                       nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   45h
+ingress.networking.k8s.io/bootstrap                    nginx    sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com   80, 443   20d
+ingress.networking.k8s.io/http-adapter                 <none>   *                                                                                       80        17h
+ingress.networking.k8s.io/ws-adapter                   <none>   *                                                                                       80        17h

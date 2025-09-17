@@ -1,0 +1,9 @@
+== C:\Users\fhdar\Documents\gobee-platform-installer ==
+origin	https://github.com/choovio/gobee-platform-installer.git (fetch)
+origin	https://github.com/choovio/gobee-platform-installer.git (push)
+sbx/pins-digest-visibility
+0ef29fd SBX: add SPDX & Choovio copyright headers to source files
+cb4aaa6 SBX: normalize pins (postgres-writer, reports ΓåÆ digest-only)
+124d2ae SBX: refresh image pins from live cluster (provision uses /health; all APIs 200)
+652273a SBX: pin users/things/certs/domains to mirrored per-service ECR digests (from live cluster)
+737ff8b docs(sbx): record digest pinning for users/things/certs/domains
