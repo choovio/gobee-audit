@@ -1,0 +1,12 @@
+NAME              STATUS   AGE
+cert-manager      Active   35d
+default           Active   36d
+ingress           Active   35d
+ingress-nginx     Active   36d
+kube-node-lease   Active   36d
+kube-public       Active   36d
+kube-system       Active   36d
+magistrala        Active   25d
+nats              Active   36d
+sbx               Active   6d22h
+web-test          Active   36d

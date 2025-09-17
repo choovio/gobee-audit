@@ -1,0 +1,6 @@
+# Don’t commit creds or temp files
+*.tmp
+*.log
+*.bak
+.DS_Store
+Thumbs.db
