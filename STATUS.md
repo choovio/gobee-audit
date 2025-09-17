@@ -40,3 +40,6 @@
 
 ## Decisions (updated 20250917-144117)
 - Added ADR: docs/decisions/ADR-2025-09-17-deployment-pipeline-and-results-tail.md
+
+## Findings (updated 20250917-145717)
+- Console repo has no deployment artifacts; frontend pipeline is out-of-repo (see docs/findings/2025-09-17-console-repo-no-deploy-artifacts.md).

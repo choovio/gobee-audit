@@ -17,9 +17,10 @@ Date: 2025-09-17
    - Sandbox: sbx.gobee.io — in progress
    - Production: prod.gobee.io — not yet deployed
 
-## Frontend delivery (pending confirmation)
-- Repo: gobee-platform-console
-- Likely ECR→EKS, but unconfirmed
+## Frontend delivery (confirmed: out-of-repo pipeline)
+- Repo gobee-platform-console contains no Dockerfile/Compose/K8s/Helm/CI.
+- Frontend build/deploy is managed **outside this repo** (external pipeline).
+- Action: identify hosting repo/service (e.g., S3/CloudFront or EKS via another repo) and document.
 - Client base URL must be https://sbx.gobee.io/api ; health = /health
 
 ## Script rule (mandatory)
