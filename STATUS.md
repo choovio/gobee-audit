@@ -64,3 +64,12 @@
 - Runtime verification:
   - All running images in namespace 'magistrala' are from AWS ECR ✅
 - RESULT rules: reaffirmed BEGIN/END RESULTS-only output for all PS scripts
+
+## Audit Status Update (20250917-163549)
+- Installer (sbx/pins-digest-visibility):
+  - Normalized ingress health paths in k8s/: postgres-writer, postgres-reader, alarms (deploy + hardening), pgwriter
+  - Prepared NATS migration to AWS ECR (infra-nats.yaml) — pending exact ECR repo@digest
+- Runtime (SBX):
+  - Ingress hosts set to sbx.gobee.io; paths under /api/* with /health (verified)
+  - All running images in 'magistrala' from AWS ECR (verified)
+- RESULTS block rule reaffirmed (BEGIN/END only)
