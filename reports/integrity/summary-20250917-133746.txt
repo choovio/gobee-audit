@@ -1,0 +1,17 @@
+Integrity Summary — 20250917-133746
+Branch: main
+HEAD (local): 442ee2b7a6f7d86c18238b297cf281d2ff9a702b
+Upstream ref: origin/main
+Upstream sha: 442ee2b7a6f7d86c18238b297cf281d2ff9a702b
+Base merge:   442ee2b7a6f7d86c18238b297cf281d2ff9a702b
+Ahead/Behind: 0/0
+Sync status:  up-to-date
+Dirty:        True
+
+Tag 'audit-20250917-094511' present: True
+STATUS.md present:          True
+docs/findings present:      True
+docs/runbooks present:      True
+docs/decisions present:     True
+
+Report CSV: C:\Users\fhdar\Documents\gobee-audit\reports\integrity\integrity-20250917-133611.csv
