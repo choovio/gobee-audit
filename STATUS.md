@@ -37,3 +37,6 @@
 1. Clean up `choovio\gobee-platform-console` (ensure remotes match, tree clean, then remove).  
 2. Re-run local → repo parity check after cleanup.  
 3. Proceed to GitHub audit (mistakes, duplicates, leftovers, drift).
+
+## Decisions (updated 20250917-144117)
+- Added ADR: docs/decisions/ADR-2025-09-17-deployment-pipeline-and-results-tail.md
