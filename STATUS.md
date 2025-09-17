@@ -52,3 +52,15 @@
 
 ## Decisions Update (20250917-153039)
 - Rule update: every PowerShell script must end with a **RESULTS** block (see ADR: docs/decisions/ADR-2025-09-17-deployment-pipeline-and-results-tail.md).
+
+## Audit Status Update (20250917-160457)
+- SBX ingress normalized:
+  - http-adapter host → sbx.gobee.io
+  - ws-adapter host → sbx.gobee.io
+  - bootstrap paths → /api/bootstrap and /api/bootstrap/health (removed / and /healthz)
+- magistrala-fork repo hygiene:
+  - Quarantined local *.bak and registry.env.bak via git stash
+  - Added .gitignore for *.bak and ops/ci/registry.env.bak; tree is clean
+- Runtime verification:
+  - All running images in namespace 'magistrala' are from AWS ECR ✅
+- RESULT rules: reaffirmed BEGIN/END RESULTS-only output for all PS scripts
