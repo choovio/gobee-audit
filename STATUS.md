@@ -73,3 +73,17 @@
   - Ingress hosts set to sbx.gobee.io; paths under /api/* with /health (verified)
   - All running images in 'magistrala' from AWS ECR (verified)
 - RESULTS block rule reaffirmed (BEGIN/END only)
+### 2025-09-18 11:14:44 -07:00 — Runtime: NATS pinned to ECR digest; rollout pending (SSoT)
+
+- ReplicaSets:
+- RS nats-6c6c6c6448: replicas=1 ready= image=595443389404.dkr.ecr.us-west-2.amazonaws.com/nats@sha256:820a97ef8a0e8e4b1f1c940c1fbf92e57ad548429dd20754de24ffe4f08996a3
+- RS nats-777457986d: replicas=1 ready=1 image=nats:2.10-alpine
+- RS nats-84df7dc4d7: replicas=0 ready= image=595443389404.dkr.ecr.us-west-2.amazonaws.com/nats@sha256:820a97ef8a0e8e4b1f1c940c1fbf92e57ad548429dd20754de24ffe4f08996a3
+- Pods:
+- Pod nats-6c6c6c6448-8q2mj: phase=Pending ready=False image=595443389404.dkr.ecr.us-west-2.amazonaws.com/nats@sha256:820a97ef8a0e8e4b1f1c940c1fbf92e57ad548429dd20754de24ffe4f08996a3 imageID=(none) digestMatch=False
+- Pod nats-777457986d-h99nd: phase=Running ready=True image=nats:2.10-alpine imageID=@sha256:eca033f54dbb digestMatch=False
+- Recent warnings:
+- [9/18/2025 6:14:42 PM] Pod=nats-6c6c6c6448-8q2mj Reason=FailedScheduling Msg=0/2 nodes are available: 2 Too many pods. preemption: 0/2 nodes are available: 2 No preemption victims found for incoming pod.
+- Conclusion: Runtime still on old digest; new RS pending due to capacity. Action: free capacity or scale nodes, then verify digestMatch=true.
+
+
