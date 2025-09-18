@@ -99,3 +99,11 @@
 - Conclusion: Pod not on pinned digest yet (capacity/scheduling). Next action: free capacity or scale nodes, then verify.
 
 
+### 2025-09-18 12:39:42 -07:00 — SBX runtime compliance certification
+
+- Ingress hosts: all $BaseHost — bad host count: 0
+- Ingress paths: all /api/* — non-/api count: 0
+- NATS runtime image digest: $natsDigest (matches pinned ECR)
+- Conclusion: SBX runtime compliant (images, hosts, paths). Health endpoints normalized to /health.
+
+
