@@ -112,3 +112,8 @@
 - Actions: freeze OpenAPI, set console env, add FE smoke script, fix adapters to 200
 
 
+### 2025-09-18 13:50:57 -07:00 — Frontend prep: console onboarding + scripts
+- FE-DEV.md added in gobee-platform-console
+- package.json updated: script=types:sbx dep=openapi-typescript -> False
+
+
