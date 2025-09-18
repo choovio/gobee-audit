@@ -138,3 +138,8 @@
 - gobee-audit: branch=main commit=86990b3 exit=0 msg=git: 'credential-manager-core' is not a git command. See 'git --help'.
 
 
+### 2025-09-18 14:35:51 -07:00 — installer push result
+- primary: exit=1 msg=error: failed to push some refs to 'https://github.com/choovio/gobee-platform-installer.git'
+- fallback: branch=sbx/pins-digest-visibility-sync-20250918-143549 exit=1 msg=error: failed to push some refs to 'https://github.com/choovio/gobee-platform-installer.git'
+
+
