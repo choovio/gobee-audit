@@ -107,3 +107,8 @@
 - Conclusion: SBX runtime compliant (images, hosts, paths). Health endpoints normalized to /health.
 
 
+### 2025-09-18 13:39:29 -07:00 — Start Frontend Readiness track (ADR-0005)
+- Current blockers: http-adapter=503, ws-adapter=503
+- Actions: freeze OpenAPI, set console env, add FE smoke script, fix adapters to 200
+
+
