@@ -151,3 +151,10 @@
 - Remove any /healthz usages across repos (console, installer, fork).
 - Ingress examples: /api/<service>/health.
 
+### 2025-09-19 09:26:46 PT — Console contract normalized
+- Repo: **gobee-platform-console**
+- Branch: ix/health-endpoint-label • Commit: $commit
+- Change: /healthz removed; **/health** only across docs/backend-contract.md & openapi/sbx.yaml
+- SPDX: Added **CHOOVIO Inc.** / **Apache-2.0** header to both files
+- PR: https://github.com/choovio/gobee-platform-console/pull/new/fix/health-endpoint-label
+- Note: CI previously blocked by billing guard; rerun checks after billing is fixed.
