@@ -146,3 +146,8 @@
 ### 2025-09-18 15:03:13 -07:00 — installer push ok (sbx/pins-digest-visibility → a720eac)
 
 
+## Canonical Health Path (Policy)
+- Health path is **/health** only.
+- Remove any /healthz usages across repos (console, installer, fork).
+- Ingress examples: /api/<service>/health.
+
