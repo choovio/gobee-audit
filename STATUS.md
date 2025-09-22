@@ -158,3 +158,72 @@
 - SPDX: Added **CHOOVIO Inc.** / **Apache-2.0** header to both files
 - PR: https://github.com/choovio/gobee-platform-console/pull/new/fix/health-endpoint-label
 - Note: CI previously blocked by billing guard; rerun checks after billing is fixed.
+## Checkpoint — 2025-09-22 (SBX / magistrala)
+
+### Environment
+- **Cluster:** arn:aws:eks:us-west-2:595443389404:cluster/mg-sbx-eks
+- **Namespace:** magistrala
+- **Origin:** https://sbx.gobee.io
+- **API Base:** /api
+
+### Latest Audit Results
+- HealthOK: 9/11
+- HealthFailing: http-adapter, ws-adapter
+- ImagesPinned: 14/23
+- TagBased: 9
+- NonECRCount: 4
+- NonECRComponents: http-adapter, ws-adapter
+- TopTagOffenders: magistrala(5), http-adapter(2), ws-adapter(2)
+- Policy: Require ECR (\595443389404.dkr.ecr.us-west-2.amazonaws.com/...@sha256\)
+
+### Adapters State
+- ECR repos: **http-adapter**, **ws-adapter** → exist but empty
+- Digest fetch: None
+- Installer pins: no updates (0 files touched)
+- Cluster still running non-ECR adapters → both failing health
+
+### Risks / Drifts
+- Duplicate magistrala images (tag-based, overlapping)
+- Adapters source dirs not detected in magistrala-fork
+- Multiple CI iterations created churn, possible deprecated workflows
+- SuperMQ reset template guard repeatedly failed (SPDX / patches-only)
+
+### Confirmed RESULTS Blocks
+\\\
+==== RESULTS ====
+Action: EnsureAdapterEcrRepos
+Account: 595443389404
+Region:  us-west-2
+AWSCaller: arn:aws:iam::595443389404:user/aws-cli
+HttpRepo: http-adapter (exists=True)
+WsRepo:   ws-adapter (exists=True)
+Policy: AES256 + scanOnPush + keep last 20 images
+TIMESTAMP: 2025-09-22 13:08:06 -07:00
+==== END RESULTS ====
+
+==== RESULTS ====
+Action: FetchAdapterDigests
+HttpImage: 595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@None
+WsImage:   595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@None
+TIMESTAMP: 2025-09-22 13:18:22 -07:00
+==== END RESULTS ====
+
+==== RESULTS ====
+Action: PinAdaptersInInstaller
+HTTP: http-adapter -> 595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@None
+WS:   http-adapter -> 595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@None
+FilesUpdated: http=0 ws=0
+HttpDigest12:
+WsDigest12:
+TIMESTAMP: 2025-09-22 13:31:44 -07:00
+==== END RESULTS ====
+\\\
+
+### Next Steps for New Agent
+1. Review gobee-audit scripts + STATUS.md (treat as ledger).
+2. Cross-check installer manifests for adapter Deployments (ensure no duplicates).
+3. Verify adapters’ source in magistrala-fork (missing or misplaced).
+4. Reconcile cluster state vs manifests before attempting new builds/pins.
+5. Only after confirming state, rebuild adapters and push to ECR with digests.
+
+---
