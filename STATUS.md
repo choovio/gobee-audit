@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 # Audit Status — 2025-09-17
 
 **Latest snapshot:** `20250917-094511`  
@@ -245,3 +246,25 @@ Outcome: updated \ops/sbx/http.yaml\ and \ops/sbx/ws.yaml\ with pinned digests, 
 - ws:   
 
 Outcome: updated \ops/sbx/http.yaml\ and \ops/sbx/ws.yaml\ with pinned digests, pushed to origin.
+
+<!-- RESULTS (SBX BACKEND) -->
+🟧 **RESULTS – SBX magistrala canonical deploy**
+- HTTP image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0
+- WS image:   595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6
+- Namespace:  magistrala
+- Deploy/http available: 1
+- Deploy/ws   available: 1
+- Timestamp: 2025-09-24 12:23:57 -07:00
+
+
+
+<!-- RESULTS (SBX SINGLE-HOST) -->
+🟧 **RESULTS – sbx.gobee.io single-host routing**
+- Host: sbx.gobee.io (nginx)
+- Routes: /http → service/http, /ws → service/ws
+- Smoke: /http/health=200, /ws/health=200
+- Images: http=595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0 ; ws=595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6
+- Deploy available: http=1 ; ws=1
+- PRs: magistrala-fork#130, #131
+- Timestamp: 2025-09-24 13:37:50 -07:00
+
