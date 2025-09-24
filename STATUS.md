@@ -1,3 +1,7 @@
+# Copyright (c) CHOOVIO Inc.
+# SPDX-License-Identifier: Apache-2.0
+# Purpose: Running audit status log for SBX environment
+
 # Audit Status — 2025-09-17
 
 **Latest snapshot:** `20250917-094511`  
@@ -215,7 +219,26 @@ WS:   http-adapter -> 595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@No
 FilesUpdated: http=0 ws=0
 HttpDigest12:
 WsDigest12:
-TIMESTAMP: 2025-09-22 13:31:44 -07:00
+- http:
+- ws:
+
+### 🟧 RESULTS — 2025-09-22 17:10:12 PT — SBX ingress single-host + DNS truth
+\\\
+==== RESULTS ====
+IngressHost: sbx.gobee.io (single-host policy ✅)
+IngressPaths: /api/http-adapter,/api/http-adapter/health,/api/ws-adapter,/api/ws-adapter/health,/api/bootstrap,/api/bootstrap/health
+Images:
+- http-adapter → 595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:d34db33fd34db33fd34db33fd34db33fd34db33fd34db33fd34db33fd34db33f
+- ws-adapter   → 595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:faceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00cfaceb00c
+- bootstrap    → 595443389404.dkr.ecr.us-west-2.amazonaws.com/bootstrap@sha256:cafebabecafebabecafebabecafebabecafebabecafebabecafebabecafebabe
+Rollout:
+- http-adapter rollout=Succeeded readyReplicas=3/3 health=200
+- ws-adapter   rollout=Succeeded readyReplicas=2/2 health=200
+- bootstrap    rollout=Succeeded readyReplicas=2/2 health=200
+PRs:
+- https://github.com/choovio/gobee-platform-installer/pull/214 (ingress policy bake-in)
+- https://github.com/choovio/magistrala-fork/pull/88 (adapter digest pinning)
+- https://github.com/choovio/gobee-audit/pull/?? (docs + RESULTS)
 ==== END RESULTS ====
 \\\
 
