@@ -37,3 +37,34 @@ curl -fsS https://sbx.gobee.io/api/bootstrap/health
 ```
 
 All endpoints should respond with `200` and, where applicable, include `status":"ok"` in the payload. Non-`200` results indicate drift either in ingress path configuration or backend health.
+
+## SBX Ingress — Smoke Tests (Run Anywhere)
+
+### Curl (HTTP)
+
+```sh
+curl -s -o /dev/null -w "%{http_code}\n" http://sbx.gobee.io/http/health
+
+curl -s -o /dev/null -w "%{http_code}\n" http://sbx.gobee.io/ws/health
+```
+
+Expected: both return **200**.
+
+### PowerShell (Windows)
+
+```powershell
+$h = Invoke-WebRequest -Uri "http://sbx.gobee.io/http/health" -UseBasicParsing -TimeoutSec 10
+$w = Invoke-WebRequest -Uri "http://sbx.gobee.io/ws/health" -UseBasicParsing -TimeoutSec 10
+"$($h.StatusCode) $($w.StatusCode)"
+```
+
+### Kubernetes (optional, when kube access is allowed)
+
+```sh
+kubectl -n magistrala get ingress -o wide
+kubectl -n magistrala get deploy http-adapter ws-adapter \
+  -o custom-columns=NAME:.metadata.name,IMAGE:.spec.template.spec.containers[0].image
+```
+
+> Record all outputs as **orange RESULTS** in `STATUS.md`.
+
