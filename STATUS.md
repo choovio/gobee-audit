@@ -268,3 +268,15 @@ Outcome: updated \ops/sbx/http.yaml\ and \ops/sbx/ws.yaml\ with pinned digests, 
 - PRs: magistrala-fork#130, #131
 - Timestamp: 2025-09-24 13:37:50 -07:00
 
+
+<!-- RESULTS (SBX SINGLE-HOST NORMALIZED) -->
+🟧 **RESULTS – sbx.gobee.io normalized ingress**
+- Host: **sbx.gobee.io** (nginx)
+- Routes: /http/* → service/http, /ws/* → service/ws
+- Health: /http/health=200, /ws/health=200 (no redirects)
+- Images: http=595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0 ; ws=595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6
+- Deploy available: http=1 ; ws=1
+- DNS: Cloudflare CNAME sbx → ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com (DNS-only)
+- PRs: magistrala-fork#130, #131
+- Timestamp: 2025-09-24 14:03:11 -07:00
+
