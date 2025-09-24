@@ -1,40 +1,52 @@
-# Copyright (c) CHOOVIO Inc.
-# SPDX-License-Identifier: Apache-2.0
-# Purpose: Describe CODEX task templates for audit automation
+# Codex Task Modes & Templates
 
-# CODEX Task Templates
+Three modes — choose exactly one per step:
 
-CODEX tasks drive reproducible automation work. Each task issued against the audit repo follows a strict template so that humans and agents stay aligned. This document captures the template expectations for the SBX environment.
+1) **Codex Ask** (read-only): use to review PRs, CI runs, file diffs; no file edits.
+2) **Codex Code** (changes): use for repo edits (YAML, MD, scripts, SPDX headers, guard workflows).
+3) **PS Runbook** (live): use only for SBX/PROD commands (kubectl, AWS, curl) from Windows PowerShell.
 
-## Template Fields
+## Environment Block (paste at top of every task)
+```
+env: SBX
+repo: choovio/magistrala-fork
+dir: /ops/sbx
+cluster: mg-sbx-eks (namespace magistrala)
+aws_account: 595443389404
+dns_zone: Cloudflare gobee.io
+```
+> Swap `repo:` to `choovio/gobee-audit` when editing the audit repo. Use `env: PROD` or `LOCAL` as needed.
 
-- **type:** Determines the execution profile. `CODE` implies a file-changing task that must end with a commit + PR payload.
-- **env:** Execution scope. `SBX` indicates sandbox operations where production data must remain untouched.
-- **repo / branch / dir:** Identify the target Git repository, the working branch, and the root directory that the agent should treat as `$PWD`.
-- **title:** Human-friendly summary used as the PR title.
-- **summary:** Bullet outline of the desired changes. Treat as acceptance criteria; every bullet should be satisfied or explicitly called out if impossible.
-- **changes:** Explicit file-level expectations. Missing a path means it should remain untouched.
-- **constraints:** Policy statements (e.g., SPDX headers, formatting rules) that override local defaults.
+## Orange RESULTS — examples
 
-## Execution Checklist
-
-1. Locate any `AGENTS.md` files under the repository tree and honor their scoped instructions.
-2. Ensure SPDX headers are present in every touched file, matching the `CHOOVIO` format.
-3. Implement the requested changes exactly once; avoid speculative edits.
-4. Run mandated checks or tests. When none are listed, ensure basic linting/presentation sanity as needed.
-5. Commit with a descriptive message, then emit a PR body summarizing the work.
-
-## PR Body Expectations
-
-PR bodies must summarize the deltas and highlight testing. Use the following structure:
-
-```markdown
-## Summary
-- High-level bullets (one per change area)
-
-## Testing
-- ✅ `command` (if successful)
-- ❌ `command` (if failed, include why)
+### Codex Ask — RESULTS
+```
+==== RESULTS ====
+Mode: Codex Ask
+Subject: Review PR #123 (health rewrite)
+Findings: All checks green; /health only, no /healthz left.
+TIMESTAMP: 2025-09-24T..-07:00
+==== END RESULTS ====
 ```
 
-Include links or references if manual validation occurred (e.g., curl outputs, screenshots). The orange RESULTS block in `STATUS.md` should be updated if the task adds new runtime evidence.
+### Codex Code — RESULTS
+```
+==== RESULTS ====
+Mode: Codex Code
+Changes: Added sbx-smoke workflow; updated SBX_INGRESS.md with curls.
+Files: .github/workflows/sbx-smoke.yaml, docs/SBX_INGRESS.md
+Commit: <SHA>
+TIMESTAMP: 2025-09-24T..-07:00
+==== END RESULTS ====
+```
+
+### PS Runbook — RESULTS
+```
+==== RESULTS ====
+Mode: PS Runbook
+Action: IngressHealth
+/http/health: 200
+/ws/health:   200
+TIMESTAMP: 2025-09-24T..-07:00
+==== END RESULTS ====
+```
