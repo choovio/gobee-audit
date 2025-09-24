@@ -227,3 +227,21 @@ TIMESTAMP: 2025-09-22 13:31:44 -07:00
 5. Only after confirming state, rebuild adapters and push to ECR with digests.
 
 ---
+## 2025-09-23 17:32:48 SBX adapters pinned
+
+- Repo: choovio/magistrala-fork
+- Workflow: .github/workflows/build-push-pin-adapters-sbx.yml
+- Run ID: 17962605198
+- http: 
+- ws:   
+
+Outcome: updated \ops/sbx/http.yaml\ and \ops/sbx/ws.yaml\ with pinned digests, pushed to origin.
+## 2025-09-23 17:36:45 SBX adapters pinned
+
+- Repo: choovio/magistrala-fork
+- Workflow: .github/workflows/build-push-pin-adapters-sbx.yml
+- Run ID: 17962689567
+- http: 
+- ws:   
+
+Outcome: updated \ops/sbx/http.yaml\ and \ops/sbx/ws.yaml\ with pinned digests, pushed to origin.
