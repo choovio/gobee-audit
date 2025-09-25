@@ -1,0 +1,8 @@
+Environment: magistrala
+Timestamp : 2025-09-25 11:30:10 -07:00
+
+Pinned deployments   : 19
+Unpinned (should be 0): 0
+
+Unpinned list:
+
