@@ -1,0 +1,8 @@
+Environment: magistrala
+Timestamp : 2025-09-25 12:48:20 -07:00
+
+Pinned deployments   : 18
+Unpinned (should be 0): 1
+
+Unpinned list:
+bootstrap,595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:bootstrap-dev
