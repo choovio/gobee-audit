@@ -12,11 +12,11 @@ jobs:
     steps:
       - name: Check /http/health
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" http://sbx.gobee.io/http/health)
+          code=$(curl -fsSL -o /dev/null -w "%{http_code}" https://sbx.gobee.io/http/health)
           echo "HTTP: $code"
           test "$code" = "200"
       - name: Check /ws/health
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" http://sbx.gobee.io/ws/health)
+          code=$(curl -fsSL -o /dev/null -w "%{http_code}" https://sbx.gobee.io/ws/health)
           echo "WS: $code"
           test "$code" = "200"
