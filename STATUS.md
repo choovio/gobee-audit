@@ -7,6 +7,7 @@
 **Latest snapshot:** `20250917-094511`  
 **Repo:** https://github.com/choovio/gobee-audit  
 **Tag:** `audit-20250917-094511` → `origin/main@efaaa27`
+**Restore tag:** `sbx-2025-09-26` — SBX green snapshot (all services ECR@digest; probes normalized; pods Ready)
 
 ---
 
