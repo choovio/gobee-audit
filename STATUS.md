@@ -313,3 +313,57 @@ Outcome: updated \ops/sbx/http.yaml\ and \ops/sbx/ws.yaml\ with pinned digests, 
 - Reports probes normalized to /health:8080.
 - SPDX + health guards active (no /healthz or /readyz allowed).
 
+========== RESULTS ==========
+ENV.REPO : SBX.gobee-audit
+TIME     : 2025-09-26 11:48:18
+HTTP DEPLOY PRESENT : True
+WS   DEPLOY PRESENT : True
+NOTE     : Ingress objects exist; deployments will appear after adapters rename/pin PR merges and deploy job runs.
+========== RESULTS ==========
+========== RESULTS ==========
+ENV.REPO : SBX.gobee-audit
+TIME     : 2025-09-26 13:34:01 PT-07:00
+ECR/DIG  : NON-ECR=[] TAGGED=[]
+PROBES   : reports /health:8080 ; OK=True (expect /health:8080). MQTT uses tcp:1883.
+INGRESS  :
+api-bootstrap                sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-bootstrap-health-alias   sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-certs                    sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-domains                  sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-http                     sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-provision                sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-readers                  sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-readers-health-alias     sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-reports                  sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-rules                    sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-things                   sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-users                    sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+api-ws                       sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+bootstrap                    sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+http                         http.sbx.gobee.io   ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+http-adapter                 sbx.gobee.io        <none>
+sbx                          sbx.gobee.io        ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+ws                           ws.sbx.gobee.io     ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+ws-adapter                   sbx.gobee.io        <none>
+PODS OK? : True
+DEPLOY   :
+alarms             595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:0bbcc6ed30b9906e255de8f875c741e44df4f6dab30b349d69780d27acafdd90
+bootstrap          595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:bootstrap-dev
+certs              595443389404.dkr.ecr.us-west-2.amazonaws.com/certs@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+domains            595443389404.dkr.ecr.us-west-2.amazonaws.com/domains@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+http               595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0
+mqtt-adapter       595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:e59a26211f4f0b48597c9566e9ad88d9b266072af54f763a9d3f15770c3c8ec3
+nats               nats@sha256:eca033f54dbb5d0a5df80c60ff229e53c71de63a8b4ddd0c2f04dd3e55d287df
+nginx              595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:e688fed0b0c7513a63364959e7d389c37ac8ecac7a6c6a31455eca2f5a71ab8b
+pgreader           595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:e688fed0b0c7513a63364959e7d389c37ac8ecac7a6c6a31455eca2f5a71ab8b
+postgres-reader    595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:9098f875d618ea1e85177bd409ee6c5b1ef7e211bac824afb0eaf5303cb8f459
+postgres-writer    595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:2d74974b546525b4e1f34ce7ac952fdf7f417ee2f8e00312dbccdd238a08999d
+provision          595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:8fdee43e9bad1028ba5a91438eb6292454b96f76cf27bdaac590cd2ce0c98f08
+re                 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:85ac2283375a019d5cb4ba9478139a06c33a80cbf71a2c7c5b188a128ee4e597
+reports            595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+things             595443389404.dkr.ecr.us-west-2.amazonaws.com/things@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+timescale-reader   595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+timescale-writer   595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+users              595443389404.dkr.ecr.us-west-2.amazonaws.com/users@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+ws                 595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6
+========== RESULTS ==========
