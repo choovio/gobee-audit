@@ -306,3 +306,10 @@ Outcome: updated \ops/sbx/http.yaml\ and \ops/sbx/ws.yaml\ with pinned digests, 
 - ws:   
 
 Outcome: updated \ops/sbx/http.yaml\ and \ops/sbx/ws.yaml\ with pinned digests, pushed to origin.
+
+### Audit Snapshot — 2025-09-26 11:09
+- All backend repos synced to origin.
+- SBX adapters pinned (http/ws).
+- Reports probes normalized to /health:8080.
+- SPDX + health guards active (no /healthz or /readyz allowed).
+
