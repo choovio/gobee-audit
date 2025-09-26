@@ -271,8 +271,13 @@ Pins:
 - timescale-writer → 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
 - users → 595443389404.dkr.ecr.us-west-2.amazonaws.com/users@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
 - ws → 595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6
-TIMESTAMP: 2025-09-25 11:36:29 -07:00
-==== END RESULTS ====
+- http:
+- ws:
+## Audit Status Update (2025-09-25 15:45:00 PT)
+
+- Installer adapters now expose `/health` endpoints in service manifests and runtime checks.
+- CI guardrails enforce `/health` coverage on adapter ingress and deployment specs.
+- PR: https://github.com/choovio/gobee-audit/pull/new/work
 \\\
 
 ### Next Steps for New Agent
