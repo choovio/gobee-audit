@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) CHOOVIO Inc.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-lns
+  namespace: magistrala
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-clusterissuer
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [lns.gobee.io]
+      secretName: lns-tls
+  rules:
+    - host: lns.gobee.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: chirpstack
+                port:
+                  number: 8080
