@@ -23,7 +23,7 @@ spec:
             - name: MAGISTRALA_MQTT_URL
               value: "nats://nats.magistrala.svc:4222"
             - name: CHIRPSTACK_API_URL
-              value: "http://chirpstack.magistrala.svc:8080"
+              value: "https://lns.gobee.io"
             - name: CHIRPSTACK_API_TOKEN
               valueFrom:
                 secretKeyRef: { name: chirpstack-secrets, key: apiToken }
