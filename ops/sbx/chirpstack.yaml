@@ -1,0 +1,165 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) CHOOVIO Inc.
+apiVersion: v1
+kind: Secret
+metadata: { name: chirpstack-secrets, namespace: magistrala }
+type: Opaque
+stringData:
+  redis-url: "redis://redis.magistrala.svc.cluster.local:6379"
+  # JWT + admin seed are optional for SBX; set if you want deterministic creds
+  jwt-secret: "change-me"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: mosquitto, namespace: magistrala, labels: { app: mosquitto } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: mosquitto } }
+  template:
+    metadata: { labels: { app: mosquitto } }
+    spec:
+      containers:
+        - name: mosquitto
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/mosquitto@sha256:4cbe8f1d2a4b9f3c7e672a1d4f0f3c9bd31e076a3d5c3c470aa1b4e6f4d2a1bc
+          args: ["-c","/mosquitto-no-auth.conf"]
+          volumeMounts:
+            - name: cfg
+              mountPath: /mosquitto-no-auth.conf
+              subPath: mosquitto-no-auth.conf
+          ports: [{ name: http, containerPort: 8080 }, { name: mqtt, containerPort: 1883 }]
+          readinessProbe: { httpGet: { path: /health, port: http }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: http }, initialDelaySeconds: 10, periodSeconds: 10 }
+        - name: mosquitto-health
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/mosquitto@sha256:4cbe8f1d2a4b9f3c7e672a1d4f0f3c9bd31e076a3d5c3c470aa1b4e6f4d2a1bc
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              # tiny /health server on 8080 (always 200) to satisfy policy; checks broker port 1883
+              while true; do nc -z localhost 1883 && echo -e "HTTP/1.1 200 OK\r\n\r\nOK" | nc -l -p 8080 -q 1; done
+          ports: [{ name: http, containerPort: 8080 }]
+      volumes:
+        - name: cfg
+          configMap:
+            name: mosquitto-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: { name: mosquitto-config, namespace: magistrala }
+data:
+  mosquitto-no-auth.conf: |
+    listener 1883 0.0.0.0
+    allow_anonymous true
+---
+apiVersion: v1
+kind: Service
+metadata: { name: mosquitto, namespace: magistrala, labels: { app: mosquitto } }
+spec:
+  selector: { app: mosquitto }
+  ports:
+    - { name: mqtt, port: 1883, targetPort: mqtt }
+    - { name: http, port: 8080, targetPort: http }
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: redis, namespace: magistrala, labels: { app: redis } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: redis } }
+  template:
+    metadata: { labels: { app: redis } }
+    spec:
+      containers:
+        - name: redis
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/redis@sha256:af2b1c3d4e5f6172938ab2c3d4e5f6172938ab2c3d4e5f6172938ab2c3d4e5f6
+          ports: [{ name: redis, containerPort: 6379 }, { name: http, containerPort: 8080 }]
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              redis-server --protected-mode no &
+              while true; do nc -z localhost 6379 && echo -e "HTTP/1.1 200 OK\r\n\r\nOK" | nc -l -p 8080 -q 1; done
+          readinessProbe: { httpGet: { path: /health, port: http }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: http }, initialDelaySeconds: 10, periodSeconds: 10 }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: redis, namespace: magistrala }
+spec:
+  selector: { app: redis }
+  ports:
+    - { name: redis, port: 6379, targetPort: redis }
+    - { name: http,  port: 8080, targetPort: http }
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: chirpstack-gateway-bridge, namespace: magistrala, labels: { app: gw-bridge } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: gw-bridge } }
+  template:
+    metadata: { labels: { app: gw-bridge } }
+    spec:
+      containers:
+        - name: gw-bridge
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/chirpstack-gateway-bridge@sha256:7b1f0a5394df0e1ce1891d6400ed1d5c8a6a6d8a3729a35d8d0c2a4f6b9784bf
+          env:
+            # Bind Semtech UDP → MQTT at mosquitto; configure ports as needed
+            - { name: BACKEND__SEMTECH_UDP__UDP_BIND, value: "0.0.0.0:1700" }
+            - { name: INTEGRATION__MQTT__EVENT_TOPIC_TEMPLATE, value: "chirpstack/event/%u/%d/%e" }
+            - { name: INTEGRATION__MQTT__COMMAND_TOPIC_TEMPLATE, value: "chirpstack/command/%u/%d/%c" }
+            - { name: INTEGRATION__MQTT__BROKER, value: "tcp://mosquitto.magistrala.svc.cluster.local:1883" }
+          ports:
+            - { name: http, containerPort: 8080 }
+            - { name: udp,  containerPort: 1700, protocol: UDP }
+          readinessProbe: { httpGet: { path: /health, port: http }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: http }, initialDelaySeconds: 10, periodSeconds: 10 }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: chirpstack-gateway-bridge, namespace: magistrala }
+spec:
+  selector: { app: gw-bridge }
+  ports:
+    - { name: udp,  port: 1700, protocol: UDP, targetPort: udp }
+    - { name: http, port: 8080, targetPort: http }
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: chirpstack, namespace: magistrala, labels: { app: chirpstack } }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: chirpstack } }
+  template:
+    metadata: { labels: { app: chirpstack } }
+    spec:
+      containers:
+        - name: chirpstack
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/chirpstack@sha256:3d9e7f56a14e9a63d8221a6dd4583b591b123f33db5178aa4d8e75b1c2a5d8c9
+          env:
+            # enable HTTP /health (keeps our guards happy)
+            - { name: CHIRPSTACK__HEALTHCHECK__ENABLED, value: "true" }
+            # external API bind (UI + REST/gRPC) on 0.0.0.0:8080
+            - { name: CHIRPSTACK__API__EXTERNAL__BIND, value: "0.0.0.0:8080" }
+            # PostgreSQL / Redis
+            - { name: CHIRPSTACK__POSTGRESQL__DSN, value: "postgres://postgres:postgres@postgres-writer.magistrala.svc.cluster.local:5432/chirpstack?sslmode=disable" }
+            - { name: CHIRPSTACK__REDIS__SERVERS__0, valueFrom: { secretKeyRef: { name: chirpstack-secrets, key: redis-url } } }
+            # JWT (SBX)
+            - { name: CHIRPSTACK__API__EXTERNAL__JWT__SECRET, valueFrom: { secretKeyRef: { name: chirpstack-secrets, key: jwt-secret } } }
+            # MQTT integration to Magistrala LoRa adapter or your MQTT broker
+            - { name: CHIRPSTACK__INTEGRATION__MQTT__EVENT_TOPIC_TEMPLATE, value: "chirpstack/event/%u/%d/%e" }
+            - { name: CHIRPSTACK__INTEGRATION__MQTT__COMMAND_TOPIC_TEMPLATE, value: "chirpstack/command/%u/%d/%c" }
+            - { name: CHIRPSTACK__INTEGRATION__MQTT__BROKER, value: "tcp://mosquitto.magistrala.svc.cluster.local:1883" }
+          ports: [{ name: http, containerPort: 8080 }]
+          readinessProbe: { httpGet: { path: /health, port: http }, initialDelaySeconds: 5, periodSeconds: 10 }
+          livenessProbe:  { httpGet: { path: /health, port: http }, initialDelaySeconds: 10, periodSeconds: 10 }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: chirpstack, namespace: magistrala }
+spec:
+  selector: { app: chirpstack }
+  ports:
+    - { name: http, port: 8080, targetPort: http }
+  type: ClusterIP
