@@ -440,3 +440,12 @@ timescale-writer   595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:times
 users              595443389404.dkr.ecr.us-west-2.amazonaws.com/users@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
 ws                 595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6
 ========== RESULTS ==========
+### 2025-10-01 — LoRa SBX State
+
+\\\RESULTS
+IMG=595443389404.dkr.ecr.us-west-2.amazonaws.com/lora@sha256:<PASTE>
+PROBE=/health:http
+READY=/2
+OK=False
+\\\
+
