@@ -4,3 +4,6 @@
 *.bak
 .DS_Store
 Thumbs.db
+gobee-audit/
+gobee-platform-installer/
+magistrala-fork/
