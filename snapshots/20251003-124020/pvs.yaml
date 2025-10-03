@@ -1,0 +1,52 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    annotations:
+      pv.kubernetes.io/provisioned-by: ebs.csi.aws.com
+      volume.kubernetes.io/provisioner-deletion-secret-name: ""
+      volume.kubernetes.io/provisioner-deletion-secret-namespace: ""
+    creationTimestamp: "2025-10-03T17:27:42Z"
+    finalizers:
+    - external-provisioner.volume.kubernetes.io/finalizer
+    - kubernetes.io/pv-protection
+    - external-attacher/ebs-csi-aws-com
+    name: pvc-911a3ce4-9589-4e4f-9a4b-2510b0c0b600
+    resourceVersion: "14065912"
+    uid: 63bb298a-3a3b-483b-965c-089154b2eeda
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 5Gi
+    claimRef:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      name: data-cs-postgres-0
+      namespace: magistrala
+      resourceVersion: "14065883"
+      uid: 911a3ce4-9589-4e4f-9a4b-2510b0c0b600
+    csi:
+      driver: ebs.csi.aws.com
+      fsType: ext4
+      volumeAttributes:
+        storage.kubernetes.io/csiProvisionerIdentity: 1759511544678-6622-ebs.csi.aws.com
+      volumeHandle: vol-09c42857d9bad7286
+    nodeAffinity:
+      required:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: topology.kubernetes.io/zone
+            operator: In
+            values:
+            - us-west-2c
+    persistentVolumeReclaimPolicy: Delete
+    storageClassName: gp3
+    volumeMode: Filesystem
+  status:
+    lastPhaseTransitionTime: "2025-10-03T17:27:42Z"
+    phase: Bound
+kind: List
+metadata:
+  resourceVersion: ""
