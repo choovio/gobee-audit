@@ -9,6 +9,8 @@
 **Tag:** `audit-20250917-094511` → `origin/main@efaaa27`
 **Restore tag:** `sbx-2025-09-26` — SBX green snapshot (all services ECR@digest; probes normalized; pods Ready)
 
+- 2025-10-06: Added “History & Standards Checkpoint” (SBX/Magistrala + LoRa ingress notes). See `docs/reports/checkpoint-history-2025-10-06.md`.
+
 ---
 
 ## Parity Checks (Local → Repo)
