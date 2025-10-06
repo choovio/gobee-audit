@@ -1,0 +1,4015 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "144"
+      kubernetes.io/change-cause: kubectl.exe set image deploy/alarms alarms=595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:0bbcc6ed30b9906e255de8f875c741e44df4f6dab30b349d69780d27acafdd90
+        --namespace=magistrala --record=true
+    creationTimestamp: "2025-08-25T20:56:09Z"
+    generation: 147
+    name: alarms
+    namespace: magistrala
+    resourceVersion: "13781039"
+    uid: 9274d01a-ccfd-43f0-b8d7-b402b836bb1b
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: alarms
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alarms
+          app.kubernetes.io/component: backend
+          app.kubernetes.io/name: alarms
+      spec:
+        containers:
+        - envFrom:
+          - secretRef:
+              name: timescale-secrets
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:alarms-a4ab87d2bb4bdd28f6557c9f2b2c9cfca51a7cfa
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: alarms
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-08-29T23:32:32Z"
+      lastUpdateTime: "2025-08-29T23:32:32Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-08-30T01:24:36Z"
+      lastUpdateTime: "2025-10-02T22:19:33Z"
+      message: ReplicaSet "alarms-588489b7d5" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 147
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "169"
+      kubernetes.io/change-cause: kubectl.exe set image deploy/bootstrap bootstrap=595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:bootstrap-9608e04
+        --namespace=magistrala --record=true
+    creationTimestamp: "2025-08-25T22:05:23Z"
+    generation: 189
+    labels:
+      app: bootstrap
+      app.kubernetes.io/name: bootstrap
+      app.kubernetes.io/part-of: magistrala
+    name: bootstrap
+    namespace: magistrala
+    resourceVersion: "14101789"
+    uid: 1b701770-a9d2-48ed-a854-324eac440bf9
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: bootstrap
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-10-03T12:31:59-07:00"
+        creationTimestamp: null
+        labels:
+          app: bootstrap
+          app.kubernetes.io/name: bootstrap
+          app.kubernetes.io/part-of: magistrala
+      spec:
+        containers:
+        - env:
+          - name: MF_BOOTSTRAP_DB_URL
+            valueFrom:
+              secretKeyRef:
+                key: DATABASE_URL
+                name: bootstrap-secrets
+          envFrom:
+          - secretRef:
+              name: bootstrap-secrets
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:bootstrap-826865e
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: bootstrap
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 5
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-08-30T02:01:23Z"
+      lastUpdateTime: "2025-08-30T02:01:23Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-10-03T19:42:01Z"
+      lastUpdateTime: "2025-10-03T19:42:01Z"
+      message: ReplicaSet "bootstrap-6448fc6f5d" has timed out progressing.
+      reason: ProgressDeadlineExceeded
+      status: "False"
+      type: Progressing
+    observedGeneration: 189
+    readyReplicas: 1
+    replicas: 2
+    unavailableReplicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "4"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"certs"},"name":"certs","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"certs"}},"template":{"metadata":{"labels":{"app":"certs"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:certs-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"certs","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
+    creationTimestamp: "2025-09-10T21:50:47Z"
+    generation: 7
+    labels:
+      app: certs
+    name: certs
+    namespace: magistrala
+    resourceVersion: "11606550"
+    uid: afaedfff-9a8a-45eb-a191-ea8184f8eb5f
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: certs
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: certs
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/certs@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: certs
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2025-09-10T23:44:43Z"
+      lastUpdateTime: "2025-09-10T23:44:43Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-10T22:32:10Z"
+      lastUpdateTime: "2025-09-25T00:16:42Z"
+      message: ReplicaSet "certs-58464d846d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 7
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "54"
+    creationTimestamp: "2025-09-29T21:56:30Z"
+    generation: 62
+    labels:
+      app: chirpstack
+    name: chirpstack
+    namespace: magistrala
+    resourceVersion: "14092374"
+    uid: a215f33d-77cb-4be9-ace6-cb7f796d45d3
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: chirpstack
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-10-03T12:05:31-07:00"
+        creationTimestamp: null
+        labels:
+          app: chirpstack
+      spec:
+        containers:
+        - args:
+          - -c
+          - /etc/chirpstack
+          env:
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_USER
+                name: cs-postgres
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_PASSWORD
+                name: cs-postgres
+          - name: PGDATABASE
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_DB
+                name: cs-postgres
+          - name: CHIRPSTACK__POSTGRESQL__DSN
+            valueFrom:
+              secretKeyRef:
+                key: DSN
+                name: chirpstack-dsn
+          envFrom:
+          - secretRef:
+              name: chirpstack-secrets
+          image: ghcr.io/chirpstack/chirpstack:4
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            successThreshold: 1
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 2
+          name: chirpstack
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 8080
+            timeoutSeconds: 2
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/chirpstack
+            name: chirpstack-config
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: chirpstack-config
+          name: chirpstack-config
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-10-03T19:05:51Z"
+      lastUpdateTime: "2025-10-03T19:05:51Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-10-03T18:01:26Z"
+      lastUpdateTime: "2025-10-03T19:05:52Z"
+      message: ReplicaSet "chirpstack-5d494697cc" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 62
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"cs-redis","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"cs-redis"}},"template":{"metadata":{"labels":{"app":"cs-redis"}},"spec":{"containers":[{"args":["--appendonly","yes"],"image":"docker.io/library/redis:7.2","name":"redis","ports":[{"containerPort":6379}]}]}}}}
+    creationTimestamp: "2025-10-02T17:23:21Z"
+    generation: 1
+    name: cs-redis
+    namespace: magistrala
+    resourceVersion: "13714177"
+    uid: 73a8608b-1d39-49e0-b2f7-3e134afcfd4f
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: cs-redis
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: cs-redis
+      spec:
+        containers:
+        - args:
+          - --appendonly
+          - "yes"
+          image: docker.io/library/redis:7.2
+          imagePullPolicy: IfNotPresent
+          name: redis
+          ports:
+          - containerPort: 6379
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-10-02T17:23:27Z"
+      lastUpdateTime: "2025-10-02T17:23:27Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-10-02T17:23:21Z"
+      lastUpdateTime: "2025-10-02T17:23:27Z"
+      message: ReplicaSet "cs-redis-789747764f" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "4"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"domains"},"name":"domains","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"domains"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"domains"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:domains-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"domains","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":2}}]}}}}
+    creationTimestamp: "2025-09-10T21:50:48Z"
+    generation: 7
+    labels:
+      app: domains
+    name: domains
+    namespace: magistrala
+    resourceVersion: "11606606"
+    uid: 3bf78860-37d3-4222-bf91-022b29acf18f
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: domains
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 1
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: domains
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/domains@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: domains
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2025-09-10T21:50:48Z"
+      lastUpdateTime: "2025-09-10T21:50:48Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-10T22:32:10Z"
+      lastUpdateTime: "2025-09-25T00:16:44Z"
+      message: ReplicaSet "domains-7dd7df878b" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 7
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"http","app.kubernetes.io/name":"http"},"name":"http","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"http"}},"template":{"metadata":{"labels":{"app":"http","app.kubernetes.io/name":"http"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0","livenessProbe":{"httpGet":{"path":"/healthz","port":8008}},"name":"http","ports":[{"containerPort":8008}],"readinessProbe":{"httpGet":{"path":"/healthz","port":8008}}}]}}}}
+    creationTimestamp: "2025-09-24T18:45:10Z"
+    generation: 2
+    labels:
+      app: http
+      app.kubernetes.io/name: http
+    name: http
+    namespace: magistrala
+    resourceVersion: "11606505"
+    uid: 8bc10367-0c17-442f-9262-4b996965dc09
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: http
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: http
+          app.kubernetes.io/name: http
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8008
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: http
+          ports:
+          - containerPort: 8008
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8008
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-09-24T18:45:11Z"
+      lastUpdateTime: "2025-09-24T18:45:11Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-24T18:45:10Z"
+      lastUpdateTime: "2025-09-25T00:16:41Z"
+      message: ReplicaSet "http-65c5fb87d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "7"
+    creationTimestamp: "2025-09-29T23:40:32Z"
+    generation: 8
+    labels:
+      app: lora
+    name: lora
+    namespace: magistrala
+    resourceVersion: "14101776"
+    uid: c1560354-5181-446d-b921-7014ddcb9316
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: lora
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: lora
+      spec:
+        containers:
+        - env:
+          - name: CHIRPSTACK_API_URL
+            value: https://lns.gobee.io
+          - name: MAGISTRALA_MQTT_URL
+            value: mqtt://nats:1883
+          - name: CHIRPSTACK_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: apiToken
+                name: chirpstack-secrets
+          image: gobee/lora:<tag>
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: lora
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2025-09-29T23:40:32Z"
+      lastUpdateTime: "2025-09-29T23:40:32Z"
+      message: Deployment does not have minimum availability.
+      reason: MinimumReplicasUnavailable
+      status: "False"
+      type: Available
+    - lastTransitionTime: "2025-10-03T19:41:58Z"
+      lastUpdateTime: "2025-10-03T19:41:58Z"
+      message: ReplicaSet "lora-78cc6d4575" has timed out progressing.
+      reason: ProgressDeadlineExceeded
+      status: "False"
+      type: Progressing
+    observedGeneration: 8
+    replicas: 2
+    unavailableReplicas: 2
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "6"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"lora-adapter","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"lora-adapter"}},"template":{"metadata":{"labels":{"app":"lora-adapter"}},"spec":{"containers":[{"env":[{"name":"MG_REDIS_URL","value":"redis://redis:6379/1"},{"name":"MG_LORA_ADAPTER_MESSAGES_URL","value":"tcp://mosquitto:1883"}],"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala-lora-adapter:sbx-1","name":"lora-adapter","ports":[{"containerPort":8080}]}]}}}}
+      kubernetes.io/change-cause: kubectl.exe set image deployment/lora-adapter lora-adapter=595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala-lora-adapter:sbx-1
+        --namespace=magistrala --record=true
+    creationTimestamp: "2025-10-02T17:50:41Z"
+    generation: 13
+    name: lora-adapter
+    namespace: magistrala
+    resourceVersion: "14101779"
+    uid: f9dc80e7-6f04-41f8-9df7-ff2e9b1f7dcb
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: lora-adapter
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: lora-adapter
+      spec:
+        containers:
+        - env:
+          - name: MG_REDIS_URL
+            value: redis://redis:6379/1
+          - name: MG_LORA_ADAPTER_MESSAGES_URL
+            value: tcp://mosquitto:1883
+          image: gobee/lora-adapter:<tag>
+          imagePullPolicy: IfNotPresent
+          name: lora-adapter
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-10-02T21:29:27Z"
+      lastUpdateTime: "2025-10-02T21:29:27Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-10-03T19:41:59Z"
+      lastUpdateTime: "2025-10-03T19:41:59Z"
+      message: ReplicaSet "lora-adapter-784f756c49" has timed out progressing.
+      reason: ProgressDeadlineExceeded
+      status: "False"
+      type: Progressing
+    observedGeneration: 13
+    readyReplicas: 1
+    replicas: 2
+    unavailableReplicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"mosquitto","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"mosquitto"}},"template":{"metadata":{"labels":{"app":"mosquitto"}},"spec":{"containers":[{"image":"eclipse-mosquitto:2.0","name":"mosquitto","ports":[{"containerPort":1883}],"volumeMounts":[{"mountPath":"/mosquitto/config","name":"cfg"}]}],"volumes":[{"configMap":{"items":[{"key":"mosquitto.conf","path":"mosquitto.conf"}],"name":"mosquitto-config"},"name":"cfg"}]}}}}
+    creationTimestamp: "2025-10-02T17:23:22Z"
+    generation: 1
+    name: mosquitto
+    namespace: magistrala
+    resourceVersion: "13765706"
+    uid: 3c572c61-54b3-495e-924a-3c88741ca02c
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: mosquitto
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: mosquitto
+      spec:
+        containers:
+        - image: eclipse-mosquitto:2.0
+          imagePullPolicy: IfNotPresent
+          name: mosquitto
+          ports:
+          - containerPort: 1883
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /mosquitto/config
+            name: cfg
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: mosquitto.conf
+              path: mosquitto.conf
+            name: mosquitto-config
+          name: cfg
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-10-02T17:23:22Z"
+      lastUpdateTime: "2025-10-02T17:23:26Z"
+      message: ReplicaSet "mosquitto-7556c779bb" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2025-10-02T21:31:05Z"
+      lastUpdateTime: "2025-10-02T21:31:05Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "22"
+      kubernetes.io/change-cause: mqtt-adapter -> mqtt-adapter-6ef9ab76ddc260750347cbeebe5614db703cfae9
+    creationTimestamp: "2025-08-30T01:14:28Z"
+    generation: 25
+    name: mqtt-adapter
+    namespace: magistrala
+    resourceVersion: "14101780"
+    uid: e38ed4a5-9d26-4ee4-9076-2f907eba90ab
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: mqtt-adapter
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: mqtt-adapter
+          app.kubernetes.io/component: backend
+          app.kubernetes.io/name: mqtt-adapter
+      spec:
+        containers:
+        - env:
+          - name: NATS_URL
+            value: nats:4222
+          image: gobee/mqtt-adapter:<tag>
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            tcpSocket:
+              port: 1883
+            timeoutSeconds: 1
+          name: mqtt-adapter
+          ports:
+          - containerPort: 1883
+            name: mqtt
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 1883
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-08-30T01:19:32Z"
+      lastUpdateTime: "2025-08-30T01:19:32Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-10-03T19:41:59Z"
+      lastUpdateTime: "2025-10-03T19:41:59Z"
+      message: ReplicaSet "mqtt-adapter-5768848f6b" has timed out progressing.
+      reason: ProgressDeadlineExceeded
+      status: "False"
+      type: Progressing
+    observedGeneration: 25
+    readyReplicas: 1
+    replicas: 2
+    unavailableReplicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "7"
+      gobee.io/restartedAt: 2025-09-18T11:01:51
+      kubernetes.io/change-cause: kubectl.exe set image deployment/nats nats=595443389404.dkr.ecr.us-west-2.amazonaws.com/nats@sha256:820a97ef8a0e8e4b1f1c940c1fbf92e57ad548429dd20754de24ffe4f08996a3
+        --namespace=magistrala --record=true
+    creationTimestamp: "2025-08-30T00:52:20Z"
+    generation: 11
+    name: nats
+    namespace: magistrala
+    resourceVersion: "12937660"
+    uid: 85a5f262-888e-41b0-b2a9-8c372b940d48
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: nats
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-09-18T11:04:16-07:00"
+        creationTimestamp: null
+        labels:
+          app: nats
+      spec:
+        containers:
+        - args:
+          - -js
+          - -m
+          - "8222"
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/nats@sha256:820a97ef8a0e8e4b1f1c940c1fbf92e57ad548429dd20754de24ffe4f08996a3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 20
+            successThreshold: 1
+            tcpSocket:
+              port: 4222
+            timeoutSeconds: 1
+          name: nats
+          ports:
+          - containerPort: 4222
+            name: client
+            protocol: TCP
+          - containerPort: 8222
+            name: monitor
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 4222
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    collisionCount: 1
+    conditions:
+    - lastTransitionTime: "2025-09-18T19:02:14Z"
+      lastUpdateTime: "2025-09-18T19:02:14Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-25T01:01:53Z"
+      lastUpdateTime: "2025-09-29T21:56:42Z"
+      message: ReplicaSet "nats-7b678b459c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 11
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2025-08-25T20:56:07Z"
+    generation: 3
+    name: nginx
+    namespace: magistrala
+    resourceVersion: "11795403"
+    uid: d5f32cfa-d84b-4a41-81d0-44fe200abe0a
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: nginx
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: nginx
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:e688fed0b0c7513a63364959e7d389c37ac8ecac7a6c6a31455eca2f5a71ab8b
+          imagePullPolicy: IfNotPresent
+          name: nginx
+          ports:
+          - containerPort: 80
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-08-28T00:21:59Z"
+      lastUpdateTime: "2025-08-28T00:21:59Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-08-25T20:56:07Z"
+      lastUpdateTime: "2025-09-25T16:57:56Z"
+      message: ReplicaSet "nginx-74778b47bf" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "7"
+    creationTimestamp: "2025-08-30T02:20:18Z"
+    generation: 49
+    name: pgreader
+    namespace: magistrala
+    resourceVersion: "13785267"
+    uid: 2b19786b-6eee-4415-8bb3-e51131386779
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: pgreader
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: pgreader
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:pgreader-dev
+          imagePullPolicy: IfNotPresent
+          name: pgreader
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2025-09-29T22:24:24Z"
+      lastUpdateTime: "2025-09-29T22:24:24Z"
+      message: ReplicaSet "pgreader-6b97bf74d4" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2025-10-02T22:33:48Z"
+      lastUpdateTime: "2025-10-02T22:33:48Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 49
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "68"
+      kubernetes.io/change-cause: pgreader -> pgreader-bbf5a464b2f25438b09afb95e412fc31a2b47480
+    creationTimestamp: "2025-08-25T20:56:11Z"
+    generation: 88
+    name: postgres-reader
+    namespace: magistrala
+    resourceVersion: "13785632"
+    uid: 36d1e9c9-1707-4864-89bc-e9f5cb35819c
+  spec:
+    paused: true
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: postgres-reader
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-08-29T13:27:02-07:00"
+        creationTimestamp: null
+        labels:
+          app: postgres-reader
+      spec:
+        containers:
+        - args:
+          - -db-url=$(DATABASE_URL)
+          command:
+          - /exe
+          env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                key: DATABASE_URL
+                name: timescale-secrets
+          envFrom:
+          - secretRef:
+              name: timescale-secrets
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:pgreader-de805b921976db22403914dec5e903c1ece7b345
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: postgres-reader
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-08-29T20:27:09Z"
+      lastUpdateTime: "2025-08-29T20:27:09Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-15T23:45:50Z"
+      lastUpdateTime: "2025-09-15T23:45:50Z"
+      message: Deployment is paused
+      reason: DeploymentPaused
+      status: Unknown
+      type: Progressing
+    observedGeneration: 88
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "87"
+      kubernetes.io/change-cause: pgwriter -> pgwriter-bbf5a464b2f25438b09afb95e412fc31a2b47480
+    creationTimestamp: "2025-08-25T20:56:11Z"
+    generation: 90
+    name: postgres-writer
+    namespace: magistrala
+    resourceVersion: "14101784"
+    uid: e4dfd9f3-2443-41dd-b7af-48dd55fa2cd3
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: postgres-writer
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-08-29T13:18:16-07:00"
+        creationTimestamp: null
+        labels:
+          app: postgres-writer
+      spec:
+        containers:
+        - envFrom:
+          - secretRef:
+              name: timescale-secrets
+          image: gobee/postgres-writer:<tag>
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 9010
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: postgres-writer
+          ports:
+          - containerPort: 9010
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 9010
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-08-29T20:18:18Z"
+      lastUpdateTime: "2025-08-29T20:18:18Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-10-03T19:42:00Z"
+      lastUpdateTime: "2025-10-03T19:42:00Z"
+      message: ReplicaSet "postgres-writer-bf4b66f4f" has timed out progressing.
+      reason: ProgressDeadlineExceeded
+      status: "False"
+      type: Progressing
+    observedGeneration: 90
+    readyReplicas: 1
+    replicas: 2
+    unavailableReplicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "4"
+    creationTimestamp: "2025-08-25T20:56:08Z"
+    generation: 7
+    name: provision
+    namespace: magistrala
+    resourceVersion: "11797203"
+    uid: c0b1ba6e-fdc2-419b-9393-3753a32093be
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: provision
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: provision
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:8fdee43e9bad1028ba5a91438eb6292454b96f76cf27bdaac590cd2ce0c98f08
+          imagePullPolicy: IfNotPresent
+          name: provision
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-08-28T00:21:59Z"
+      lastUpdateTime: "2025-08-28T00:21:59Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-08-25T20:56:08Z"
+      lastUpdateTime: "2025-09-25T17:07:02Z"
+      message: ReplicaSet "provision-749d885b49" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 7
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "90"
+      kubernetes.io/change-cause: re -> re-ca73523145c4c1afa6cbcb9994f3c1fc4c589841
+    creationTimestamp: "2025-08-25T20:56:10Z"
+    generation: 91
+    name: re
+    namespace: magistrala
+    resourceVersion: "13785445"
+    uid: 04ae7327-2b0e-48ba-9aaf-3e9a379b4d3e
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: re
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          re/email-template-version: v1
+        creationTimestamp: null
+        labels:
+          app: re
+          app.kubernetes.io/component: backend
+          app.kubernetes.io/name: re
+      spec:
+        containers:
+        - env:
+          - name: MG_EMAIL_TEMPLATE
+            value: /etc/email/email.tmpl
+          envFrom:
+          - secretRef:
+              name: smtp-secrets
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:re-ca73523145c4c1afa6cbcb9994f3c1fc4c589841
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: re
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/email
+            name: email-template
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: email.tmpl
+              path: email.tmpl
+            name: email-template
+          name: email-template
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-08-30T00:33:39Z"
+      lastUpdateTime: "2025-08-30T00:33:39Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-02T21:00:16Z"
+      lastUpdateTime: "2025-10-02T22:34:13Z"
+      message: ReplicaSet "re-74cb4dbf4c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 91
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"redis","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"redis"}},"template":{"metadata":{"labels":{"app":"redis"}},"spec":{"containers":[{"image":"redis:7","name":"redis","ports":[{"containerPort":6379,"name":"redis"}]}]}}}}
+    creationTimestamp: "2025-10-03T17:36:58Z"
+    generation: 1
+    name: redis
+    namespace: magistrala
+    resourceVersion: "14068336"
+    uid: df68f250-61ba-4942-8bd6-852708f419dc
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: redis
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: redis
+      spec:
+        containers:
+        - image: redis:7
+          imagePullPolicy: IfNotPresent
+          name: redis
+          ports:
+          - containerPort: 6379
+            name: redis
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-10-03T17:37:04Z"
+      lastUpdateTime: "2025-10-03T17:37:04Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-10-03T17:36:58Z"
+      lastUpdateTime: "2025-10-03T17:37:04Z"
+      message: ReplicaSet "redis-65467b55b6" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "114"
+      kubernetes.io/change-cause: reports -> reports-45075eec054539fa282129e171c954a264cc845d
+    creationTimestamp: "2025-08-25T20:56:09Z"
+    generation: 117
+    name: reports
+    namespace: magistrala
+    resourceVersion: "13785536"
+    uid: 13d506bc-b7f4-49b6-a1ed-e3c3100a89e7
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 2
+    selector:
+      matchLabels:
+        app: reports
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-09-10T14:19:06-07:00"
+        creationTimestamp: null
+        labels:
+          app: reports
+          app.kubernetes.io/component: backend
+          app.kubernetes.io/name: reports
+      spec:
+        containers:
+        - env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                key: DATABASE_URL
+                name: timescale-secrets
+          envFrom:
+          - secretRef:
+              name: timescale-secrets
+          image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:reports-45075eec054539fa282129e171c954a264cc845d
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: reports
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-09-02T19:17:34Z"
+      lastUpdateTime: "2025-09-02T19:17:34Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-29T22:13:59Z"
+      lastUpdateTime: "2025-10-02T22:34:25Z"
+      message: ReplicaSet "reports-55564766ff" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 117
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "4"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"things"},"name":"things","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"things"}},"template":{"metadata":{"labels":{"app":"things"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:things-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"things","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
+    creationTimestamp: "2025-09-10T21:50:48Z"
+    generation: 7
+    labels:
+      app: things
+    name: things
+    namespace: magistrala
+    resourceVersion: "11606723"
+    uid: f828a558-8a43-4d61-8eaa-0243de7eb277
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: things
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: things
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/things@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: things
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2025-09-10T23:44:41Z"
+      lastUpdateTime: "2025-09-10T23:44:41Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-10T22:32:09Z"
+      lastUpdateTime: "2025-09-25T00:16:48Z"
+      message: ReplicaSet "things-748c8b9bdd" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 7
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "5"
+    creationTimestamp: "2025-08-30T02:20:08Z"
+    generation: 44
+    name: timescale-reader
+    namespace: magistrala
+    resourceVersion: "13785561"
+    uid: 69d0c1af-5aa1-4a39-99ca-079422f3f128
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: timescale-reader
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: timescale-reader
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:timescale-reader-dev
+          imagePullPolicy: IfNotPresent
+          name: timescale-reader
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2025-08-30T02:20:08Z"
+      lastUpdateTime: "2025-09-29T21:56:34Z"
+      message: ReplicaSet "timescale-reader-b8497f649" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2025-10-02T22:34:26Z"
+      lastUpdateTime: "2025-10-02T22:34:26Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 44
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "5"
+    creationTimestamp: "2025-08-30T02:20:07Z"
+    generation: 44
+    name: timescale-writer
+    namespace: magistrala
+    resourceVersion: "13785586"
+    uid: e876fb6a-f553-4d2a-9efb-dc8b144fc179
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 0
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: timescale-writer
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: timescale-writer
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:timescale-writer-dev
+          imagePullPolicy: IfNotPresent
+          name: timescale-writer
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    conditions:
+    - lastTransitionTime: "2025-08-30T02:20:07Z"
+      lastUpdateTime: "2025-09-29T21:56:36Z"
+      message: ReplicaSet "timescale-writer-f844d9549" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2025-10-02T22:34:28Z"
+      lastUpdateTime: "2025-10-02T22:34:28Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 44
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "4"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"users"},"name":"users","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"users"}},"template":{"metadata":{"labels":{"app":"users"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:users-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"users","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
+    creationTimestamp: "2025-09-10T21:50:49Z"
+    generation: 7
+    labels:
+      app: users
+    name: users
+    namespace: magistrala
+    resourceVersion: "11606901"
+    uid: c00d665e-dc35-4efc-b9d3-0d9d41209981
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 2
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: users
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: users
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/users@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: users
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 2
+    conditions:
+    - lastTransitionTime: "2025-09-10T23:44:43Z"
+      lastUpdateTime: "2025-09-10T23:44:43Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-10T22:32:08Z"
+      lastUpdateTime: "2025-09-25T00:17:16Z"
+      message: ReplicaSet "users-5577fcb44f" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 7
+    readyReplicas: 2
+    replicas: 2
+    updatedReplicas: 2
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"ws","app.kubernetes.io/name":"ws"},"name":"ws","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"ws"}},"template":{"metadata":{"labels":{"app":"ws","app.kubernetes.io/name":"ws"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6","livenessProbe":{"httpGet":{"path":"/healthz","port":8186}},"name":"ws","ports":[{"containerPort":8186}],"readinessProbe":{"httpGet":{"path":"/healthz","port":8186}}}]}}}}
+    creationTimestamp: "2025-09-24T18:45:11Z"
+    generation: 2
+    labels:
+      app: ws
+      app.kubernetes.io/name: ws
+    name: ws
+    namespace: magistrala
+    resourceVersion: "11606668"
+    uid: 81a0cfcf-0b2f-413b-b0b9-507741f2dda1
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: ws
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: ws
+          app.kubernetes.io/name: ws
+      spec:
+        containers:
+        - image: 595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8186
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: ws
+          ports:
+          - containerPort: 8186
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8186
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2025-09-24T18:45:12Z"
+      lastUpdateTime: "2025-09-24T18:45:12Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2025-09-24T18:45:11Z"
+      lastUpdateTime: "2025-09-25T00:16:45Z"
+      message: ReplicaSet "ws-585665cfd" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: StatefulSet
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"StatefulSet","metadata":{"annotations":{},"name":"cs-postgres","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"cs-postgres"}},"serviceName":"cs-postgres","template":{"metadata":{"labels":{"app":"cs-postgres"}},"spec":{"containers":[{"env":[{"name":"POSTGRES_DB","value":"chirpstack"},{"name":"POSTGRES_USER","valueFrom":{"secretKeyRef":{"key":"CS_DB_USER","name":"cs-secrets"}}},{"name":"POSTGRES_PASSWORD","valueFrom":{"secretKeyRef":{"key":"CS_DB_PASS","name":"cs-secrets"}}}],"image":"docker.io/library/postgres:15","name":"postgres","ports":[{"containerPort":5432}],"volumeMounts":[{"mountPath":"/var/lib/postgresql/data","name":"data"}]}]}},"volumeClaimTemplates":[{"metadata":{"name":"data"},"spec":{"accessModes":["ReadWriteOnce"],"resources":{"requests":{"storage":"5Gi"}},"storageClassName":"gp3"}}]}}
+    creationTimestamp: "2025-10-02T20:54:10Z"
+    generation: 16
+    name: cs-postgres
+    namespace: magistrala
+    resourceVersion: "14072849"
+    uid: fe977e03-2cf3-4d98-9905-bf463d268517
+  spec:
+    persistentVolumeClaimRetentionPolicy:
+      whenDeleted: Retain
+      whenScaled: Retain
+    podManagementPolicy: OrderedReady
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: cs-postgres
+    serviceName: cs-postgres
+    template:
+      metadata:
+        annotations:
+          kubectl.kubernetes.io/restartedAt: "2025-10-03T10:45:06-07:00"
+        creationTimestamp: null
+        labels:
+          app: cs-postgres
+      spec:
+        containers:
+        - env:
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_DB
+                name: cs-postgres
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_USER
+                name: cs-postgres
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: POSTGRES_PASSWORD
+                name: cs-postgres
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+          image: docker.io/library/postgres:15
+          imagePullPolicy: IfNotPresent
+          name: postgres
+          ports:
+          - containerPort: 5432
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: data
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    updateStrategy:
+      rollingUpdate:
+        partition: 0
+      type: RollingUpdate
+    volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        creationTimestamp: null
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: gp3
+        volumeMode: Filesystem
+      status:
+        phase: Pending
+  status:
+    availableReplicas: 1
+    collisionCount: 0
+    currentReplicas: 1
+    currentRevision: cs-postgres-9d6f47d47
+    observedGeneration: 16
+    readyReplicas: 1
+    replicas: 1
+    updateRevision: cs-postgres-9d6f47d47
+    updatedReplicas: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-25T20:56:10Z"
+    name: alarms
+    namespace: magistrala
+    resourceVersion: "13781030"
+    uid: 00038364-7218-44b6-8ab3-bf590a367b79
+  spec:
+    clusterIP: 172.20.177.59
+    clusterIPs:
+    - 172.20.177.59
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: alarms
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-22T22:40:48Z"
+    labels:
+      app: bootstrap
+    name: bootstrap
+    namespace: magistrala
+    resourceVersion: "13781173"
+    uid: 60083a70-0345-407d-b1f0-a560f57551fb
+  spec:
+    clusterIP: 172.20.204.202
+    clusterIPs:
+    - 172.20.204.202
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: bootstrap
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"certs"},"name":"certs","namespace":"magistrala"},"spec":{"ports":[{"port":8080,"targetPort":8080}],"selector":{"app":"certs"}}}
+    creationTimestamp: "2025-09-10T21:50:48Z"
+    labels:
+      app: certs
+    name: certs
+    namespace: magistrala
+    resourceVersion: "7914002"
+    uid: 574d7a32-d726-49af-bcd3-78b5133f3f8c
+  spec:
+    clusterIP: 172.20.33.250
+    clusterIPs:
+    - 172.20.33.250
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: certs
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-09-29T21:56:30Z"
+    name: chirpstack
+    namespace: magistrala
+    resourceVersion: "14091828"
+    uid: b9ba3e50-0340-4c72-9e94-e670ed3e855a
+  spec:
+    clusterIP: 172.20.49.85
+    clusterIPs:
+    - 172.20.49.85
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: chirpstack
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"cs-postgres","namespace":"magistrala"},"spec":{"ports":[{"name":"pg","port":5432,"targetPort":5432}],"selector":{"app":"cs-postgres"}}}
+    creationTimestamp: "2025-10-02T17:23:21Z"
+    name: cs-postgres
+    namespace: magistrala
+    resourceVersion: "13714075"
+    uid: e33202e5-62cd-4196-9b7b-a8d42c0e42fc
+  spec:
+    clusterIP: 172.20.213.35
+    clusterIPs:
+    - 172.20.213.35
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: pg
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: cs-postgres
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"cs-redis","namespace":"magistrala"},"spec":{"ports":[{"name":"redis","port":6379,"targetPort":6379}],"selector":{"app":"cs-redis"}}}
+    creationTimestamp: "2025-10-02T17:23:21Z"
+    name: cs-redis
+    namespace: magistrala
+    resourceVersion: "13714057"
+    uid: 3198b50d-0590-4ded-8652-8d79b8d26b65
+  spec:
+    clusterIP: 172.20.136.138
+    clusterIPs:
+    - 172.20.136.138
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: redis
+      port: 6379
+      protocol: TCP
+      targetPort: 6379
+    selector:
+      app: cs-redis
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"domains"},"name":"domains","namespace":"magistrala"},"spec":{"ports":[{"name":"http","port":8080,"targetPort":8080}],"selector":{"app":"domains"}}}
+    creationTimestamp: "2025-09-10T21:50:48Z"
+    labels:
+      app: domains
+    name: domains
+    namespace: magistrala
+    resourceVersion: "7914025"
+    uid: c7ca5ff5-3643-403b-819f-5b56d21d29e4
+  spec:
+    clusterIP: 172.20.43.191
+    clusterIPs:
+    - 172.20.43.191
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: domains
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"http"},"name":"http","namespace":"magistrala"},"spec":{"ports":[{"name":"http","port":8008,"targetPort":8008}],"selector":{"app":"http"}}}
+    creationTimestamp: "2025-09-24T16:31:24Z"
+    labels:
+      app: http
+    name: http
+    namespace: magistrala
+    resourceVersion: "11541339"
+    uid: 4b86586c-c0ff-443c-9a5c-85d267b4be54
+  spec:
+    clusterIP: 172.20.211.173
+    clusterIPs:
+    - 172.20.211.173
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8008
+      protocol: TCP
+      targetPort: 8008
+    selector:
+      app: http
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"http-adapter","namespace":"magistrala"},"spec":{"ports":[{"name":"http","port":8080,"targetPort":8080}],"selector":{"app.kubernetes.io/name":"http-adapter"}}}
+    creationTimestamp: "2025-09-15T19:07:46Z"
+    name: http-adapter
+    namespace: magistrala
+    resourceVersion: "11577835"
+    uid: e2ae5b6b-07f5-41ae-bff3-116df2451789
+  spec:
+    clusterIP: 172.20.176.49
+    clusterIPs:
+    - 172.20.176.49
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app.kubernetes.io/name: http-adapter
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-09-29T23:40:32Z"
+    labels:
+      app: lora
+    name: lora
+    namespace: magistrala
+    resourceVersion: "13473992"
+    uid: a96fbc38-ffea-42aa-82b6-c54f7c72c600
+  spec:
+    clusterIP: 172.20.202.214
+    clusterIPs:
+    - 172.20.202.214
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+    selector:
+      app: lora
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"lora-adapter","namespace":"magistrala"},"spec":{"ports":[{"name":"http","port":8080,"targetPort":8080}],"selector":{"app":"lora-adapter"}}}
+    creationTimestamp: "2025-10-02T17:23:23Z"
+    name: lora-adapter
+    namespace: magistrala
+    resourceVersion: "13714132"
+    uid: 502ec5ec-632a-468f-8a77-fa86f0569b2d
+  spec:
+    clusterIP: 172.20.127.133
+    clusterIPs:
+    - 172.20.127.133
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: lora-adapter
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"mosquitto","namespace":"magistrala"},"spec":{"ports":[{"name":"mqtt","port":1883,"targetPort":1883}],"selector":{"app":"mosquitto"}}}
+    creationTimestamp: "2025-10-02T17:23:22Z"
+    name: mosquitto
+    namespace: magistrala
+    resourceVersion: "13714093"
+    uid: 82412e34-bc46-4671-82a4-530f0ae71530
+  spec:
+    clusterIP: 172.20.137.108
+    clusterIPs:
+    - 172.20.137.108
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: mqtt
+      port: 1883
+      protocol: TCP
+      targetPort: 1883
+    selector:
+      app: mosquitto
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-30T01:14:28Z"
+    name: mqtt-adapter
+    namespace: magistrala
+    resourceVersion: "4808734"
+    uid: 2d3e7261-cf74-499a-9f9c-0a256016b39a
+  spec:
+    clusterIP: 172.20.195.133
+    clusterIPs:
+    - 172.20.195.133
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: mqtt-adapter
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-30T00:52:20Z"
+    name: nats
+    namespace: magistrala
+    resourceVersion: "12937546"
+    uid: 7bf3085c-ba64-4f09-8cea-e5d6c526155c
+  spec:
+    clusterIP: 172.20.110.84
+    clusterIPs:
+    - 172.20.110.84
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: client
+      port: 4222
+      protocol: TCP
+      targetPort: 4222
+    - name: monitor
+      port: 8222
+      protocol: TCP
+      targetPort: 8222
+    selector:
+      app: nats
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-25T20:56:08Z"
+    name: nginx
+    namespace: magistrala
+    resourceVersion: "4808337"
+    uid: 8e12a80a-bbb7-44a7-9b98-d44b8982cc20
+  spec:
+    clusterIP: 172.20.73.77
+    clusterIPs:
+    - 172.20.73.77
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+    selector:
+      app: nginx
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-30T02:20:18Z"
+    name: pgreader
+    namespace: magistrala
+    resourceVersion: "4821058"
+    uid: 66ba288a-281f-44de-97f5-e06f3e2ad3ec
+  spec:
+    clusterIP: 172.20.21.54
+    clusterIPs:
+    - 172.20.21.54
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: pgreader
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-25T20:56:11Z"
+    name: postgres-reader
+    namespace: magistrala
+    resourceVersion: "4808624"
+    uid: 378e6180-b654-43fd-b8a3-8253f1eefa95
+  spec:
+    clusterIP: 172.20.129.37
+    clusterIPs:
+    - 172.20.129.37
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: postgres-reader
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-25T20:56:11Z"
+    name: postgres-writer
+    namespace: magistrala
+    resourceVersion: "11593970"
+    uid: abd24aee-a6c3-4ff4-aefc-04ec95dd4709
+  spec:
+    clusterIP: 172.20.78.174
+    clusterIPs:
+    - 172.20.78.174
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 9010
+      protocol: TCP
+      targetPort: 9010
+    selector:
+      app: postgres-writer
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-25T20:56:09Z"
+    name: provision
+    namespace: magistrala
+    resourceVersion: "11593844"
+    uid: 556f8a6b-2275-4925-b199-592baee43cfe
+  spec:
+    clusterIP: 172.20.3.64
+    clusterIPs:
+    - 172.20.3.64
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 9016
+    selector:
+      app: provision
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-25T20:56:10Z"
+    name: re
+    namespace: magistrala
+    resourceVersion: "5819265"
+    uid: 05dea59c-2aa8-45ae-b4a3-56308ab866ee
+  spec:
+    clusterIP: 172.20.49.53
+    clusterIPs:
+    - 172.20.49.53
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: re
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"redis","namespace":"magistrala"},"spec":{"ports":[{"name":"redis","port":6379,"targetPort":6379}],"selector":{"app":"redis"}}}
+    creationTimestamp: "2025-10-03T17:36:58Z"
+    name: redis
+    namespace: magistrala
+    resourceVersion: "14068301"
+    uid: 5aa066bd-7c6d-49f1-a03e-3a3eff74f012
+  spec:
+    clusterIP: 172.20.221.115
+    clusterIPs:
+    - 172.20.221.115
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: redis
+      port: 6379
+      protocol: TCP
+      targetPort: 6379
+    selector:
+      app: redis
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-25T20:56:09Z"
+    name: reports
+    namespace: magistrala
+    resourceVersion: "13781377"
+    uid: 1b3405a1-ea47-4e7f-b6f3-26330c6683f0
+  spec:
+    clusterIP: 172.20.245.25
+    clusterIPs:
+    - 172.20.245.25
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: reports
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"things"},"name":"things","namespace":"magistrala"},"spec":{"ports":[{"port":8080,"targetPort":8080}],"selector":{"app":"things"}}}
+    creationTimestamp: "2025-09-10T21:50:48Z"
+    labels:
+      app: things
+    name: things
+    namespace: magistrala
+    resourceVersion: "7914054"
+    uid: 1956a9b9-1817-4718-b7eb-cee48b0cd71a
+  spec:
+    clusterIP: 172.20.189.14
+    clusterIPs:
+    - 172.20.189.14
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: things
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-30T02:20:08Z"
+    name: timescale-reader
+    namespace: magistrala
+    resourceVersion: "4820924"
+    uid: ed06cb23-8a24-4d54-90fd-6aeb1e27681b
+  spec:
+    clusterIP: 172.20.15.189
+    clusterIPs:
+    - 172.20.15.189
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: timescale-reader
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-08-30T02:20:07Z"
+    name: timescale-writer
+    namespace: magistrala
+    resourceVersion: "4820894"
+    uid: ef1ba427-9fac-4e1d-90d3-d3ad63902ace
+  spec:
+    clusterIP: 172.20.161.208
+    clusterIPs:
+    - 172.20.161.208
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: timescale-writer
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"users"},"name":"users","namespace":"magistrala"},"spec":{"ports":[{"port":8080,"targetPort":8080}],"selector":{"app":"users"}}}
+    creationTimestamp: "2025-09-10T21:50:49Z"
+    labels:
+      app: users
+    name: users
+    namespace: magistrala
+    resourceVersion: "7914078"
+    uid: 35e3fdc9-2067-4207-97d1-c98f5fa83687
+  spec:
+    clusterIP: 172.20.148.158
+    clusterIPs:
+    - 172.20.148.158
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: users
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"ws"},"name":"ws","namespace":"magistrala"},"spec":{"ports":[{"name":"ws","port":8186,"targetPort":8186}],"selector":{"app":"ws"}}}
+    creationTimestamp: "2025-09-24T16:31:25Z"
+    labels:
+      app: ws
+    name: ws
+    namespace: magistrala
+    resourceVersion: "11541370"
+    uid: 8f323cb6-8c6e-4d24-b46a-c2d46c22a1a8
+  spec:
+    clusterIP: 172.20.49.102
+    clusterIPs:
+    - 172.20.49.102
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: ws
+      port: 8186
+      protocol: TCP
+      targetPort: 8186
+    selector:
+      app: ws
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"ws-adapter","namespace":"magistrala"},"spec":{"ports":[{"name":"http","port":8080,"targetPort":8080}],"selector":{"app.kubernetes.io/name":"ws-adapter"}}}
+    creationTimestamp: "2025-09-15T19:07:47Z"
+    name: ws-adapter
+    namespace: magistrala
+    resourceVersion: "11577865"
+    uid: 0dd44ad2-ffaf-45f1-93f0-68869ad2f1c8
+  spec:
+    clusterIP: 172.20.158.116
+    clusterIPs:
+    - 172.20.158.116
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app.kubernetes.io/name: ws-adapter
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-04T20:55:30Z"
+    generation: 1
+    name: api-bootstrap
+    namespace: magistrala
+    resourceVersion: "11594075"
+    uid: 41813fd7-e9c1-4dbc-a0ce-316d59cb0b02
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: bootstrap
+              port:
+                number: 8080
+          path: /api/bootstrap/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/rewrite-target":"/healthz","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"api-bootstrap-health-alias","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"bootstrap","port":{"number":8080}}},"path":"/api/bootstrap/health$","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["sbx.gobee.io"],"secretName":"sbx-gobee-io-tls"}]}}
+      nginx.ingress.kubernetes.io/rewrite-target: /healthz
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-15T18:49:19Z"
+    generation: 2
+    name: api-bootstrap-health-alias
+    namespace: magistrala
+    resourceVersion: "9210795"
+    uid: 5b45fafa-1a80-4a68-bc78-75d7c9348d8e
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: bootstrap
+              port:
+                number: 8080
+          path: /api/bootstrap/health$
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/cors-allow-credentials":"true","nginx.ingress.kubernetes.io/cors-allow-headers":"Accept, Authorization, Content-Type, X-Requested-With, X-CSRF-Token","nginx.ingress.kubernetes.io/cors-allow-methods":"GET, PUT, POST, DELETE, PATCH, OPTIONS","nginx.ingress.kubernetes.io/cors-allow-origin":"https://sbx.gobee.io, https://gobee.io, https://ai.gobee.io, http://localhost:3000","nginx.ingress.kubernetes.io/cors-max-age":"86400","nginx.ingress.kubernetes.io/enable-cors":"true","nginx.ingress.kubernetes.io/proxy-body-size":"0","nginx.ingress.kubernetes.io/rewrite-target":"/$1","nginx.ingress.kubernetes.io/ssl-redirect":"true","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"api-certs","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"certs","port":{"number":8080}}},"path":"/api/certs/?(.*)","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["sbx.gobee.io"],"secretName":"sbx-gobee-io-tls"}]}}
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-10T23:34:41Z"
+    generation: 1
+    name: api-certs
+    namespace: magistrala
+    resourceVersion: "8178148"
+    uid: 4fb3c27c-9281-4cf7-a613-8edf40eaf191
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: certs
+              port:
+                number: 8080
+          path: /api/certs/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/cors-allow-credentials":"true","nginx.ingress.kubernetes.io/cors-allow-headers":"Accept, Authorization, Content-Type, X-Requested-With, X-CSRF-Token","nginx.ingress.kubernetes.io/cors-allow-methods":"GET, PUT, POST, DELETE, PATCH, OPTIONS","nginx.ingress.kubernetes.io/cors-allow-origin":"https://sbx.gobee.io, https://gobee.io, https://ai.gobee.io, http://localhost:3000","nginx.ingress.kubernetes.io/cors-max-age":"86400","nginx.ingress.kubernetes.io/enable-cors":"true","nginx.ingress.kubernetes.io/proxy-body-size":"0","nginx.ingress.kubernetes.io/rewrite-target":"/$1","nginx.ingress.kubernetes.io/ssl-redirect":"true","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"api-domains","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"domains","port":{"number":8080}}},"path":"/api/domains/?(.*)","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["sbx.gobee.io"],"secretName":"sbx-gobee-io-tls"}]}}
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-10T23:34:41Z"
+    generation: 1
+    name: api-domains
+    namespace: magistrala
+    resourceVersion: "8178150"
+    uid: b6537d44-4e0c-4dc3-8935-4962fccddfdc
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: domains
+              port:
+                number: 8080
+          path: /api/domains/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/cors-allow-credentials":"true","nginx.ingress.kubernetes.io/cors-allow-headers":"Accept, Authorization, Content-Type, X-Requested-With, X-CSRF-Token","nginx.ingress.kubernetes.io/cors-allow-methods":"GET, PUT, POST, DELETE, PATCH, OPTIONS","nginx.ingress.kubernetes.io/cors-allow-origin":"https://sbx.gobee.io, https://gobee.io, https://ai.gobee.io, http://localhost:3000","nginx.ingress.kubernetes.io/cors-allow-origin-list":"https://sbx.gobee.io, https://gobee.io, https://ai.gobee.io, http://localhost:3000","nginx.ingress.kubernetes.io/enable-cors":"true","nginx.ingress.kubernetes.io/rewrite-target":"/","nginx.ingress.kubernetes.io/ssl-redirect":"true","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"api-http","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"http-adapter","port":{"number":8080}}},"path":"/api/http/?(.*)","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["sbx.gobee.io"],"secretName":"sbx-gobee-io-tls"}]}}
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-15T19:07:47Z"
+    generation: 1
+    name: api-http
+    namespace: magistrala
+    resourceVersion: "9183765"
+    uid: 879fa394-c81d-4fb5-9e4d-f5527edcf3ec
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: http-adapter
+              port:
+                number: 8080
+          path: /api/http/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/ingress.class: nginx
+    creationTimestamp: "2025-09-29T21:56:24Z"
+    generation: 2
+    name: api-lns
+    namespace: magistrala
+    resourceVersion: "13420642"
+    uid: c7d5f709-fb0f-4be6-a2a1-f5339bb24d0f
+  spec:
+    rules:
+    - host: lns.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: lora
+              port:
+                name: http
+          path: /health
+          pathType: Prefix
+    tls:
+    - hosts:
+      - lns.gobee.io
+      secretName: lns-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token, X-Tenant-ID
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-09T16:28:47Z"
+    generation: 1
+    name: api-provision
+    namespace: magistrala
+    resourceVersion: "11594120"
+    uid: 880885ae-4174-436f-9afa-6b1e0a6c9771
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: provision
+              port:
+                number: 8080
+          path: /api/provision/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-04T18:46:43Z"
+    generation: 2
+    name: api-readers
+    namespace: magistrala
+    resourceVersion: "11594089"
+    uid: 6d36d2ed-d6b9-466a-9987-efe184d751a6
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: postgres-reader
+              port:
+                number: 8080
+          path: /api/readers/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/rewrite-target":"/healthz","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"api-readers-health-alias","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"postgres-reader","port":{"number":8080}}},"path":"/api/readers/health$","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["sbx.gobee.io"],"secretName":"sbx-gobee-io-tls"}]}}
+      nginx.ingress.kubernetes.io/rewrite-target: /healthz
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-15T19:54:02Z"
+    generation: 1
+    name: api-readers-health-alias
+    namespace: magistrala
+    resourceVersion: "9192243"
+    uid: 0b27482e-052d-4358-a93b-7c0d11d6f572
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: postgres-reader
+              port:
+                number: 8080
+          path: /api/readers/health$
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-04T20:42:38Z"
+    generation: 1
+    name: api-reports
+    namespace: magistrala
+    resourceVersion: "11594099"
+    uid: cfc80043-bd2f-46a2-bd2c-0f3a5eb49621
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: reports
+              port:
+                number: 8080
+          path: /api/reports/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-04T20:30:34Z"
+    generation: 1
+    name: api-rules
+    namespace: magistrala
+    resourceVersion: "11594111"
+    uid: 44b89bad-9835-4384-95d5-f85d8d4c4f8c
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: re
+              port:
+                number: 8080
+          path: /api/rules/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/cors-allow-credentials":"true","nginx.ingress.kubernetes.io/cors-allow-headers":"Accept, Authorization, Content-Type, X-Requested-With, X-CSRF-Token","nginx.ingress.kubernetes.io/cors-allow-methods":"GET, PUT, POST, DELETE, PATCH, OPTIONS","nginx.ingress.kubernetes.io/cors-allow-origin":"https://sbx.gobee.io, https://gobee.io, https://ai.gobee.io, http://localhost:3000","nginx.ingress.kubernetes.io/cors-max-age":"86400","nginx.ingress.kubernetes.io/enable-cors":"true","nginx.ingress.kubernetes.io/proxy-body-size":"0","nginx.ingress.kubernetes.io/rewrite-target":"/$1","nginx.ingress.kubernetes.io/ssl-redirect":"true","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"api-things","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"things","port":{"number":8080}}},"path":"/api/things/?(.*)","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["sbx.gobee.io"],"secretName":"sbx-gobee-io-tls"}]}}
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-10T23:34:40Z"
+    generation: 1
+    name: api-things
+    namespace: magistrala
+    resourceVersion: "8178158"
+    uid: 3a43cf7d-021f-4f9d-82e6-13cac5fd892f
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: things
+              port:
+                number: 8080
+          path: /api/things/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/cors-allow-credentials":"true","nginx.ingress.kubernetes.io/cors-allow-headers":"Accept, Authorization, Content-Type, X-Requested-With, X-CSRF-Token","nginx.ingress.kubernetes.io/cors-allow-methods":"GET, PUT, POST, DELETE, PATCH, OPTIONS","nginx.ingress.kubernetes.io/cors-allow-origin":"https://sbx.gobee.io, https://gobee.io, https://ai.gobee.io, http://localhost:3000","nginx.ingress.kubernetes.io/cors-max-age":"86400","nginx.ingress.kubernetes.io/enable-cors":"true","nginx.ingress.kubernetes.io/proxy-body-size":"0","nginx.ingress.kubernetes.io/rewrite-target":"/$1","nginx.ingress.kubernetes.io/ssl-redirect":"true","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"api-users","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"users","port":{"number":8080}}},"path":"/api/users/?(.*)","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["sbx.gobee.io"],"secretName":"sbx-gobee-io-tls"}]}}
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-10T23:34:40Z"
+    generation: 1
+    name: api-users
+    namespace: magistrala
+    resourceVersion: "8178160"
+    uid: 16038b41-6bf9-45d5-a2e3-574a352608ba
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: users
+              port:
+                number: 8080
+          path: /api/users/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/rewrite-target":"/","nginx.ingress.kubernetes.io/ssl-redirect":"true","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"api-ws","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"ws-adapter","port":{"number":8080}}},"path":"/api/ws/?(.*)","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["sbx.gobee.io"],"secretName":"sbx-gobee-io-tls"}]}}
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-15T19:07:47Z"
+    generation: 1
+    name: api-ws
+    namespace: magistrala
+    resourceVersion: "9183764"
+    uid: 0fee075e-7d1c-41f8-9137-1c360c69fedc
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: ws-adapter
+              port:
+                number: 8080
+          path: /api/ws/?(.*)
+          pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+      nginx.ingress.kubernetes.io/cors-allow-headers: Accept, Authorization, Content-Type,
+        X-Requested-With, X-CSRF-Token
+      nginx.ingress.kubernetes.io/cors-allow-methods: GET, PUT, POST, DELETE, PATCH,
+        OPTIONS
+      nginx.ingress.kubernetes.io/cors-allow-origin: https://sbx.gobee.io, https://gobee.io,
+        https://ai.gobee.io, http://localhost:3000
+      nginx.ingress.kubernetes.io/cors-allow-origin-list: https://sbx.gobee.io,https://sandbox.gobee.io
+      nginx.ingress.kubernetes.io/cors-max-age: "86400"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    creationTimestamp: "2025-08-27T19:04:39Z"
+    generation: 7
+    name: bootstrap
+    namespace: magistrala
+    resourceVersion: "12937476"
+    uid: 13e9e0ee-5d5a-4b0e-8fe9-5b55d453f578
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: bootstrap
+              port:
+                number: 8080
+          path: /health
+          pathType: Prefix
+        - backend:
+            service:
+              name: bootstrap
+              port:
+                number: 8080
+          path: /
+          pathType: Prefix
+    tls:
+    - hosts:
+      - sbx.gobee.io
+      secretName: sbx-gobee-io-tls
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"kubernetes.io/ingress.class":"nginx"},"name":"chirpstack-ing","namespace":"magistrala"},"spec":{"rules":[{"host":"lns.gobee.io","http":{"paths":[{"backend":{"service":{"name":"chirpstack","port":{"number":8080}}},"path":"/","pathType":"Prefix"}]}}]}}
+      kubernetes.io/ingress.class: nginx
+    creationTimestamp: "2025-10-02T17:23:23Z"
+    generation: 1
+    name: chirpstack-ing
+    namespace: magistrala
+    resourceVersion: "13714282"
+    uid: 7516dc4d-f3a3-4803-94de-38f28d5df5ad
+  spec:
+    rules:
+    - host: lns.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: chirpstack
+              port:
+                number: 8080
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"kubernetes.io/ingress.class":"nginx"},"name":"http","namespace":"magistrala"},"spec":{"rules":[{"host":"http.sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"http","port":{"number":8008}}},"path":"/","pathType":"Prefix"}]}}]}}
+      kubernetes.io/change-cause: 2025-09-24T12:40:29
+      kubernetes.io/ingress.class: nginx
+    creationTimestamp: "2025-09-24T16:31:24Z"
+    generation: 2
+    name: http
+    namespace: magistrala
+    resourceVersion: "11555548"
+    uid: 0ee7e261-6028-4f64-8814-988adad5fc34
+  spec:
+    rules:
+    - host: http.sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: http
+              port:
+                number: 8008
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{},"name":"http-adapter","namespace":"magistrala"},"spec":{"rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"http-adapter","port":{"number":8080}}},"path":"/api/http/?(.*)","pathType":"Prefix"}]}}]}}
+    creationTimestamp: "2025-09-16T23:04:07Z"
+    generation: 7
+    name: http-adapter
+    namespace: magistrala
+    resourceVersion: "11577839"
+    uid: 08409e65-fd46-463f-9890-9b06a77ccb45
+  spec:
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: http-adapter
+              port:
+                number: 8080
+          path: /api/http/?(.*)
+          pathType: Prefix
+  status:
+    loadBalancer: {}
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/proxy-read-timeout":"3600","nginx.ingress.kubernetes.io/proxy-send-timeout":"3600","nginx.ingress.kubernetes.io/rewrite-target":"/\\","nginx.ingress.kubernetes.io/use-regex":"true"},"name":"sbx","namespace":"magistrala"},"spec":{"ingressClassName":"nginx","rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"http","port":{"number":8008}}},"path":"/http/health","pathType":"Exact"},{"backend":{"service":{"name":"ws","port":{"number":8186}}},"path":"/ws/health","pathType":"Exact"},{"backend":{"service":{"name":"http","port":{"number":8008}}},"path":"/http/?(.*)","pathType":"ImplementationSpecific"},{"backend":{"service":{"name":"ws","port":{"number":8186}}},"path":"/ws/?(.*)","pathType":"ImplementationSpecific"}]}}]}}
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+      nginx.ingress.kubernetes.io/rewrite-target: /\
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    creationTimestamp: "2025-09-24T20:24:39Z"
+    generation: 4
+    name: sbx
+    namespace: magistrala
+    resourceVersion: "11563187"
+    uid: b7490b3e-594c-4034-b304-2bd368c4692d
+  spec:
+    ingressClassName: nginx
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: http
+              port:
+                number: 8008
+          path: /http/health
+          pathType: Exact
+        - backend:
+            service:
+              name: ws
+              port:
+                number: 8186
+          path: /ws/health
+          pathType: Exact
+        - backend:
+            service:
+              name: http
+              port:
+                number: 8008
+          path: /http/?(.*)
+          pathType: ImplementationSpecific
+        - backend:
+            service:
+              name: ws
+              port:
+                number: 8186
+          path: /ws/?(.*)
+          pathType: ImplementationSpecific
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"kubernetes.io/ingress.class":"nginx"},"name":"ws","namespace":"magistrala"},"spec":{"rules":[{"host":"ws.sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"ws","port":{"number":8186}}},"path":"/","pathType":"Prefix"}]}}]}}
+      kubernetes.io/change-cause: 2025-09-24T12:40:30
+      kubernetes.io/ingress.class: nginx
+    creationTimestamp: "2025-09-24T16:31:25Z"
+    generation: 2
+    name: ws
+    namespace: magistrala
+    resourceVersion: "11555549"
+    uid: 67f99acf-0f94-43e9-bf06-8494d1ea63fc
+  spec:
+    rules:
+    - host: ws.sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: ws
+              port:
+                number: 8186
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer:
+      ingress:
+      - hostname: ad27663c3d26f424c895bc36bd89fb38-640070812.us-west-2.elb.amazonaws.com
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{},"name":"ws-adapter","namespace":"magistrala"},"spec":{"rules":[{"host":"sbx.gobee.io","http":{"paths":[{"backend":{"service":{"name":"ws-adapter","port":{"number":8080}}},"path":"/api/ws/?(.*)","pathType":"Prefix"}]}}]}}
+    creationTimestamp: "2025-09-16T23:04:08Z"
+    generation: 7
+    name: ws-adapter
+    namespace: magistrala
+    resourceVersion: "11577871"
+    uid: 88623968-e93c-4d55-bf24-a0361baf950c
+  spec:
+    rules:
+    - host: sbx.gobee.io
+      http:
+        paths:
+        - backend:
+            service:
+              name: ws-adapter
+              port:
+                number: 8080
+          path: /api/ws/?(.*)
+          pathType: Prefix
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  data:
+    chirpstack.toml: |
+      [api]
+      bind = "0.0.0.0:8080"
+
+      [postgresql]
+      dsn = "postgres://chirpstack:3Chaeebede%21%3F@cs-postgres.magistrala.svc.cluster.local:5432/chirpstack?sslmode=disable"
+      automigrate = true
+
+      [redis]
+      servers = ["redis://redis:6379"]
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"chirpstack.toml":"[api]\nbind = \"0.0.0.0:8080\"\n\n[postgresql]\ndsn = \"postgres://chirpstack:3Chaeebede%21%3F@cs-postgres.magistrala.svc.cluster.local:5432/chirpstack?sslmode=disable\"\nautomigrate = true\n\n[redis]\nservers = [\"redis://redis:6379\"]\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"chirpstack-config","namespace":"magistrala"}}
+    creationTimestamp: "2025-10-02T17:23:22Z"
+    name: chirpstack-config
+    namespace: magistrala
+    resourceVersion: "14083601"
+    uid: b0d9890b-c763-44a2-a2ef-da73304cf7f4
+- apiVersion: v1
+  data:
+    email.tmpl: |-
+      To: {{range $index, $v := .To}}{{if $index}},{{end}}{{$v}}{{end}}
+      From: {{.From}}
+      Subject: {{.Subject}}
+      {{.Header}}
+      You have a new message for {{.User}} on {{.Host}}:
+      {{.Content}}
+      {{.Footer}}
+  kind: ConfigMap
+  metadata:
+    creationTimestamp: "2025-09-02T21:00:09Z"
+    name: email-template
+    namespace: magistrala
+    resourceVersion: "5819213"
+    uid: 6b8c00eb-0d8a-474e-a20d-1c7fb4868139
+- apiVersion: v1
+  data:
+    ca.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIDBTCCAe2gAwIBAgIIQyZw7p2yb28wDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE
+      AxMKa3ViZXJuZXRlczAeFw0yNTA4MTExOTQyMTlaFw0zNTA4MDkxOTQ3MTlaMBUx
+      EzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+      AoIBAQCxnlf8h1ejZF7cnYq3a5XU33an+i1dZKEttTN9U2ry3pNfFLWnEi1ZTYJS
+      32AD3YKGPQH1O/bDqOilO52Sv/jpKveUNYtMI0q1C0Z0wJ1Hu1Bk/99qdj+mgK2K
+      z1xyJ/2Hq7tHXtn4xpb+n9LXOSMIaSBzrSmWJT5pM5U8IVlc/rRqgcEAsSc9bPUJ
+      KnHVZnhh3tAZh7N8Fc6565kg+VmolYSr8+UuVN7HPpH4V2HoC2MjoaM/DSKw8F7x
+      Z2fz63HdwZoGT5KE6ccHSwFrZM4e3JjTKTF0BUdowTgN8H7dn8EFqrDS1ap1qon2
+      JytAHBNzo5HBvc7afYZVxeSQRsyrAgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP
+      BgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBRl6pxhGxZgT/GP2cOI+533BQYYADAV
+      BgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQCkuVrgB3hw
+      3LFsIvDSI6hnGqqGq5kW/WwD51wSQQ7hwzsCz3G0cgMsgWQGBW7vtTXl0EPLDz/+
+      GdAfkZrmDCrNceqQLooQZwrLCkNUPrMFvmu1btpJfREjuVUsXpTWb6wPXOBUJv9R
+      WOacyyGyt+4SgjiadglKaFPZmt1Gu4i5vKO/fTOCrejmXjklMkLRlJSU4WRi9Z3n
+      Tf6FMq5aHkou5Sbdnd6u4paAxPlDkJ4vUgusLXo+KnOQTGYuKLr6jqgnSsC4W1p9
+      UO7tZeCKOPICo55h6lydlABBJFbz+XR/2kuvir5JFw6zrp7AFXbiADEZD98NYWi7
+      74rdoymMJokL
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubernetes.io/description: Contains a CA bundle that can be used to verify the
+        kube-apiserver when using internal endpoints such as the internal service
+        IP or kubernetes.default.svc. No other usage is guaranteed across distributions
+        of Kubernetes clusters.
+    creationTimestamp: "2025-08-22T22:31:28Z"
+    name: kube-root-ca.crt
+    namespace: magistrala
+    resourceVersion: "2911242"
+    uid: a1964646-6188-436b-8b8e-a6be10498f74
+- apiVersion: v1
+  data:
+    mosquitto.conf: |
+      listener 1883
+      allow_anonymous true
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"mosquitto.conf":"listener 1883\nallow_anonymous true\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"mosquitto-config","namespace":"magistrala"}}
+    creationTimestamp: "2025-10-02T17:23:22Z"
+    name: mosquitto-config
+    namespace: magistrala
+    resourceVersion: "13714079"
+    uid: 0e6ad8df-c8bf-4544-819a-026b06b6b9f7
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    creationTimestamp: "2025-08-22T22:31:28Z"
+    name: default
+    namespace: magistrala
+    resourceVersion: "2911243"
+    uid: fb4ea2e4-2b7f-4a1d-8986-a215c97e94b6
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    annotations:
+      pv.kubernetes.io/bind-completed: "yes"
+      pv.kubernetes.io/bound-by-controller: "yes"
+      volume.beta.kubernetes.io/storage-provisioner: ebs.csi.aws.com
+      volume.kubernetes.io/selected-node: ip-10-20-161-228.us-west-2.compute.internal
+      volume.kubernetes.io/storage-provisioner: ebs.csi.aws.com
+    creationTimestamp: "2025-10-03T17:27:40Z"
+    finalizers:
+    - kubernetes.io/pvc-protection
+    labels:
+      app: cs-postgres
+    name: data-cs-postgres-0
+    namespace: magistrala
+    resourceVersion: "14065901"
+    uid: 911a3ce4-9589-4e4f-9a4b-2510b0c0b600
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi
+    storageClassName: gp3
+    volumeMode: Filesystem
+    volumeName: pvc-911a3ce4-9589-4e4f-9a4b-2510b0c0b600
+  status:
+    accessModes:
+    - ReadWriteOnce
+    capacity:
+      storage: 5Gi
+    phase: Bound
+kind: List
+metadata:
+  resourceVersion: ""
