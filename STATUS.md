@@ -12,6 +12,9 @@
 - 2025-10-06: Added “History & Standards Checkpoint” (SBX/Magistrala + LoRa ingress notes). See `docs/reports/checkpoint-history-2025-10-06.md`.
 - 2025-10-06: Added “Checkpoint & Handoff Report — 2025-10-06” summarizing SBX audit from 2025-09-05 → 2025-10-06. See `docs/reports/checkpoint-handoff-2025-10-06.md`.
 - Added codex/CODEX_CONTROL.md as authoritative guardrails for all Codex tasks (2025-10-06).
+- Added reports/redeploy-readiness-2025-10-06.md as the canonical pre-flight checklist for clean redeploy.
+- Added reports/SERVICE_MATRIX.md to pin image tags/digests and deployment timestamps for all services.
+- Added reports/timings/rebuild-2025-10-06.csv for measurable rebuild timing logs; stubbed codex/REBUILD_PLAN_V1.0.md for the execution PR.
 
 ---
 
