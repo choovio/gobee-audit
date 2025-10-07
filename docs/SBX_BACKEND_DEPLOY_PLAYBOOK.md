@@ -1,12 +1,14 @@
 # SBX Backend Deploy Playbook (Windows PowerShell)
 
-This playbook covers the SBX magistrala namespace deployment using PowerShell 7 on Windows. Follow the **verify-first** principle: capture evidence before and after every action. API base paths remain `/api/*`; skip ChirpStack unless you are testing the LoRa adapter.
+Use this flow to deploy SBX backend workloads into the `magistrala` namespace from a Windows 11 workstation running PowerShell 7.
+Follow the **verify-first** rule: gather baseline evidence before changing anything, deploy with `/api/*` paths intact, and skip
+ChirpStack unless you are explicitly exercising the LoRa adapter.
 
 ## Prerequisites
 
 - Windows 11 workstation with PowerShell 7.4+
 - AWS CLI v2 with SBX profile configured (`aws sts get-caller-identity` must resolve)
-- kubectl pointing to SBX EKS cluster
+- `kubectl` pointing to SBX EKS cluster
 - Access to AWS ECR (login via `aws ecr get-login-password`)
 - Latest gobee-platform-installer repo checkout (sbx branch or tag)
 

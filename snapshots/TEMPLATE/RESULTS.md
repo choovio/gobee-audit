@@ -18,4 +18,5 @@ Rules:
 - Keep values concise and verifiable.
 - Replace placeholders; remove unused sections rather than leaving them blank.
 - If rollback executed, include both deploy and rollback evidence bullets.
+- Store supporting logs (kubectl, transcripts, screenshots) alongside the snapshot folder.
 - Do not include command transcripts outside the block; store logs under the snapshot folder.
