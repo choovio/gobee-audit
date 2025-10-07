@@ -12,17 +12,28 @@ SPDX-License-Identifier: Apache-2.0
 - **Namespace:** `magistrala`.
 - **Ingress base:** `https://sbx.gobee.io/api`.
 
+## Deployment Method
+- **Kustomize-only** (bases + overlays).
+- **Helm is forbidden** — no charts, values files, or Helm templating.
+- **Adapters must follow `*-adapter` naming** in manifests, API paths, ECR repos, and source directories.
+
 ## Tag & Digest Rules
 - **Tag schema:** `<git_short_sha>` (immutable). Optional suffix `-r<n>` if multiple builds from same SHA.
 - **Always pin deployments by digest** (sha256) in manifests/pins.
 - **No `latest`**—reject PRs that introduce floating tags.
 
+## Adapter Naming Standard
+- **Names:** `http-adapter`, `lora-adapter`, `ws-adapter`.
+- **API paths:** `/api/http-adapter`, `/api/lora-adapter`, `/api/ws-adapter`.
+- **ECR repos:** `…/gobee-http-adapter`, `…/gobee-lora-adapter`, `…/gobee-ws-adapter` (deploy by digest).
+- **Source directories:** `adapters/http-adapter`, `adapters/lora-adapter`, `adapters/ws-adapter`.
+
 ## Standard ECR Layout (examples)
-- `xxxxxxxxxxxx.dkr.ecr.<region>.amazonaws.com/magistrala-users`
-- `…/magistrala-things`, `…/magistrala-certs`, `…/magistrala-domains`
-- `…/magistrala-bootstrap`, `…/magistrala-provision`, `…/magistrala-readers`
-- `…/magistrala-reports`, `…/magistrala-rules`
-- `…/magistrala-http`, `…/magistrala-ws`
+- `xxxxxxxxxxxx.dkr.ecr.<region>.amazonaws.com/gobee-users`
+- `…/gobee-things`, `…/gobee-certs`, `…/gobee-domains`
+- `…/gobee-bootstrap`, `…/gobee-provision`, `…/gobee-readers`
+- `…/gobee-reports`, `…/gobee-rules`
+- `…/gobee-http-adapter`, `…/gobee-lora-adapter`, `…/gobee-ws-adapter`
 
 ## Build Inputs (per service)
 - **Context:** `choovio/magistrala-fork/<service path>`
@@ -42,7 +53,7 @@ $ACC = "xxxxxxxxxxxx"
 $ECR = "$ACC.dkr.ecr.$REG.amazonaws.com"
 
 # Build & tag (example: users)
-$IMG = "$ECR/magistrala-users:$SHA"
+$IMG = "$ECR/gobee-users:$SHA"
 docker build -t $IMG .\services\users
 docker push $IMG
 
