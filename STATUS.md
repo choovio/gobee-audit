@@ -10,6 +10,7 @@
 **Restore tag:** `sbx-2025-09-26` — SBX green snapshot (all services ECR@digest; probes normalized; pods Ready)
 
 - 2025-10-06: Added “History & Standards Checkpoint” (SBX/Magistrala + LoRa ingress notes). See `docs/reports/checkpoint-history-2025-10-06.md`.
+- 2025-10-06: Added “Checkpoint & Handoff Report — 2025-10-06” summarizing SBX audit from 2025-09-05 → 2025-10-06. See `docs/reports/checkpoint-handoff-2025-10-06.md`.
 
 ---
 
