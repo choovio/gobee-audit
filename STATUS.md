@@ -449,3 +449,63 @@ READY=/2
 OK=False
 \\\
 
+## ChirpStack (SBX — Test Only)
+- [ ] Status doc present: docs/CHIRPSTACK_STATUS.md
+- [ ] Host confirmed: https://lns.gobee.io
+- [ ] Integration: **MQTT**
+- [ ] Role confirmed: SBX/test-only (no prod)
+- [ ] Evidence snapshot saved under snapshots/ (date-stamped)
+
+## Backend Deployment Readiness (SBX)
+- [ ] Namespace set to **gobee** across manifests/docs
+- [ ] Playbook present: docs/SBX_BACKEND_DEPLOY_PLAYBOOK.md
+- [ ] All API services expose /health (not /healthz)
+- [ ] All images pinned by digest
+- [ ] Ingress base confirmed: https://sbx.gobee.io/api/*
+"@
+
+# Fix the CI guard so it only scans paths that exist
+New-Item -ItemType Directory -Force -Path ".github/workflows" | Out-Null
+@"
+name: audit-guards
+on:
+  pull_request:
+    paths:
+      - '**/*.md'
+      - '**/*.yaml'
+      - '**/*.yml'
+      - 'k8s/**'
+      - 'snapshots/**'
+      - 'pins/**'
+jobs:
+  grep-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Block healthz, wrong domains, floating tags (paths gated)
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Block legacy endpoints/domains in any tracked files
+          ! git grep -nE '/healthz' || (echo "Found /healthz (use /health)"; exit 1)
+          ! git grep -nE 'sbx\.api\.gobee\.io' || (echo "Found sbx.api.gobee.io (use sbx.gobee.io/api)"; exit 1)
+          ! git grep -nE '/api/sbx' || (echo "Found /api/sbx (use /api)"; exit 1)
+
+          # Only scan k8s/ if it exists in the repo
+          if git ls-files 'k8s/**' >/dev/null 2>&1; then
+            # reject floating tags e.g. image: repo:tag   (we require digests)
+            if git grep -nE 'image:\s+[^@]+:[^[:space:]]+$' k8s >/dev/null 2>&1; then
+              echo "Floating image tag found in k8s/ (use @sha256:digest)"; exit 1
+            fi
+          fi
+
+      - name: Enforce snapshots template header (gated)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files 'snapshots/**/*.md' | grep -v 'TEMPLATE/RESULTS.md' >/dev/null 2>&1; then
+            while IFS= read -r f; do
+              head -n1 "" | grep -q '^# RESULTS — ' || { echo "Snapshot  missing RESULTS header"; exit 1; }
+            done < <(git ls-files 'snapshots/**/*.md' | grep -v 'TEMPLATE/RESULTS.md')
+          fi
