@@ -5,6 +5,7 @@ on:
       - '**/*.md'
       - '**/*.yaml'
       - '**/*.yml'
+      - '**/*.ps1'
       - 'k8s/**'
       - 'snapshots/**'
       - 'pins/**'
@@ -14,20 +15,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Block healthz, wrong domains, floating tags (paths gated)
+      - name: Block legacy endpoints/domains/tags (paths gated)
         shell: bash
         run: |
           set -euo pipefail
           ! git grep -nE '/healthz' || (echo "Found /healthz (use /health)"; exit 1)
           ! git grep -nE 'sbx\.api\.gobee\.io' || (echo "Found sbx.api.gobee.io (use sbx.gobee.io/api)"; exit 1)
           ! git grep -nE '/api/sbx' || (echo "Found /api/sbx (use /api)"; exit 1)
+          # Only scan k8s if present
           if git ls-files 'k8s/**' >/dev/null 2>&1; then
+            # Reject floating tags (require digests)
             if git grep -nE 'image:\s+[^@]+:[^[:space:]]+$' k8s >/dev/null 2>&1; then
               echo "Floating image tag found in k8s/ (use @sha256:digest)"; exit 1
             fi
+            # Reject -svc suffix in resource names
+            if git grep -nE 'name:\s*.+-svc\b' k8s >/dev/null 2>&1; then
+              echo "Service/Deploy name ends with -svc (standardize to <service>)"; exit 1
+            fi
           fi
 
-      - name: Enforce snapshots template header (gated)
+      - name: Enforce snapshot RESULTS header
         shell: bash
         run: |
           set -euo pipefail
