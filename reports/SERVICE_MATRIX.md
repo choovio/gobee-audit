@@ -13,9 +13,9 @@
 | readers         | /api/readers       | /health     | services/readers              | ecr://…/gobee-readers         | <to fill>             | <to fill>           | <to fill>       | <to fill>          |
 | reports         | /api/reports       | /health     | services/reports              | ecr://…/gobee-reports         | <to fill>             | <to fill>           | <to fill>       | <to fill>          |
 | rules           | /api/rules         | /health     | services/rules                | ecr://…/gobee-rules           | <to fill>             | <to fill>           | <to fill>       | <to fill>          |
-| http-adapter    | /api/http-adapter  | /health     | adapters/http-adapter         | ecr://…/gobee-http-adapter    | <to fill>             | <to fill>           | <to fill>       | <to fill>          |
-| lora-adapter    | /api/lora-adapter  | /health     | adapters/lora-adapter         | ecr://…/gobee-lora-adapter    | <to fill>             | <to fill>           | <to fill>       | <to fill>          |
-| ws-adapter      | /api/ws-adapter    | /health     | adapters/ws-adapter           | ecr://…/gobee-ws-adapter      | <to fill>             | <to fill>           | <to fill>       | <to fill>          |
+| http-adapter | /api/http-adapter | /health | adapters/http-adapter | ecr://…/gobee-http-adapter | <to fill> | <to fill> | <to fill> | <to fill> |
+| lora-adapter | /api/lora-adapter | /health | adapters/lora-adapter | ecr://…/gobee-lora-adapter | <to fill> | <to fill> | <to fill> | <to fill> |
+| ws-adapter | /api/ws-adapter | /health | adapters/ws-adapter | ecr://…/gobee-ws-adapter | <to fill> | <to fill> | <to fill> | <to fill> |
 
 **Notes**
 - Health path unified to `/health`.
