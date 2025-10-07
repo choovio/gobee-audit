@@ -1,26 +1,37 @@
-# ChirpStack Status — SBX (lns.gobee.io)
+# ChirpStack — Deployment Status (SBX / Test Only)
+# Copyright (c) CHOOVIO Inc.
+# SPDX-License-Identifier: Apache-2.0
 
-The SBX sandbox uses a **test-only** ChirpStack deployment to validate LoRaWAN packet delivery without touching production infrastructure.
+**Policy:** Slim ChirpStack is **SBX/test-only** for LoRa adapter integration. **No production ChirpStack** yet.
 
-- **Host:** `lns.gobee.io`
-- **Role:** Proof-of-life for LoRa adapters and device routing tests only
-- **Scope:** SBX sandbox; no production traffic or credentials
-- **Data retention:** Ephemeral (cleared between audit snapshots)
+- **Host (UI/API):** https://lns.gobee.io
+- **Environment:** SBX (staging / sandbox)
+- **Namespace:** `gobee`
+- **Integration method:** **MQTT** (not HTTP webhooks)
+- **Components (expected):** Application Server, Network Server, Gateway Bridge (slim)
+- **Data stores:** PostgreSQL (DSN redacted), Redis (addr redacted), MQTT broker (addr/TLS redacted)
+- **Version:** v4.x (record exact tag when verified)
 
-## Readiness checklist
+## Live Checks (fill on each verification)
+- [ ] DNS resolves `lns.gobee.io`
+- [ ] UI reachable over TLS
+- [ ] API/health responds (200) (if exposed)
+- [ ] DB migrations applied
+- [ ] Redis reachable
+- [ ] MQTT connection stable (bridge ↔ adapter)
+- [ ] Tenants/keys policy documented
 
-- [ ] DNS resolves `lns.gobee.io` to SBX load balancer IP
-- [ ] HTTPS endpoint responds with 200/302 and SBX certificate chain
-- [ ] ChirpStack console reachable with SBX-only credentials (stored in vault)
-- [ ] LoRa packet forwarder points to `lns.gobee.io` over TLS
-- [ ] Events appear in SBX magistrala namespace (test tenants/devices only)
+## Decision (authorized)
+- **Keep SBX/test-only** until LoRa adapter integration is stable.
+- Production ChirpStack: **NOT DEPLOYED** (planned only).
 
-## Evidence to capture per audit
+## Evidence (attach under snapshots/)
+- `kubectl describe` (deploy/svc/ing) if k8s-managed
+- Ingress or external Nginx notes (if standalone)
+- Config excerpts (secrets redacted)
+- Screenshots of UI status pages (optional)
+- MQTT connectivity proof (topic list & sample message)
 
-1. DNS lookup output (`nslookup`/`Resolve-DnsName`)
-2. TLS chain screenshot or `openssl s_client` transcript (CN = `lns.gobee.io`)
-3. ChirpStack web console screenshot (redacted user info)
-4. LoRa test device uplink log showing ChirpStack ingestion
-5. SBX namespace events (`kubectl -n magistrala get events --field-selector involvedObject.name=<adapter-pod>`)
-
-> ⚠️ Do **not** connect production gateways to `lns.gobee.io`. This endpoint is for SBX validation only.
+## Ops Notes
+- Backups (DB), restore steps, upgrade path, rollback
+- Contact points for LoRa adapter tests

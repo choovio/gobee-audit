@@ -43,23 +43,19 @@
 - Added: `docs/runbooks/sync-adapter-images-and-redeploy.md`
 - Added: `docs/PRIMER.md` + templates in `docs/decisions` and `docs/findings`.
 
-## SBX ChirpStack Status (lns.gobee.io)
+## ChirpStack (SBX — Test Only)
+- [ ] Status doc present: `docs/CHIRPSTACK_STATUS.md`
+- [ ] Host confirmed: https://lns.gobee.io
+- [ ] Integration: **MQTT**
+- [ ] Role confirmed: SBX/test-only (no prod)
+- [ ] Evidence snapshot saved under `snapshots/` (date-stamped)
 
-- [ ] DNS lookup recorded for `lns.gobee.io`
-- [ ] TLS chain captured (CN=`lns.gobee.io`)
-- [ ] ChirpStack console screenshot stored (SBX credentials)
-- [ ] LoRa test uplink proves SBX ingestion
-- [ ] Magistrala namespace events saved for adapter pods
-- Reference: `docs/CHIRPSTACK_STATUS.md`
-
-## SBX Backend Deploy Readiness
-
-- [ ] Playbook prerequisites verified on Windows PowerShell 7 workstation
-- [ ] `/api/*` ingress paths + `/health` checks captured pre-deploy
-- [ ] Image digests pinned before `kubectl apply`
-- [ ] Post-deploy verification + smoke tests logged
-- [ ] Snapshot `RESULTS.md` completed using template
-- Reference: `docs/SBX_BACKEND_DEPLOY_PLAYBOOK.md`
+## Backend Deployment Readiness (SBX)
+- [ ] Namespace set to **gobee** across manifests/docs
+- [ ] Playbook present: `docs/SBX_BACKEND_DEPLOY_PLAYBOOK.md`
+- [ ] All API services expose `/health` (not `/healthz`)
+- [ ] All images pinned by digest
+- [ ] Ingress base confirmed: `https://sbx.gobee.io/api/*`
 
 ---
 
