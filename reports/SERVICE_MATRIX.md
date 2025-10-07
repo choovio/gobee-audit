@@ -2,7 +2,7 @@
 
 > Use this table during (and after) the rebuild to pin exact artifacts. Fill the columns as you build/push/deploy. Keep rows ordered as below.
 
-| Service         | Path Prefix      | Health Path | Source Dir (magistrala-fork) | ECR Repo Name                 | Image Tag (immutable) | Digest (sha256:...) | Last Build SHA | Last Deployed (UTC) |
+| Service         | Path Prefix      | Health Path | Source Dir (magistrala-fork) | **ECR Repo URI**                 | Image Tag (immutable) | Digest (sha256:...) | Last Build SHA | Last Deployed (UTC) |
 |-----------------|------------------|-------------|-------------------------------|-------------------------------|-----------------------|---------------------|----------------|---------------------|
 | users           | /api/users       | /health     | services/users                | ecr://…/magistrala-users      | <to fill>             | <to fill>           | <to fill>       | <to fill>          |
 | things          | /api/things      | /health     | services/things               | ecr://…/magistrala-things     | <to fill>             | <to fill>           | <to fill>       | <to fill>          |
