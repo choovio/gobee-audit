@@ -433,6 +433,19 @@ chirpstack         595443389404.dkr.ecr.us-west-2.amazonaws.com/chirpstack@sha25
 domains            595443389404.dkr.ecr.us-west-2.amazonaws.com/domains@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
 
 Deployment method finalized: Kustomize-only; Helm forbidden; enforced *-adapter naming and API paths (2025-10-06).
+
+## ChirpStack (SBX — Test Only)
+- [ ] Status doc present: `docs/CHIRPSTACK_STATUS.md`
+- [ ] Host confirmed: https://lns.gobee.io
+- [ ] Role confirmed: SBX/test-only (no prod)
+- [ ] Evidence snapshot saved under `snapshots/` (date-stamped)
+- [ ] Next review date noted in the status doc
+
+## Backend Deployment Readiness (SBX)
+- [ ] Playbook present: `docs/SBX_BACKEND_DEPLOY_PLAYBOOK.md`
+- [ ] All API services expose `/health` (not `/healthz`)
+- [ ] All images pinned by digest
+- [ ] Ingress base confirmed: `https://sbx.gobee.io/api/*`
 http               595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0
 lora               595443389404.dkr.ecr.us-west-2.amazonaws.com/lora@sha256:DIGEST
 mqtt-adapter       595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:mqtt-adapter-6ef9ab76ddc260750347cbeebe5614db703cfae9
