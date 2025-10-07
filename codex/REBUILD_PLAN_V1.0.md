@@ -16,6 +16,7 @@ This stub exists so the execution PR can point to one canonical place.
 - Log timings into `reports/timings/rebuild-2025-10-06.csv`.
 - Update `reports/SERVICE_MATRIX.md` as artifacts are produced.
 - Update `STATUS.md` after each major milestone.
+- Services include adapters: `http-adapter`, `lora-adapter`, `ws-adapter`; API paths `/api/http-adapter`, `/api/lora-adapter`, `/api/ws-adapter`.
 
 ## Results Block (paste after each PS verification)
 ```powershell

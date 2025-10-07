@@ -23,10 +23,15 @@ SPDX-License-Identifier: Apache-2.0
 - **No `latest`**—reject PRs that introduce floating tags.
 
 ## Adapter Naming Standard
-- **Names:** `http-adapter`, `lora-adapter`, `ws-adapter`.
-- **API paths:** `/api/http-adapter`, `/api/lora-adapter`, `/api/ws-adapter`.
-- **ECR repos:** `…/gobee-http-adapter`, `…/gobee-lora-adapter`, `…/gobee-ws-adapter` (deploy by digest).
-- **Source directories:** `adapters/http-adapter`, `adapters/lora-adapter`, `adapters/ws-adapter`.
+Names: http-adapter, lora-adapter, ws-adapter
+
+API paths: /api/http-adapter, /api/lora-adapter, /api/ws-adapter
+
+ECR URIs: <ACC>.dkr.ecr.<REG>.amazonaws.com/gobee-http-adapter, .../gobee-lora-adapter, .../gobee-ws-adapter
+
+Source dirs (gobee-source): adapters/http-adapter, adapters/lora-adapter, adapters/ws-adapter
+
+Any other variant is a compliance failure.
 
 ## Standard ECR Layout (examples)
 - `xxxxxxxxxxxx.dkr.ecr.<region>.amazonaws.com/gobee-users`

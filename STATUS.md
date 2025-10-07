@@ -15,6 +15,7 @@
 - Added reports/redeploy-readiness-2025-10-06.md as the canonical pre-flight checklist for clean redeploy.
 - Added reports/SERVICE_MATRIX.md to pin image tags/digests and deployment timestamps for all services.
 - Added reports/timings/rebuild-2025-10-06.csv for measurable rebuild timing logs; stubbed codex/REBUILD_PLAN_V1.0.md for the execution PR.
+- Enforced *-adapter naming across names, API paths, ECR URIs, and source dirs; added compliance checklist (2025-10-06).
 
 ---
 

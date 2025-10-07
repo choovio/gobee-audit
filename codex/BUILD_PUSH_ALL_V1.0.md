@@ -9,7 +9,17 @@
 - SPDX headers verified in `magistrala-fork`.
 
 ## Services (build order suggestion)
-users, things, certs, domains, bootstrap, provision, readers, reports, rules, http-adapter, ws-adapter
+users, things, certs, domains, bootstrap, provision, readers, reports, rules, http-adapter, lora-adapter, ws-adapter
+
+Build contexts:
+.\gobee-source\adapters\http-adapter
+.\gobee-source\adapters\lora-adapter
+.\gobee-source\adapters\ws-adapter
+
+ECR targets:
+$ECR/gobee-http-adapter:$SHA
+$ECR/gobee-lora-adapter:$SHA
+$ECR/gobee-ws-adapter:$SHA
 
 ## Standard Variables (set once per session)
 ```powershell

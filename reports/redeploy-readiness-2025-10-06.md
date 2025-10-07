@@ -9,7 +9,7 @@ This document is the single, canonical pre-flight checklist for a **clean redepl
 - Health path: `/health` (not `/healthz`)
 - TLS: `ClusterIssuer=letsencrypt-prod`, `Secret=sbx-gobee-io-tls`
 - Deployment method: **Kustomize-only** (Helm forbidden).
-- Adapter naming: only `http-adapter`, `lora-adapter`, `ws-adapter`; API paths `/api/http-adapter`, `/api/lora-adapter`, `/api/ws-adapter`.
+- **Adapter naming:** only `http-adapter`, `lora-adapter`, `ws-adapter`; API paths `/api/http-adapter`, `/api/lora-adapter`, `/api/ws-adapter`.
 - SPDX header required with CHOOVIO copyright
 
 ## Repos & Roles
