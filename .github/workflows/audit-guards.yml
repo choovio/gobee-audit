@@ -1,0 +1,30 @@
+name: audit-guards
+on:
+  pull_request:
+    paths:
+      - '**/*.md'
+      - '**/*.yaml'
+      - '**/*.yml'
+      - 'k8s/**'
+      - 'snapshots/**'
+      - 'pins/**'
+jobs:
+  grep-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Block healthz, wrong domains, floating tags
+        run: |
+          ! git grep -nE '/healthz' || (echo "Found /healthz (use /health)"; exit 1)
+          ! git grep -nE 'sbx\\.api\\.gobee\\.io' || (echo "Found sbx.api.gobee.io (use sbx.gobee.io/api)"; exit 1)
+          ! git grep -nE '/api/sbx' || (echo "Found /api/sbx (use /api)"; exit 1)
+          ! git grep -nE 'image:\s+[^@]+:[^[:space:]]+$' k8s || (echo "Floating image tag found (use @sha256:digest)"; exit 1)
+
+      - name: Enforce snapshots template header
+        run: |
+          if git ls-files 'snapshots/**/*.md' | grep -v 'TEMPLATE/RESULTS.md' >/dev/null; then
+            for f in $(git ls-files 'snapshots/**/*.md' | grep -v 'TEMPLATE/RESULTS.md'); do
+              head -n1 "$f" | grep -q '^# RESULTS — ' || (echo "Snapshot $f missing RESULTS header"; exit 1)
+            done
+          fi
