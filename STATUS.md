@@ -50,6 +50,7 @@
 - [ ] ChirpStack console screenshot stored (SBX credentials)
 - [ ] LoRa test uplink proves SBX ingestion
 - [ ] Magistrala namespace events saved for adapter pods
+- [ ] Test devices removed or reset after validation
 - Reference: `docs/CHIRPSTACK_STATUS.md`
 
 ## SBX Backend Deploy Readiness
@@ -59,6 +60,7 @@
 - [ ] Image digests pinned before `kubectl apply`
 - [ ] Post-deploy verification + smoke tests logged
 - [ ] Snapshot `RESULTS.md` completed using template
+- [ ] Evidence stored in current snapshot folder with `BEGIN/END RESULTS` block
 - Reference: `docs/SBX_BACKEND_DEPLOY_PLAYBOOK.md`
 
 ---

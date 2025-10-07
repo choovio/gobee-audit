@@ -1,11 +1,13 @@
 # ChirpStack Status — SBX (lns.gobee.io)
 
-The SBX sandbox uses a **test-only** ChirpStack deployment to validate LoRaWAN packet delivery without touching production infrastructure.
+The SBX sandbox keeps a **slim, test-only** ChirpStack deployment that exists purely to validate LoRaWAN packet delivery without
+touching production infrastructure. Treat it as disposable and refresh evidence on every audit run.
 
 - **Host:** `lns.gobee.io`
 - **Role:** Proof-of-life for LoRa adapters and device routing tests only
 - **Scope:** SBX sandbox; no production traffic or credentials
 - **Data retention:** Ephemeral (cleared between audit snapshots)
+- **Tenancy:** Single-tenant test space; remove devices after validation
 
 ## Readiness checklist
 
@@ -14,6 +16,7 @@ The SBX sandbox uses a **test-only** ChirpStack deployment to validate LoRaWAN p
 - [ ] ChirpStack console reachable with SBX-only credentials (stored in vault)
 - [ ] LoRa packet forwarder points to `lns.gobee.io` over TLS
 - [ ] Events appear in SBX magistrala namespace (test tenants/devices only)
+- [ ] Evidence stored under current snapshot folder
 
 ## Evidence to capture per audit
 
