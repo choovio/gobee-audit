@@ -11,6 +11,7 @@
 
 - 2025-10-06: Added “History & Standards Checkpoint” (SBX/Magistrala + LoRa ingress notes). See `docs/reports/checkpoint-history-2025-10-06.md`.
 - 2025-10-06: Added “Checkpoint & Handoff Report — 2025-10-06” summarizing SBX audit from 2025-09-05 → 2025-10-06. See `docs/reports/checkpoint-handoff-2025-10-06.md`.
+- Added codex/CODEX_CONTROL.md as authoritative guardrails for all Codex tasks (2025-10-06).
 
 ---
 
