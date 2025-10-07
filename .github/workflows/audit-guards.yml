@@ -1,0 +1,77 @@
+# Copyright (c) CHOOVIO Inc.
+# SPDX-License-Identifier: Apache-2.0
+name: audit-guards
+on:
+  pull_request:
+    paths:
+      - '**/*.yaml'
+      - '**/*.yml'
+      - '**/*.ps1'
+      - 'k8s/**'
+      - 'pins/**'
+jobs:
+  guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1) Canonical endpoints & namespace
+      - name: Block legacy endpoints and namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! git grep -nE 'sbx\.api\.gobee\.io' -- '**/*' ':!**/*.md' || (echo "Use https://sbx.gobee.io + base /api"; exit 1)
+          ! git grep -nE '/api/sbx'            -- '**/*' ':!**/*.md' || (echo "Use base path /api only"; exit 1)
+          ! git grep -nE '/api/api'            -- '**/*' ':!**/*.md' || (echo "Double /api detected"; exit 1)
+          ! git grep -nE '\bmagistrala\b'      -- '**/*.y*ml' ':!**/*.md' || (echo "Namespace must be gobee"; exit 1)
+
+      # 2) Health endpoint uniformity
+      - name: Block /healthz
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! git grep -nE '/healthz' -- '**/*' ':!**/*.md' || (echo "Use /health (not /healthz)"; exit 1)
+
+      # 3) Image pinning & naming rules (k8s only if exists)
+      - name: Enforce digest pins and service naming
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files 'k8s/**' >/dev/null 2>&1; then
+            ! git grep -nE 'image:\s+[^@]+:[^[:space:]]+$' k8s || (echo "Floating image tag in k8s/ (must use @sha256:digest)"; exit 1)
+            ! git grep -nE '\bname:\s*.+-svc\b' k8s || (echo "K8s resource names must not end with -svc"; exit 1)
+          fi
+
+      # 4) Tooling discipline (PowerShell-only scripts, no jq/rg in PS)
+      - name: Forbid jq/rg use inside PowerShell scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files '**/*.ps1' >/dev/null 2>&1; then
+            ! git grep -nE '\bjq\b' '**/*.ps1' || (echo "Do not use jq in PowerShell scripts"; exit 1)
+            ! git grep -nE '\brg\b' '**/*.ps1' || (echo "Do not use ripgrep (rg) in PowerShell scripts"; exit 1)
+          fi
+
+      # 5) SPDX headers in PS1 and YAML
+      - name: Enforce SPDX headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          check_spdx () {
+            local pat="$1"; shift
+            while IFS= read -r f; do
+              head -n 5 "$f" | grep -q 'SPDX-License-Identifier:' || { echo "SPDX header missing: $f"; exit 1; }
+            done < <(git ls-files $pat || true)
+          }
+          check_spdx '**/*.ps1'
+          check_spdx '**/*.yml'
+          check_spdx '**/*.yaml'
+
+      # 6) Pins live only in audit repo (policy check)
+      - name: Prevent stray pin files outside /pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files '**/*pins*.*' ':!pins/**' ':!**/*.md' | grep .; then
+            echo "Pin files must live only under /pins in this repo"; exit 1
+          fi

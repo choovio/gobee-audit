@@ -453,6 +453,17 @@ chirpstack         595443389404.dkr.ecr.us-west-2.amazonaws.com/chirpstack@sha25
 domains            595443389404.dkr.ecr.us-west-2.amazonaws.com/domains@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
 
 Deployment method finalized: Kustomize-only; Helm forbidden; enforced *-adapter naming and API paths (2025-10-06).
+
+## Anti-Drift Guards (must be GREEN before fresh deployment)
+- [ ] CI guard present: `.github/workflows/audit-guards.yml`
+- [ ] Namespace policy in docs: `gobee`; no references to `magistrala`
+- [ ] Endpoint policy in docs: origin `https://sbx.gobee.io`, base `/api`, health `/health`
+- [ ] CI blocks: `sbx.api.gobee.io`, `/api/sbx`, `/api/api`, `/healthz`
+- [ ] CI enforces k8s: no floating image tags, no `-svc` resource names (if `k8s/` exists)
+- [ ] Pins policy documented; no stray pin files
+- [ ] Tooling policy documented; CI forbids `jq`/`rg` in PS
+- [ ] SPDX headers enforced in `.ps1` and YAML
+- [ ] ChirpStack SBX policy documented (MQTT, `lns.gobee.io`)
 http               595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0
 lora               595443389404.dkr.ecr.us-west-2.amazonaws.com/lora@sha256:DIGEST
 mqtt-adapter       595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:mqtt-adapter-6ef9ab76ddc260750347cbeebe5614db703cfae9
