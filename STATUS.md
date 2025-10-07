@@ -39,9 +39,27 @@
 
 ## Findings / Runbooks
 
-- Added: `docs/findings/2025-09-17-sbx-http-ws-503.md`  
-- Added: `docs/runbooks/sync-adapter-images-and-redeploy.md`  
+- Added: `docs/findings/2025-09-17-sbx-http-ws-503.md`
+- Added: `docs/runbooks/sync-adapter-images-and-redeploy.md`
 - Added: `docs/PRIMER.md` + templates in `docs/decisions` and `docs/findings`.
+
+## SBX ChirpStack Status (lns.gobee.io)
+
+- [ ] DNS lookup recorded for `lns.gobee.io`
+- [ ] TLS chain captured (CN=`lns.gobee.io`)
+- [ ] ChirpStack console screenshot stored (SBX credentials)
+- [ ] LoRa test uplink proves SBX ingestion
+- [ ] Magistrala namespace events saved for adapter pods
+- Reference: `docs/CHIRPSTACK_STATUS.md`
+
+## SBX Backend Deploy Readiness
+
+- [ ] Playbook prerequisites verified on Windows PowerShell 7 workstation
+- [ ] `/api/*` ingress paths + `/health` checks captured pre-deploy
+- [ ] Image digests pinned before `kubectl apply`
+- [ ] Post-deploy verification + smoke tests logged
+- [ ] Snapshot `RESULTS.md` completed using template
+- Reference: `docs/SBX_BACKEND_DEPLOY_PLAYBOOK.md`
 
 ---
 
