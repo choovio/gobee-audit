@@ -464,6 +464,7 @@ Deployment method finalized: Kustomize-only; Helm forbidden; enforced *-adapter 
 - [ ] Tooling policy documented; CI forbids `jq`/`rg` in PS
 - [ ] SPDX headers enforced in `.ps1` and YAML
 - [ ] ChirpStack SBX policy documented (MQTT, `lns.gobee.io`)
+- 2025-10-07: Added PS & Codex task templates. See docs/templates/.
 http               595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0
 lora               595443389404.dkr.ecr.us-west-2.amazonaws.com/lora@sha256:DIGEST
 mqtt-adapter       595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:mqtt-adapter-6ef9ab76ddc260750347cbeebe5614db703cfae9
