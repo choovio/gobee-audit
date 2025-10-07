@@ -430,6 +430,8 @@ bootstrap          595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:boots
 certs              595443389404.dkr.ecr.us-west-2.amazonaws.com/certs@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
 chirpstack         595443389404.dkr.ecr.us-west-2.amazonaws.com/chirpstack@sha256:0fef9e0b6ab71963f32f1a861bd05b80e0cbb063b92ef0410471066a30e0bbbe
 domains            595443389404.dkr.ecr.us-west-2.amazonaws.com/domains@sha256:f7a667508fc42f5104139bee5364f155f8ef8e4f6d01227f157cb05fef257536
+
+Deployment method finalized: Kustomize-only; Helm forbidden; enforced *-adapter naming and API paths (2025-10-06).
 http               595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0
 lora               595443389404.dkr.ecr.us-west-2.amazonaws.com/lora@sha256:DIGEST
 mqtt-adapter       595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:mqtt-adapter-6ef9ab76ddc260750347cbeebe5614db703cfae9
