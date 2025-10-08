@@ -7,6 +7,11 @@ SPDX-License-Identifier: Apache-2.0
 
 **Last Updated:** 2025-10-07 (PT)
 
+## Current Status
+
+### Backend — Source & Registry
+- 2025-10-07 PT: Source completeness GREEN (overlay + contrib). Mirror CI disabled. All required ECR repos created (immutable, scanOnPush, lifecycle 20).
+
 ## Canonical Truth
 
 - **Source of truth repo:** https://github.com/choovio/gobee-audit  
