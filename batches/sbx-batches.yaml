@@ -1,0 +1,29 @@
+# Copyright (c) CHOOVIO Inc.
+# SPDX-License-Identifier: Apache-2.0
+# Batches for SBX builds (used by batch scripts). Do not inline digests here.
+batches:
+  core:
+    - { svc: users,     ecr: gobee/core/users,     target: users }
+    - { svc: things,    ecr: gobee/core/things,    target: things }
+    - { svc: certs,     ecr: gobee/core/certs,     target: certs }
+    - { svc: domains,   ecr: gobee/core/domains,   target: domains }
+    - { svc: bootstrap, ecr: gobee/core/bootstrap, target: bootstrap }
+    - { svc: provision, ecr: gobee/core/provision, target: provision }
+
+  adapters:
+    - { svc: http-adapter, ecr: gobee/adapters/http,  target: http }
+    - { svc: ws-adapter,   ecr: gobee/adapters/ws,    target: ws }
+    - { svc: mqtt-adapter, ecr: gobee/adapters/mqtt,  target: mqtt }
+    - { svc: coap-adapter, ecr: gobee/adapters/coap,  target: coap }
+    - { svc: lora-adapter, ecr: gobee/adapters/lora,  target: lora }     # contrib
+    - { svc: opcua-adapter,ecr: gobee/adapters/opcua, target: opcua }    # contrib
+
+  infra:
+    - { svc: nats, ecr: gobee/infra/nats, target: nats }
+
+  processing_data:
+    - { svc: rules,   ecr: gobee/processing/rules,   target: rules }
+    - { svc: alarms,  ecr: gobee/processing/alarms,  target: alarms }
+    - { svc: reports, ecr: gobee/processing/reports, target: reports }
+    - { svc: readers, ecr: gobee/data/readers,       target: readers }
+    - { svc: writers, ecr: gobee/data/writers,       target: writers }
