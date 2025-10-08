@@ -10,6 +10,7 @@ SPDX-License-Identifier: Apache-2.0
 ## Current Status
 
 ### Backend — Source & Registry
+- 2025-10-07 PT: Core batch built & digests pinned to SBX overlay (no apply). Parser standardized (YAML-first, regex fallback).
 - 2025-10-07 PT: Source completeness GREEN (overlay + contrib). Mirror CI disabled. All required ECR repos created (immutable, scanOnPush, lifecycle 20).
 
 ## Canonical Truth
