@@ -14,6 +14,10 @@ SPDX-License-Identifier: Apache-2.0
 - Overlay remains digest-only, Kustomize-only, namespace `gobee`. SPDX = Choovio.
 - ECR spot-checks by imageDigest validated core/bootstrap, processing/rules, adapters/mqtt.
 
+### 2025-10-09 — Users service vendor plan recorded
+- Added `checkpoints/2025-10-09-sbx-users-vendor-plan.md` noting missing upstream dirs for `users` at `v0.15.1` and the step-by-step plan to vendor → build → push → pin by digest.
+- No SBX pin added yet for `core/users` (ECR empty). Next step: vendor the listed dirs and attempt build/push, then checkpoint the digest.
+
 ### ECR step totals (no EKS)
 - Deployed & recorded: 14
 - Pending: 4 (core/users, core/things, core/domains, core/certs) — upstream services exist; local source missing; no images yet.
