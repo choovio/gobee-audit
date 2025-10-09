@@ -5,9 +5,21 @@ SPDX-License-Identifier: Apache-2.0
 
 # GoBee Platform — STATUS
 
-**Last Updated:** 2025-10-07 (PT)
+**Last Updated:** 2025-10-09 (PT)
 
 ## Current Status
+
+## 2025-10-09 — SBX ECR Pins Synchronized
+- Added `checkpoints/sbx-ecr-pins-2025-10-09.md` consolidating **14** SBX pins (core, processing incl. rules, data, infra, adapters).
+- Overlay remains **digest-only**, **Kustomize-only**, namespace `gobee`.
+- Next action (verify-only): AWS ECR spot-check by **imageDigest** for 2–3 services, then render SBX overlay to confirm exact digests. No EKS steps yet.
+
+### Quick Totals (ECR image step only; no EKS)
+- **Deployed (recorded in audit): 7**  
+  (`provision`, `bootstrap`, `reports`, `alarms`, `readers`, `writers`, `nats`)
+- **Pending (in overlay, not previously in audit): 7**  
+  (`rules` + adapters `lora`, `opcua`, `http`, `ws`, `mqtt`, `coap`)
+- **Not started: 0** (all SBX services currently present in overlay have pins)
 
 ### Backend — Source & Registry
 - 2025-10-07 PT: Core batch built & digests pinned to SBX overlay (no apply). Parser standardized (YAML-first, regex fallback).
