@@ -18,9 +18,15 @@ SPDX-License-Identifier: Apache-2.0
 - Added `checkpoints/2025-10-09-sbx-users-vendor-plan.md` noting missing upstream dirs for `users` at `v0.15.1` and the step-by-step plan to vendor → build → push → pin by digest.
 - No SBX pin added yet for `core/users` (ECR empty). Next step: vendor the listed dirs and attempt build/push, then checkpoint the digest.
 
+### 2025-10-09 — SBX: core/users pinned
+- Added checkpoint `sbx-ecr-pin-users-2025-10-09.md` with digest for `gobee/core/users`.
+- Updated SBX overlay images with the same digest (digest-only; Kustomize-only; namespace `gobee`; SPDX = Choovio).
+- ECR tag removed post-push to keep digest-only.
+- ECR step totals: **15 deployed**, **3 pending** (`core/things`, `core/domains`, `core/certs`).
+
 ### ECR step totals (no EKS)
-- Deployed & recorded: 14
-- Pending: 4 (core/users, core/things, core/domains, core/certs) — upstream services exist; local source missing; no images yet.
+- Deployed & recorded: 15
+- Pending: 3 (core/things, core/domains, core/certs) — upstream services exist; local source missing; no images yet.
 - Not started: 0
 
 ### Backend — Source & Registry
