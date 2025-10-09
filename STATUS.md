@@ -5,13 +5,23 @@ SPDX-License-Identifier: Apache-2.0
 
 # GoBee Platform — STATUS
 
-**Last Updated:** 2025-10-07 (PT)
+**Last Updated:** 2025-10-09 (PT)
 
 ## Current Status
 
 ### Backend — Source & Registry
 - 2025-10-07 PT: Core batch built & digests pinned to SBX overlay (no apply). Parser standardized (YAML-first, regex fallback).
 - 2025-10-07 PT: Source completeness GREEN (overlay + contrib). Mirror CI disabled. All required ECR repos created (immutable, scanOnPush, lifecycle 20).
+
+## 2025-10-09 — SBX ECR Pins Synchronized
+- Added `checkpoints/sbx-ecr-pins-2025-10-09.md` consolidating **14** SBX pins (core, processing incl. rules, data, infra, adapters).
+- Overlay remains **digest-only**, **Kustomize-only**, namespace `gobee`. SPDX = Choovio.
+- ECR spot-checks by `imageDigest` confirm matches for `core/bootstrap`, `processing/rules`, and `adapters/mqtt`.
+
+### Quick Totals (ECR image step only; no EKS)
+- **Deployed & recorded:** 14  
+- **Pending:** 0  
+- **Not started:** 0
 
 ## Canonical Truth
 
