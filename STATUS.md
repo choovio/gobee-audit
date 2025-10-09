@@ -119,3 +119,9 @@ Branch: `main` (default). Pushed and recorded in checkpoints.
 2. **PowerShell (read-only):** emit the **Build Context Map** from compose/Make.  
 3. **PowerShell (write):** create only **missing** ECR repos from the map.  
 4. **PowerShell (per service, gated):** run `templates/build-pin-deploy.ps1` to build → push → **pin digest** → SBX apply for **Batch 1 (Core)**; then checkpoint.
+
+## 2025-10-09 — SBX ECR Drift Purge
+- Executed audit-driven purge: **14 tags** and **26 non-audited digests** removed across **18** repos.
+- Kept **14** canonical SBX digests exactly as pinned in the overlay and recorded in audit.
+- Post-verification confirms **0 tags** and **0 extra digests** remain.
+
