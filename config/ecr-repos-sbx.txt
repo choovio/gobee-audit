@@ -1,0 +1,27 @@
+# Copyright (c) CHOOVIO Inc.
+# SPDX-License-Identifier: Apache-2.0
+# List of all ECR repositories required for SBX (sandbox) Magistrala deployment.
+# One repo per line. Keep names stable; used by ensure-repos & purge scripts.
+
+gobee/core/users
+gobee/core/things
+gobee/core/domains
+gobee/core/certs
+gobee/core/bootstrap
+gobee/core/provision
+
+gobee/data/readers
+gobee/data/writers
+
+gobee/processing/rules
+gobee/processing/alarms
+gobee/processing/reports
+
+gobee/adapters/http
+gobee/adapters/ws
+gobee/adapters/mqtt
+gobee/adapters/coap
+gobee/adapters/lora
+gobee/adapters/opcua
+
+gobee/infra/nats
