@@ -1,106 +1,55 @@
-<#
-Ensure the SBX ECR repositories exist for the modern service set.
-Derives repository names directly from config/services-sbx.txt so the ensure step
-stays aligned with the build/push workflow.
-#>
+function OUT($s){ Write-Host $s -ForegroundColor DarkYellow }
+$H='==== RESULTS BEGIN (COPY/PASTE) ===='; $F='==== RESULTS END (COPY/PASTE) ===='
 
-$ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
 
-function OUT([string]$s){ Write-Host $s }
-$RESULTS_BEGIN = '==== RESULTS BEGIN (COPY/PASTE) ===='
-$RESULTS_END   = '==== RESULTS END (COPY/PASTE) ===='
+# Config
+$Region = $env:AWS_DEFAULT_REGION
+if (-not $Region) { $Region = 'us-west-2' }
+$Services = Get-Content -LiteralPath (Join-Path $PSScriptRoot '..\config\services-sbx.txt') | Where-Object { $_ -and $_ -notmatch '^\s*#' }
 
-function SafeJson([string[]]$args){
-  $raw = & aws @args 2>$null
-  if (-not $raw) { return $null }
-  try { return $raw | ConvertFrom-Json } catch { return $null }
+# Auth check (no SSO). Require standard CLI creds to be present.
+function Require-AwsAuth {
+  try {
+    $id = aws sts get-caller-identity --output json | ConvertFrom-Json
+    return $id.Account
+  } catch {
+    OUT "AWS Auth: NOT AUTHENTICATED"
+    OUT "Expected standard CLI creds (env/profile). Example:"
+    OUT "  setx AWS_ACCESS_KEY_ID <key>"
+    OUT "  setx AWS_SECRET_ACCESS_KEY <secret>"
+    OUT "  setx AWS_DEFAULT_REGION $Region"
+    throw "No AWS credentials detected"
+  }
 }
 
-$region = if ($env:AWS_DEFAULT_REGION) { $env:AWS_DEFAULT_REGION } else { 'us-west-2' }
-$profile = if ($env:AWS_PROFILE) { $env:AWS_PROFILE } else { 'gobee' }
-
-$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$repoRoot   = Split-Path -Parent $scriptRoot
-$svcListPath = Join-Path $repoRoot 'config/services-sbx.txt'
-if (-not (Test-Path -LiteralPath $svcListPath)) {
-  throw "Missing services list: $svcListPath"
+# Ensure repo helper
+function Ensure-Repo([string]$Name) {
+  $exists = aws ecr describe-repositories --repository-names $Name --region $Region 2>$null
+  if (-not $?) {
+    aws ecr create-repository --repository-name $Name --image-scanning-configuration scanOnPush=true --region $Region | Out-Null
+    OUT "Created ECR repo: $Name"
+  } else {
+    OUT "Exists: $Name"
+  }
 }
 
-$serviceMap = @{
-  'bootstrap' = 'gobee/core/bootstrap'
-  'users'     = 'gobee/core/users'
-  'domains'   = 'gobee/core/domains'
-  'certs'     = 'gobee/core/certs'
-  'provision' = 'gobee/core/provision'
-  'alarms'    = 'gobee/processing/alarms'
-  'reports'   = 'gobee/processing/reports'
-  'http'      = 'gobee/adapters/http'
-  'ws'        = 'gobee/adapters/ws'
-  'mqtt'      = 'gobee/adapters/mqtt'
-  'coap'      = 'gobee/adapters/coap'
-  'lora'      = 'gobee/adapters/lora'
-  'opcua'     = 'gobee/adapters/opcua'
-}
+OUT $H
+$account = Require-AwsAuth
+OUT ("Account: {0} | Region: {1}" -f $account, $Region)
 
-$services = Get-Content -LiteralPath $svcListPath | Where-Object { $_ -and -not [string]::IsNullOrWhiteSpace($_) } | ForEach-Object { $_.Trim() }
-if (-not $services -or $services.Count -eq 0) {
-  throw "No services defined in $svcListPath"
+# Map each service to a canonical repo path
+function Map-Repo([string]$svc){
+  switch -Regex ($svc) {
+    '^(bootstrap|users|domains|certs|provision)$' { "gobee/core/$svc"; break }
+    '^(alarms|reports)$'                           { "gobee/processing/$svc"; break }
+    default                                        { "gobee/adapters/$svc" }
+  }
 }
 
 $repos = @()
-foreach ($svc in $services) {
-  if (-not $serviceMap.ContainsKey($svc)) {
-    throw "Missing repository mapping for service '$svc'"
-  }
-  $repos += $serviceMap[$svc]
-}
+foreach ($svc in $Services) { $repos += (Map-Repo $svc) }
+$repos | ForEach-Object { Ensure-Repo $_ }
 
-$sts = SafeJson @('sts','get-caller-identity','--profile',$profile)
-if (-not $sts) {
-  OUT $RESULTS_BEGIN
-  OUT 'AWS Auth: NOT AUTHENTICATED'
-  OUT "Run: aws sso login --profile $profile"
-  OUT $RESULTS_END
-  exit 1
-}
-$acct = $sts.Account
-
-$lifecycle = @{
-  rules = @(
-    @{
-      rulePriority = 10
-      description  = 'Expire untagged images beyond 10'
-      selection    = @{ tagStatus = 'untagged'; countType = 'imageCountMoreThan'; countNumber = 10 }
-      action       = @{ type = 'expire' }
-    }
-  )
-} | ConvertTo-Json -Depth 5
-
-$created = @()
-$exists  = @()
-foreach ($name in $repos) {
-  $describe = SafeJson @('ecr','describe-repositories','--repository-names',$name,'--region',$region,'--profile',$profile)
-  if (-not $describe) {
-    $scanCfg = '{"scanOnPush": true}'
-    $create = SafeJson @('ecr','create-repository','--repository-name',$name,'--image-scanning-configuration',$scanCfg,'--region',$region,'--profile',$profile)
-    if (-not $create) { throw "Failed to create repo: $name" }
-
-    & aws ecr put-image-tag-mutability --repository-name $name --image-tag-mutability IMMUTABLE --region $region --profile $profile | Out-Null
-    try {
-      & aws ecr put-lifecycle-policy --repository-name $name --lifecycle-policy-text $lifecycle --region $region --profile $profile | Out-Null
-    } catch { }
-    $created += $name
-  } else {
-    $exists += $name
-  }
-}
-
-OUT $RESULTS_BEGIN
-OUT ("Account: {0} | Region: {1} | Profile: {2}" -f $acct, $region, $profile)
-OUT 'ECR ensure-repos summary:'
-OUT ("  created: {0}" -f (($created | Measure-Object).Count))
-foreach ($r in $created) { OUT ("    - {0}" -f $r) }
-OUT ("  existed: {0}" -f (($exists | Measure-Object).Count))
-foreach ($r in $exists)  { OUT ("    - {0}" -f $r) }
-OUT $RESULTS_END
+OUT $F
