@@ -1,0 +1,8 @@
+{
+  "_meta": {
+    "env": "sbx",
+    "region": "us-west-2",
+    "account": "595443389404",
+    "note": "Deployment must reference image digests from this lock."
+  }
+}
