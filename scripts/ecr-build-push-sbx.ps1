@@ -83,7 +83,7 @@ foreach ($repo in $Services) {
   $svc = Get-SvcName $repo
   $localTag = "gobee-$svc:sbx-local"
   $ecrRepo = "$repo"
-  $ecrRef  = "$Registry/$ecrRepo:$Tag"
+  $ecrRef  = "${Registry}/${ecrRepo}:$Tag"
 
   $ok = $false
   $digest = ''
