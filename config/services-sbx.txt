@@ -1,31 +1,13 @@
-# Copyright (c) CHOOVIO Inc.
-# SPDX-License-Identifier: Apache-2.0
-# Ordered list of SBX services to build/push from gobee-source using Dockerfile ARG SVC
-
-# core
-gobee/core/bootstrap
-gobee/core/users
-gobee/core/things
-gobee/core/domains
-gobee/core/certs
-gobee/core/provision
-
-# data
-gobee/data/readers
-gobee/data/writers
-
-# processing
-gobee/processing/rules
-gobee/processing/alarms
-gobee/processing/reports
-
-# adapters
-gobee/adapters/http
-gobee/adapters/ws
-gobee/adapters/mqtt
-gobee/adapters/coap
-gobee/adapters/lora
-gobee/adapters/opcua
-
-# infra (mirrored)
-gobee/infra/nats
+bootstrap
+users
+domains
+certs
+provision
+alarms
+reports
+http
+ws
+mqtt
+coap
+lora
+opcua
