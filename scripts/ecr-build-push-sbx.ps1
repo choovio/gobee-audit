@@ -55,15 +55,17 @@ Login-Ecr -Account $Account -Region $Region
 $Registry = "$Account.dkr.ecr.$Region.amazonaws.com"
 $results = New-Object System.Collections.Generic.List[object]
 
-OUT $H
 OUT ("Account: {0} | Region: {1} | Registry: {2}" -f $Account, $Region, $Registry)
 
 foreach ($svc in $Services) {
   $repoName = Map-Repo $svc
   $tag      = $VersionTag
+  $err      = $null
+  $built    = $false
+  $pushed   = $false
 
   # Build using root Dockerfile + SVC arg
-  $imageTag = "$Registry/$repoName:$tag"
+  $imageTag = "$Registry/$($repoName):$($tag)"
   try {
     OUT "[build] $svc -> $imageTag"
     docker build -f (Join-Path $SRC 'Dockerfile') --build-arg SVC=$svc -t $imageTag $SRC | Out-Null
@@ -89,10 +91,12 @@ foreach ($svc in $Services) {
 
   # Digest
   $digest = Get-EcrDigest -Repo $repoName -Tag $tag -Region $Region
-  if (-not $digest) { $err = "Missing digest for $repoName:$tag" }
+  if (-not $digest) {
+    $err = "Missing digest for $repoName:$tag"
+  }
 
   $ok = ($built -and $pushed -and $digest)
-  $results.Add([pscustomobject]@{ Service=$svc; Built=$built; Pushed=$pushed; Image="$repoName@$digest"; Digest=$digest; Error=$err })
+  $results.Add([pscustomobject]@{ Service=$svc; Built=$built; Pushed=$pushed; Image=$imageTag; Digest=$digest; Error=$err })
 
   if ($ok) {
     OUT ("OK   {0} -> {1}@{2}" -f $svc,$repoName,$digest)
@@ -105,11 +109,19 @@ foreach ($svc in $Services) {
 $pushed = ($results | Where-Object { $_.Pushed }).Count
 $total  = $results.Count
 $failed = ($results | Where-Object { -not $_.Pushed }).Count
+
 OUT ""
+OUT $H
+$results | ForEach-Object {
+  $repo = Map-Repo $_.Service
+  if ($_.Pushed -and $_.Digest) {
+    OUT ("OK   {0} -> {1}@{2}" -f $_.Service, $repo, $_.Digest)
+  } elseif ($_.Pushed) {
+    $msg = if ($_.Error) { $_.Error } else { 'Missing digest' }
+    OUT ("WARN {0} -> {1} :: {2}" -f $_.Service, $repo, $msg)
+  } else {
+    OUT ("FAIL {0} :: {1}" -f $_.Service, $_.Error)
+  }
+}
 OUT ("Summary: pushed={0} failed={1} total={2}" -f $pushed,$failed,$total)
 OUT $F
-
-# Emit lines for callers (optional)
-$results | ForEach-Object {
-  if ($_.Pushed -and $_.Digest) { "OK   {0} -> {1}" -f $_.Service,$_.Image } else { "FAIL {0} :: {1}" -f $_.Service,$_.Error }
-}

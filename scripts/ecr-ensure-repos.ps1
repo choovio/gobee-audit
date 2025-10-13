@@ -26,18 +26,16 @@ function Require-AwsAuth {
 
 # Ensure repo helper
 function Ensure-Repo([string]$Name) {
-  $exists = aws ecr describe-repositories --repository-names $Name --region $Region 2>$null
-  if (-not $?) {
+  try {
+    aws ecr describe-repositories --repository-names $Name --region $Region --output json | Out-Null
+    return [pscustomobject]@{ Repository=$Name; Created=$false }
+  } catch {
     aws ecr create-repository --repository-name $Name --image-scanning-configuration scanOnPush=true --region $Region | Out-Null
-    OUT "Created ECR repo: $Name"
-  } else {
-    OUT "Exists: $Name"
+    return [pscustomobject]@{ Repository=$Name; Created=$true }
   }
 }
 
-OUT $H
 $account = Require-AwsAuth
-OUT ("Account: {0} | Region: {1}" -f $account, $Region)
 
 # Map each service to a canonical repo path
 function Map-Repo([string]$svc){
@@ -48,8 +46,17 @@ function Map-Repo([string]$svc){
   }
 }
 
-$repos = @()
-foreach ($svc in $Services) { $repos += (Map-Repo $svc) }
-$repos | ForEach-Object { Ensure-Repo $_ }
+$repos = foreach ($svc in $Services) { Map-Repo $svc }
+$results = foreach ($repo in ($repos | Sort-Object -Unique)) { Ensure-Repo $repo }
 
+OUT $H
+OUT ("Account: {0} | Region: {1}" -f $account, $Region)
+$results | ForEach-Object {
+  if ($_.Created) {
+    OUT ("Created {0}" -f $_.Repository)
+  } else {
+    OUT ("Exists {0}" -f $_.Repository)
+  }
+}
+OUT ("Summary: total={0} created={1} existing={2}" -f $results.Count, ($results | Where-Object { $_.Created }).Count, ($results | Where-Object { -not $_.Created }).Count)
 OUT $F
