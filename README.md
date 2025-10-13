@@ -38,3 +38,21 @@ Legacy images such as `things`, `readers`, `writers`, `rules`, and `nats` are no
 ## PowerShell task template
 - Emit a single orange `==== RESULTS BEGIN (COPY/PASTE) ==== ... ==== RESULTS END (COPY/PASTE) ====` block for copy/paste into audit logs.
 - Do not include SPDX headers in PowerShell task scripts; keep headers concise and focused on task purpose.
+
+## Deployment & Operational Standards (SBX — modern)
+- Namespace: `gobee`
+- Origin: `https://sbx.gobee.io`
+- API Base: `/api`
+- Deployment: Kustomize-only (NO Helm)
+- Build: root Dockerfile in `gobee-source` with `--build-arg SVC=<service>`
+- Go toolchain: Go 1.25 (`GOTOOLCHAIN=auto`)
+- Service set (SBX, 13): bootstrap, users, domains, certs, provision, alarms, reports, http, ws, mqtt, coap, lora, opcua
+- Source of truth: this repo (status + locks)
+- PS task template: single RESULTS header/footer (orange), no SPDX in PS tasks
+
+### RDS status refresh (operator)
+- Run the PowerShell “RDS Audit” task (read-only)
+- Commit a new `status/STATUS-RDS-YYYY-MM-DD.md`
+
+### ECR status refresh (operator)
+- Run `scripts/ecr-build-push-sbx.ps1` locally, paste OK lines into `status/STATUS-ECR-YYYY-MM-DD.md`, commit.
