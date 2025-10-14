@@ -59,5 +59,12 @@ Legacy images such as `things`, `readers`, `writers`, `rules`, and `nats` are no
 
 ## Namespace Standard (SBX & Prod)
 
-**All Kubernetes workloads MUST use namespace `gobee`.**  
+**All Kubernetes workloads MUST use namespace `gobee`.**
 Using any other namespace (e.g., `magistrala`) is a policy violation and will fail CI checks in this repo.
+
+Run the local guard before committing:
+
+```powershell
+pwsh .\tools\Test-Namespace.ps1
+```
+
