@@ -1,5 +1,6 @@
 # Copyright (c) CHOOVIO Inc.
 # SPDX-License-Identifier: Apache-2.0
+
 name: Namespace Guard
 
 on:
@@ -10,30 +11,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  scan:
+  scan-this-repo:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        repo:
-          - choovio/gobee-audit
-          - choovio/gobee-installer
-          - choovio/gobee-source
     steps:
-      - name: Checkout ${{ matrix.repo }}
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: ${{ matrix.repo }}
-          fetch-depth: 0
-
-      - name: Fetch audit tools
-        uses: actions/checkout@v4
-        with:
-          repository: choovio/gobee-audit
-          path: audit-tools
           fetch-depth: 0
 
       - name: Run Namespace Guard
         shell: pwsh
-        run: |
-          $repoRoot = (Resolve-Path ".").Path
-          pwsh -File "$env:GITHUB_WORKSPACE/audit-tools/tools/Test-Namespace.ps1" -RepoRoot $repoRoot
+        run: pwsh -File "./tools/Test-Namespace.ps1" -RepoRoot (Resolve-Path ".").Path

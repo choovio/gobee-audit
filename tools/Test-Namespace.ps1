@@ -1,84 +1,69 @@
-<# 
-  Copyright (c) CHOOVIO Inc.
-  SPDX-License-Identifier: Apache-2.0
+<#
+Copyright (c) CHOOVIO Inc.
+SPDX-License-Identifier: Apache-2.0
 
-  Purpose: Guard against namespace drift. Fails if any file declares or uses the forbidden
-  namespace "magistrala" in a way that would affect deployments.
-
-  Usage (local):
-    pwsh ./tools/Test-Namespace.ps1 -RepoRoot "C:\Users\<you>\Documents\choovio\gobee-installer"
-    pwsh ./tools/Test-Namespace.ps1 -RepoRoot "C:\Users\<you>\Documents\choovio\gobee-source"
-    pwsh ./tools/Test-Namespace.ps1 -RepoRoot "C:\Users\<you>\Documents\gobee-audit"
-
-  Notes:
-    - We scan YAML/YML, PS1, SH, MD, and JSON by default.
-    - We allow literal words in allowed files listed in policies/namespace-allowlist.txt (if present).
+Guard against namespace drift. Fails if any file effectively uses the forbidden
+namespace "magistrala" (YAML field or kubectl flag). Allowed namespace is "gobee".
 #>
 
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory=$false)]
-  [string]$RepoRoot = (Resolve-Path ".").Path
+    [Parameter(Mandatory=$false)]
+    [string]$RepoRoot = (Resolve-Path ".").Path
 )
 
 $ErrorActionPreference = 'Stop'
 
-$forbiddenWord = 'magistrala'
-$okNamespace  = 'gobee'
-$allowlistPath = Join-Path $RepoRoot 'policies\namespace-allowlist.txt'
+$forbidden = 'magistrala'
+$allowed = 'gobee'
+
+$allowlistPath = Join-Path (Join-Path $RepoRoot 'policies') 'namespace-allowlist.txt'
 $allowlist = @()
 if (Test-Path $allowlistPath) {
-  $allowlist = Get-Content $allowlistPath | Where-Object { $_ -and -not $_.Trim().StartsWith('#') } | ForEach-Object { $_.Trim() }
+    $allowlist = Get-Content $allowlistPath | Where-Object {
+        $_ -and -not $_.Trim().StartsWith('#')
+    } | ForEach-Object { $_.Trim() }
 }
 
-# file globs
-$extensions = @('*.yaml','*.yml','*.ps1','*.sh','*.md','*.json')
+$extensions = @('.yaml','.yml','.ps1','.sh','.md','.json')
 
-# patterns that indicate **effective** namespace usage (not just historical mention)
 $effectivePatterns = @(
-  '^\s*namespace\s*:\s*magistrala\s*$',      # YAML field
-  '\b-k\b|\b--namespace\b\s+magistrala',     # kubectl flags
-  '^\s*namespace\s*:\s*magistrala\b'         # Kustomize field
+    '^\s*namespace\s*:\s*' + [regex]::Escape($forbidden) + '\s*$', # YAML
+    '(?<![A-Za-z0-9_-])(--namespace|-n)\s+' + [regex]::Escape($forbidden) + '\b' # kubectl flags
 )
 
-$violations = @()
+$violations = New-Object System.Collections.Generic.List[object]
 
-Get-ChildItem -Path $RepoRoot -Recurse -File -Include $extensions | ForEach-Object {
-  $rel = Resolve-Path $_.FullName | ForEach-Object {
-    $_.Path.Substring($RepoRoot.Length).TrimStart('\\','/')
-  }
+function Get-RelPath([string]$root, [string]$full) {
+    return [System.IO.Path]::GetRelativePath($root, $full)
+}
 
-  # Skip allowlisted exact paths
-  if ($allowlist -contains $rel) { return }
+Get-ChildItem -Path $RepoRoot -Recurse -File | Where-Object {
+    $extensions -contains ([System.IO.Path]::GetExtension($_.Name).ToLowerInvariant())
+} | ForEach-Object {
+    $rel = Get-RelPath $RepoRoot $_.FullName
 
-  $content = Get-Content -Raw -LiteralPath $_.FullName
+    if ($allowlist -contains $rel) { return }
 
-  # Quick reject if word not present
-  if ($content -notmatch '\bmagistrala\b') { return }
+    $content = Get-Content -Raw -LiteralPath $_.FullName
+    if ($content -notmatch ('\b' + [regex]::Escape($forbidden) + '\b')) { return }
 
-  $isEffective = $false
-  foreach ($pat in $effectivePatterns) {
-    if ($content -match $pat) { $isEffective = $true; break }
-  }
-
-  if ($isEffective) {
-    $violations += [pscustomobject]@{
-      File = $rel
-      Reason = 'Forbidden namespace usage (effective)'
+    $isEffective = $false
+    foreach ($pat in $effectivePatterns) {
+        if ($content -match $pat) { $isEffective = $true; break }
     }
-  } else {
-    # Allow casual/historical mentions only if explicitly allowlisted; otherwise flag as advisory
-    $violations += [pscustomobject]@{
-      File = $rel
-      Reason = 'Contains "magistrala" (non-effective). Whitelist in policies/namespace-allowlist.txt or remove.'
+
+    if ($isEffective) {
+        $violations.Add([pscustomobject]@{ File = $rel; Reason = 'Forbidden namespace usage (effective)'; })
+    } else {
+        $violations.Add([pscustomobject]@{ File = $rel; Reason = "Contains '$forbidden' text; remove or allowlist."; })
     }
-  }
 }
 
 if ($violations.Count -gt 0) {
-  Write-Host "Namespace guard FAILED. Offending files:" -ForegroundColor Red
-  $violations | Format-Table -AutoSize
-  Exit 1
+    Write-Host "Namespace guard FAILED. Offending files:" -ForegroundColor Red
+    $violations | Format-Table -AutoSize
+    Exit 1
 } else {
-  Write-Host "Namespace guard OK — all files comply (namespace must be '$okNamespace')." -ForegroundColor Green
+    Write-Host "Namespace guard OK — all files comply (namespace must be '$allowed')." -ForegroundColor Green
 }

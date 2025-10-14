@@ -1,17 +1,23 @@
-# Namespace Governance — Choovio (GoBee)
+Copyright (c) CHOOVIO Inc.
+SPDX-License-Identifier: Apache-2.0
+Namespace Governance — Choovio (GoBee)
 
-- **Authoritative namespace:** `gobee`
-- **Scope:** All Kubernetes objects (YAML, Kustomize overlays, scripts, docs, CI)
-- **Non-compliant examples (forbidden):**
-  - `namespace: magistrala`
-  - `kubectl -n magistrala …`
-  - Kustomize `namespace: magistrala`
-- **Allowed exceptions:** None by default. Paths can be whitelisted via `policies/namespace-allowlist.txt`
-  for *historical text only* (e.g., archived notes). Never for manifests or scripts.
+Authoritative namespace: gobee
 
-## Rationale
-Single namespace eliminates drift, simplifies RBAC and deployment automation, and matches our installer overlay defaults.
+Scope: All Kubernetes objects (YAML, Kustomize overlays, scripts, docs, CI)
 
-## Enforced by
-- `tools/Test-Namespace.ps1` (local + CI)
-- `.github/workflows/namespace-guard.yml` (CI across gobee-audit, gobee-installer, gobee-source)
+Forbidden examples:
+
+namespace: magistrala
+
+kubectl -n magistrala ...
+
+Kustomize namespace: magistrala
+
+Allowed exceptions: None for manifests/scripts. Historical mentions may be listed in policies/namespace-allowlist.txt.
+
+Enforced by
+
+tools/Test-Namespace.ps1 (local + CI)
+
+.github/workflows/namespace-guard.yml (CI)
