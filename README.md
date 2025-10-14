@@ -56,3 +56,8 @@ Legacy images such as `things`, `readers`, `writers`, `rules`, and `nats` are no
 
 ### ECR status refresh (operator)
 - Run `scripts/ecr-build-push-sbx.ps1` locally, paste OK lines into `status/STATUS-ECR-YYYY-MM-DD.md`, commit.
+
+## Namespace Standard (SBX & Prod)
+
+**All Kubernetes workloads MUST use namespace `gobee`.**  
+Using any other namespace (e.g., `magistrala`) is a policy violation and will fail CI checks in this repo.
