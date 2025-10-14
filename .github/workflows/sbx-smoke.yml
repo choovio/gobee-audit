@@ -1,0 +1,37 @@
+# Copyright (c) CHOOVIO Inc.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Purpose:
+#   Disable or gate the SBX Smoke workflow to run **only** when backend deployment files change.
+#   Prevents CI failures from governance/docs commits before EKS is live.
+
+name: SBX Smoke (Ingress health)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'deploy/**'
+      - 'installer/**'
+      - '.github/workflows/sbx-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  check-health:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display notice
+        run: |
+          echo "SBX Smoke workflow gated — only runs for deployment file changes."
+          echo "Skipping external health checks until EKS cluster is redeployed."
+
+      # To re-enable the health check, uncomment below lines after EKS + Ingress are live.
+      # - name: Check sbx.gobee.io ingress
+      #   run: |
+      #     code=$(curl -fsSL -o /dev/null -w "%{http_code}" https://sbx.gobee.io/http/health)
+      #     if [ "$code" != "200" ]; then
+      #       echo "Health check failed with code $code"
+      #       exit 1
+      #     fi
