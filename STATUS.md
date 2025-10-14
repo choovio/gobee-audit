@@ -5,6 +5,18 @@ SPDX-License-Identifier: Apache-2.0
 
 # GoBee Platform — STATUS
 
+## SBX Status — 2025-10-14
+
+- **Namespace:** `gobee`
+- **Cluster:** `gobee-sbx` (v1.32) — exists; public endpoint on; OIDC set
+- **State:** Nodegroup **CREATING** (Bottlerocket t3.medium, 1 node). CoreDNS **DEGRADED** pending Ready node. Ingress hostname active; control-plane logs enabled; DNS/Kubeconfig verified.
+- **Next checks:** 
+  1) `aws eks describe-nodegroup` → status = ACTIVE  
+  2) `kubectl -n kube-system get pods` → CoreDNS READY  
+  3) Apply `gobee-installer` `k8s/overlays/sbx`, then deploy backend from `gobee-source`, run `/health` checks.
+- **Report:** See [reports/sbx-checkpoint-2025-10-14.md](reports/sbx-checkpoint-2025-10-14.md)
+
+---
 **Last Updated:** 2025-10-09 (PT)
 
 ## Current Status

@@ -69,7 +69,19 @@ Block "Access Entries (list)" $acc
 
 $md -join "`r`n" | Set-Content -Path $report -Encoding UTF8
 
-# Orange markers for console copy/paste visibility
-Write-Host "🟧 ==== RESULTS BEGIN (COPY/PASTE) ====" -ForegroundColor DarkYellow
-Write-Host ("Report: " + $report)
-Write-Host "🟧 ==== RESULTS END (COPY/PASTE) ====" -ForegroundColor DarkYellow
+function Write-ResultsBlock {
+  param(
+    [string[]]$Lines
+  )
+
+  $header = "🟧 ==== RESULTS BEGIN (COPY/PASTE) ===="
+  $footer = "🟧 ==== RESULTS END (COPY/PASTE) ===="
+
+  Write-Host $header -ForegroundColor DarkYellow
+  foreach ($line in $Lines) {
+    Write-Host $line
+  }
+  Write-Host $footer -ForegroundColor DarkYellow
+}
+
+Write-ResultsBlock @(("Report: " + $report))
