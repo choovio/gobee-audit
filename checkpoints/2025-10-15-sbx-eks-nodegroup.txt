@@ -1,0 +1,8 @@
+🟧 ==== RESULTS BEGIN (COPY/PASTE) ====
+Profile: sbx
+Region: us-west-2
+Cluster: gobee-sbx
+Error: aws sts get-caller-identity failed with exit code 255:
+Could not connect to the endpoint URL: "https://sts.us-west-2.amazonaws.com/"
+
+🟧 ==== RESULTS END (COPY/PASTE) ====
