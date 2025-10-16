@@ -66,7 +66,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: users
-  namespace: magistrala
+  namespace: gobee
 spec:
   replicas: 2
   selector: { matchLabels: { app: users } }

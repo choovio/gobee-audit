@@ -15,7 +15,7 @@ The SBX environment uses **sbx.gobee.io** as the single canonical host for exter
 
 1. **Kubernetes:** confirm that each ingress exposes `/api/<service>/health` and references the service backend. Example:
    ```sh
-   kubectl -n magistrala get ingress http-adapter -o jsonpath='{@.spec.rules[*].http.paths[*].path}'
+   kubectl -n gobee get ingress http-adapter -o jsonpath='{@.spec.rules[*].http.paths[*].path}'
    ```
    Every path must resolve to `/api/http-adapter` and `/api/http-adapter/health`.
 2. **Route53:** validate the A/ALIAS record for `sbx.gobee.io` points to the expected load balancer and that the evaluated health is `True`.
@@ -61,8 +61,8 @@ $w = Invoke-WebRequest -Uri "http://sbx.gobee.io/ws/health" -UseBasicParsing -Ti
 ### Kubernetes (optional, when kube access is allowed)
 
 ```sh
-kubectl -n magistrala get ingress -o wide
-kubectl -n magistrala get deploy http-adapter ws-adapter \
+kubectl -n gobee get ingress -o wide
+kubectl -n gobee get deploy http-adapter ws-adapter \
   -o custom-columns=NAME:.metadata.name,IMAGE:.spec.template.spec.containers[0].image
 ```
 

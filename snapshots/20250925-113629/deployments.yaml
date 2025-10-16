@@ -6,11 +6,11 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "116"
       kubernetes.io/change-cause: kubectl.exe set image deploy/alarms alarms=595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:0bbcc6ed30b9906e255de8f875c741e44df4f6dab30b349d69780d27acafdd90
-        --namespace=magistrala --record=true
+        --namespace=gobee --record=true
     creationTimestamp: "2025-08-25T20:56:09Z"
     generation: 119
     name: alarms
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11809078"
     uid: 9274d01a-ccfd-43f0-b8d7-b402b836bb1b
   spec:
@@ -102,13 +102,13 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "134"
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"bootstrap","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"bootstrap"}},"template":{"metadata":{"labels":{"app":"bootstrap"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:f0eee65797928f7b11938cea122626a47d647dd5112da98d69c40be09e50e414","imagePullPolicy":"IfNotPresent","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/health","port":8080},"initialDelaySeconds":10,"periodSeconds":10,"timeoutSeconds":1},"name":"bootstrap","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/health","port":8080},"initialDelaySeconds":5,"periodSeconds":10,"timeoutSeconds":1}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"bootstrap","namespace":"gobee"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"bootstrap"}},"template":{"metadata":{"labels":{"app":"bootstrap"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala@sha256:f0eee65797928f7b11938cea122626a47d647dd5112da98d69c40be09e50e414","imagePullPolicy":"IfNotPresent","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/health","port":8080},"initialDelaySeconds":10,"periodSeconds":10,"timeoutSeconds":1},"name":"bootstrap","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/health","port":8080},"initialDelaySeconds":5,"periodSeconds":10,"timeoutSeconds":1}}]}}}}
       kubernetes.io/change-cause: kubectl.exe set image deploy/bootstrap bootstrap=595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:bootstrap-9608e04
-        --namespace=magistrala --record=true
+        --namespace=gobee --record=true
     creationTimestamp: "2025-08-25T22:05:23Z"
     generation: 152
     name: bootstrap
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11810006"
     uid: 1b701770-a9d2-48ed-a854-324eac440bf9
   spec:
@@ -203,13 +203,13 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "4"
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"certs"},"name":"certs","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"certs"}},"template":{"metadata":{"labels":{"app":"certs"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:certs-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"certs","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"certs"},"name":"certs","namespace":"gobee"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"certs"}},"template":{"metadata":{"labels":{"app":"certs"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:certs-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"certs","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
     creationTimestamp: "2025-09-10T21:50:47Z"
     generation: 7
     labels:
       app: certs
     name: certs
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11606550"
     uid: afaedfff-9a8a-45eb-a191-ea8184f8eb5f
   spec:
@@ -290,13 +290,13 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "4"
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"domains"},"name":"domains","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"domains"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"domains"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:domains-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"domains","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":2}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"domains"},"name":"domains","namespace":"gobee"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"domains"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"labels":{"app":"domains"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:domains-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"domains","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":2}}]}}}}
     creationTimestamp: "2025-09-10T21:50:48Z"
     generation: 7
     labels:
       app: domains
     name: domains
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11606606"
     uid: 3bf78860-37d3-4222-bf91-022b29acf18f
   spec:
@@ -377,14 +377,14 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "2"
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"http","app.kubernetes.io/name":"http"},"name":"http","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"http"}},"template":{"metadata":{"labels":{"app":"http","app.kubernetes.io/name":"http"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0","livenessProbe":{"httpGet":{"path":"/healthz","port":8008}},"name":"http","ports":[{"containerPort":8008}],"readinessProbe":{"httpGet":{"path":"/healthz","port":8008}}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"http","app.kubernetes.io/name":"http"},"name":"http","namespace":"gobee"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"http"}},"template":{"metadata":{"labels":{"app":"http","app.kubernetes.io/name":"http"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/http-adapter@sha256:481e0789f954be2d4e3d27cbbfd81cd38c5c0fbdc4e965d72908fabe308bd8a0","livenessProbe":{"httpGet":{"path":"/healthz","port":8008}},"name":"http","ports":[{"containerPort":8008}],"readinessProbe":{"httpGet":{"path":"/healthz","port":8008}}}]}}}}
     creationTimestamp: "2025-09-24T18:45:10Z"
     generation: 2
     labels:
       app: http
       app.kubernetes.io/name: http
     name: http
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11606505"
     uid: 8bc10367-0c17-442f-9262-4b996965dc09
   spec:
@@ -467,7 +467,7 @@ items:
     creationTimestamp: "2025-08-30T01:14:28Z"
     generation: 9
     name: mqtt-adapter
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11811625"
     uid: e38ed4a5-9d26-4ee4-9076-2f907eba90ab
   spec:
@@ -561,13 +561,13 @@ items:
       deployment.kubernetes.io/revision: "5"
       gobee.io/restartedAt: 2025-09-18T11:01:51
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"nats","namespace":"magistrala"},"spec":{"replicas":1,"revisionHistoryLimit":2,"selector":{"matchLabels":{"app":"nats"}},"template":{"metadata":{"labels":{"app":"nats"}},"spec":{"containers":[{"args":["-js","-m","8222"],"image":"nats@sha256:eca033f54dbb5d0a5df80c60ff229e53c71de63a8b4ddd0c2f04dd3e55d287df","imagePullPolicy":"IfNotPresent","livenessProbe":{"initialDelaySeconds":5,"periodSeconds":20,"tcpSocket":{"port":4222}},"name":"nats","ports":[{"containerPort":4222,"name":"client"},{"containerPort":8222,"name":"monitor"}],"readinessProbe":{"initialDelaySeconds":3,"periodSeconds":10,"tcpSocket":{"port":4222}}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"nats","namespace":"gobee"},"spec":{"replicas":1,"revisionHistoryLimit":2,"selector":{"matchLabels":{"app":"nats"}},"template":{"metadata":{"labels":{"app":"nats"}},"spec":{"containers":[{"args":["-js","-m","8222"],"image":"nats@sha256:eca033f54dbb5d0a5df80c60ff229e53c71de63a8b4ddd0c2f04dd3e55d287df","imagePullPolicy":"IfNotPresent","livenessProbe":{"initialDelaySeconds":5,"periodSeconds":20,"tcpSocket":{"port":4222}},"name":"nats","ports":[{"containerPort":4222,"name":"client"},{"containerPort":8222,"name":"monitor"}],"readinessProbe":{"initialDelaySeconds":3,"periodSeconds":10,"tcpSocket":{"port":4222}}}]}}}}
       kubernetes.io/change-cause: kubectl.exe set image deployment/nats nats=595443389404.dkr.ecr.us-west-2.amazonaws.com/nats@sha256:820a97ef8a0e8e4b1f1c940c1fbf92e57ad548429dd20754de24ffe4f08996a3
-        --namespace=magistrala --record=true
+        --namespace=gobee --record=true
     creationTimestamp: "2025-08-30T00:52:20Z"
     generation: 9
     name: nats
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11807365"
     uid: 85a5f262-888e-41b0-b2a9-8c372b940d48
   spec:
@@ -656,7 +656,7 @@ items:
     creationTimestamp: "2025-08-25T20:56:07Z"
     generation: 3
     name: nginx
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11795403"
     uid: d5f32cfa-d84b-4a41-81d0-44fe200abe0a
   spec:
@@ -719,7 +719,7 @@ items:
     creationTimestamp: "2025-08-30T02:20:18Z"
     generation: 35
     name: pgreader
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11812484"
     uid: 2b19786b-6eee-4415-8bb3-e51131386779
   spec:
@@ -783,7 +783,7 @@ items:
     creationTimestamp: "2025-08-25T20:56:11Z"
     generation: 76
     name: postgres-reader
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11809284"
     uid: 36d1e9c9-1707-4864-89bc-e9f5cb35819c
   spec:
@@ -882,7 +882,7 @@ items:
     creationTimestamp: "2025-08-25T20:56:11Z"
     generation: 77
     name: postgres-writer
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11811631"
     uid: e4dfd9f3-2443-41dd-b7af-48dd55fa2cd3
   spec:
@@ -971,7 +971,7 @@ items:
     creationTimestamp: "2025-08-25T20:56:08Z"
     generation: 7
     name: provision
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11797203"
     uid: c0b1ba6e-fdc2-419b-9393-3753a32093be
   spec:
@@ -1035,7 +1035,7 @@ items:
     creationTimestamp: "2025-08-25T20:56:10Z"
     generation: 71
     name: re
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11809427"
     uid: 04ae7327-2b0e-48ba-9aaf-3e9a379b4d3e
   spec:
@@ -1147,7 +1147,7 @@ items:
     creationTimestamp: "2025-08-25T20:56:09Z"
     generation: 87
     name: reports
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11809448"
     uid: 13d506bc-b7f4-49b6-a1ed-e3c3100a89e7
   spec:
@@ -1247,13 +1247,13 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "4"
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"things"},"name":"things","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"things"}},"template":{"metadata":{"labels":{"app":"things"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:things-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"things","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"things"},"name":"things","namespace":"gobee"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"things"}},"template":{"metadata":{"labels":{"app":"things"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:things-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"things","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
     creationTimestamp: "2025-09-10T21:50:48Z"
     generation: 7
     labels:
       app: things
     name: things
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11606723"
     uid: f828a558-8a43-4d61-8eaa-0243de7eb277
   spec:
@@ -1336,7 +1336,7 @@ items:
     creationTimestamp: "2025-08-30T02:20:08Z"
     generation: 34
     name: timescale-reader
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11812526"
     uid: 69d0c1af-5aa1-4a39-99ca-079422f3f128
   spec:
@@ -1399,7 +1399,7 @@ items:
     creationTimestamp: "2025-08-30T02:20:07Z"
     generation: 34
     name: timescale-writer
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11812545"
     uid: e876fb6a-f553-4d2a-9efb-dc8b144fc179
   spec:
@@ -1460,13 +1460,13 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "4"
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"users"},"name":"users","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"users"}},"template":{"metadata":{"labels":{"app":"users"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:users-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"users","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"users"},"name":"users","namespace":"gobee"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"users"}},"template":{"metadata":{"labels":{"app":"users"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/magistrala:users-dev","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":10,"periodSeconds":20,"timeoutSeconds":2},"name":"users","ports":[{"containerPort":8080}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthz","port":8080},"initialDelaySeconds":2,"periodSeconds":5,"timeoutSeconds":2}}]}}}}
     creationTimestamp: "2025-09-10T21:50:49Z"
     generation: 7
     labels:
       app: users
     name: users
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11606901"
     uid: c00d665e-dc35-4efc-b9d3-0d9d41209981
   spec:
@@ -1547,14 +1547,14 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "2"
       kubectl.kubernetes.io/last-applied-configuration: |
-        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"ws","app.kubernetes.io/name":"ws"},"name":"ws","namespace":"magistrala"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"ws"}},"template":{"metadata":{"labels":{"app":"ws","app.kubernetes.io/name":"ws"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6","livenessProbe":{"httpGet":{"path":"/healthz","port":8186}},"name":"ws","ports":[{"containerPort":8186}],"readinessProbe":{"httpGet":{"path":"/healthz","port":8186}}}]}}}}
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"ws","app.kubernetes.io/name":"ws"},"name":"ws","namespace":"gobee"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"ws"}},"template":{"metadata":{"labels":{"app":"ws","app.kubernetes.io/name":"ws"}},"spec":{"containers":[{"image":"595443389404.dkr.ecr.us-west-2.amazonaws.com/ws-adapter@sha256:c021866ee8461b7ed2aa5955cc970948ec63ef83bc5bbd52cbce63b069981fa6","livenessProbe":{"httpGet":{"path":"/healthz","port":8186}},"name":"ws","ports":[{"containerPort":8186}],"readinessProbe":{"httpGet":{"path":"/healthz","port":8186}}}]}}}}
     creationTimestamp: "2025-09-24T18:45:11Z"
     generation: 2
     labels:
       app: ws
       app.kubernetes.io/name: ws
     name: ws
-    namespace: magistrala
+    namespace: gobee
     resourceVersion: "11606668"
     uid: 81a0cfcf-0b2f-413b-b0b9-507741f2dda1
   spec:

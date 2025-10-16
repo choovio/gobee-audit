@@ -8,7 +8,7 @@ File: mirror-lora-adapter.md
 
 ## Summary
 
-This runbook captures the non-interactive steps to mirror the upstream LoRa adapter container image into the SBX ECR registry, pin it by digest, and roll out the deployment in the `magistrala` namespace. Use this whenever upstream publishes a new adapter build or when SBX needs to be bootstrapped.
+This runbook captures the non-interactive steps to mirror the upstream LoRa adapter container image into the SBX ECR registry, pin it by digest, and roll out the deployment in the `gobee` namespace. Use this whenever upstream publishes a new adapter build or when SBX needs to be bootstrapped.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ This runbook captures the non-interactive steps to mirror the upstream LoRa adap
   - `SRC_IMAGE` → upstream adapter image (e.g. `docker.io/mainflux/lora:<tag>`).
   - `MAGISTRALA_MQTT_URL` → MQTT or NATS endpoint reachable by the adapter.
   - `CHIRPSTACK_API_URL` → ChirpStack REST endpoint.
-  - `chirpstack-secrets` secret in namespace `magistrala` with key `apiToken`.
+  - `chirpstack-secrets` secret in namespace `gobee` with key `apiToken`.
 
 ## Procedure
 
@@ -67,7 +67,7 @@ This runbook captures the non-interactive steps to mirror the upstream LoRa adap
    Update the environment values if different from the defaults committed in git:
 
    ```bash
-   kubectl -n magistrala create secret generic chirpstack-secrets \
+  kubectl -n gobee create secret generic chirpstack-secrets \
      --from-literal=apiToken='<chirpstack-api-token>' \
      --dry-run=client -o yaml | kubectl apply -f -
    ```
@@ -75,18 +75,18 @@ This runbook captures the non-interactive steps to mirror the upstream LoRa adap
 3. **Deploy to SBX**
 
    ```bash
-   kubectl -n magistrala apply -f ops/sbx/lora.yaml
-   kubectl -n magistrala rollout status deploy/lora --timeout=180s
-   kubectl -n magistrala get deploy lora -o jsonpath='{.spec.template.spec.containers[0].image}'
+  kubectl -n gobee apply -f ops/sbx/lora.yaml
+  kubectl -n gobee rollout status deploy/lora --timeout=180s
+  kubectl -n gobee get deploy lora -o jsonpath='{.spec.template.spec.containers[0].image}'
    ```
 
    Confirm the output image matches the digest you mirrored.
 
 ## Validation Checklist
 
-- [ ] `kubectl -n magistrala get pods -l app=lora` shows pods in `Running`/`Ready` state.
-- [ ] `kubectl -n magistrala get deploy lora -o jsonpath='{.status.conditions[?(@.type=="Available")].status}'` returns `True`.
-- [ ] `kubectl -n magistrala port-forward svc/lora 8080:8080` and `curl http://localhost:8080/health` returns `200`.
+- [ ] `kubectl -n gobee get pods -l app=lora` shows pods in `Running`/`Ready` state.
+- [ ] `kubectl -n gobee get deploy lora -o jsonpath='{.status.conditions[?(@.type=="Available")].status}'` returns `True`.
+- [ ] `kubectl -n gobee port-forward svc/lora 8080:8080` and `curl http://localhost:8080/health` returns `200`.
 - [ ] ChirpStack integration tests confirm device traffic is flowing through the adapter.
 
 ## Rollback
