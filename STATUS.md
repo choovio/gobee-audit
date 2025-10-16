@@ -19,6 +19,12 @@ SPDX-License-Identifier: Apache-2.0
 ---
 **Last Updated:** 2025-10-09 (PT)
 
+## 2025-10-16 (SBX)
+- Namespace standardized to **gobee** across repos.
+- Scope fixed **post-ECR**; no changes to pre-EKS assets.
+- `gobee-source` treated as **read-only fork** (no edits).
+- Next actions: merge this plan, sync local repos, run Phase A → B.
+
 ## Current Status
 
 > Kubernetes namespace standardized to gobee across all repos. Former namespace magistrala is deprecated and must not appear in manifests or commands.
