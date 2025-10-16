@@ -40,7 +40,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: users
-  namespace: magistrala
+  namespace: gobee
 spec:
   replicas: 2
   selector:
@@ -69,5 +69,5 @@ spec:
 ## Pinning Rules
 - Always commit manifests with ECR digests (`@sha256:`).
 - Never rely on mutable tags or `kustomize images:` rewrites.
-- Namespace stays `magistrala`; health probes point at `/health` only.
+- Namespace stays `gobee`; health probes point at `/health` only.
 - Ingress routes live under `https://sbx.gobee.io/api/...` including `/api/http-adapter`, `/api/lora-adapter`, `/api/ws-adapter`.

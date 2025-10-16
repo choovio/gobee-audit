@@ -4,7 +4,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: api-lns
-  namespace: magistrala
+  namespace: gobee
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-clusterissuer
 spec:

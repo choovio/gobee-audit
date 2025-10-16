@@ -2,7 +2,7 @@
 # Copyright (c) CHOOVIO Inc.
 apiVersion: v1
 kind: Secret
-metadata: { name: chirpstack-secrets, namespace: magistrala }
+metadata: { name: chirpstack-secrets, namespace: gobee }
 type: Opaque
 stringData:
   redis-url: "__REDIS_URL__"
@@ -10,7 +10,7 @@ stringData:
 ---
 apiVersion: apps/v1
 kind: Deployment
-metadata: { name: chirpstack, namespace: magistrala, labels: { app: chirpstack } }
+metadata: { name: chirpstack, namespace: gobee, labels: { app: chirpstack } }
 spec:
   replicas: 2
   selector: { matchLabels: { app: chirpstack } }
@@ -32,7 +32,7 @@ spec:
 ---
 apiVersion: v1
 kind: Service
-metadata: { name: chirpstack, namespace: magistrala }
+metadata: { name: chirpstack, namespace: gobee }
 spec:
   selector: { app: chirpstack }
   ports:

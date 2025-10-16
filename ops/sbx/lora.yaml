@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: lora-adapter
-  namespace: magistrala
+  namespace: gobee
 spec:
   replicas: 1
   selector: { matchLabels: { app: lora } }
@@ -21,7 +21,7 @@ spec:
               containerPort: 8080
           env:
             - name: MAGISTRALA_MQTT_URL
-              value: "nats://nats.magistrala.svc:4222"
+              value: "nats://nats.gobee.svc:4222"
             - name: CHIRPSTACK_API_URL
               value: "https://lns.gobee.io"
             - name: CHIRPSTACK_API_TOKEN
@@ -40,7 +40,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: lora-adapter
-  namespace: magistrala
+  namespace: gobee
   labels: { app: lora }
 spec:
   selector: { app: lora  selector: { app: 

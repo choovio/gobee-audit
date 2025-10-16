@@ -21,6 +21,8 @@ SPDX-License-Identifier: Apache-2.0
 
 ## Current Status
 
+> Kubernetes namespace standardized to gobee across all repos. Former namespace magistrala is deprecated and must not appear in manifests or commands.
+
 ## 2025-10-09 — SBX ECR Pins Synchronized
 - Replaced conflicted checkpoint with consolidated list of 14 SBX digests (core, processing incl. rules, data, infra, adapters).
 - Overlay remains digest-only, Kustomize-only, namespace `gobee`. SPDX = Choovio.

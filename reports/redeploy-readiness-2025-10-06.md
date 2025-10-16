@@ -5,7 +5,7 @@ This document is the single, canonical pre-flight checklist for a **clean redepl
 ## Canonical Truths (do not override)
 - Origin: `https://sbx.gobee.io`
 - Base path: `/api` (no `/v1`, no `sbx.api.gobee.io`)
-- Namespace: `magistrala`
+- Namespace: `gobee`
 - Health path: `/health` (not `/healthz`)
 - TLS: `ClusterIssuer=letsencrypt-prod`, `Secret=sbx-gobee-io-tls`
 - Deployment method: **Kustomize-only** (Helm forbidden).
@@ -14,7 +14,7 @@ This document is the single, canonical pre-flight checklist for a **clean redepl
 
 ## Repos & Roles
 - `choovio/magistrala-fork` — builds backend images
-- `choovio/gobee-platform-installer` — manifests, pins, infra (namespace: magistrala)
+- `choovio/gobee-platform-installer` — manifests, pins, infra (namespace: gobee)
 - `choovio/gobee-audit` — source of truth (this repo)
 
 ## Pre-Flight Checklist (read-only verifications)

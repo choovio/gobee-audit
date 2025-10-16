@@ -1,6 +1,6 @@
 # SBX Backend Deploy Playbook (Windows PowerShell)
 
-Use this flow to deploy SBX backend workloads into the `magistrala` namespace from a Windows 11 workstation running PowerShell 7.
+Use this flow to deploy SBX backend workloads into the `gobee` namespace from a Windows 11 workstation running PowerShell 7.
 Follow the **verify-first** rule: gather baseline evidence before changing anything, deploy with `/api/*` paths intact, and skip
 ChirpStack unless you are explicitly exercising the LoRa adapter.
 
@@ -16,7 +16,7 @@ ChirpStack unless you are explicitly exercising the LoRa adapter.
 
 | Component | Namespace | Notes |
 |-----------|-----------|-------|
-| magistrala services | `magistrala` | All workloads must live in this namespace |
+| magistrala services | `gobee` | All workloads must live in this namespace |
 | ingress host | `sbx.gobee.io` | Paths **must** start with `/api/` |
 | ChirpStack | `lns.gobee.io` | Skip unless validating LoRa adapter |
 | Adapter registry | `595443389404.dkr.ecr.us-west-2.amazonaws.com/choovio/magistrala` | Use digest pins |
@@ -32,19 +32,19 @@ ChirpStack unless you are explicitly exercising the LoRa adapter.
    - `aws ecr get-login-password --profile sbx | docker login --username AWS --password-stdin <account>.dkr.ecr.us-west-2.amazonaws.com`
    - `kubectl config use-context <sbx-cluster>`
 3. **Validate baseline**
-   - `kubectl -n magistrala get pods`
-   - `kubectl -n magistrala get ingress`
-   - `kubectl -n magistrala get svc`
+   - `kubectl -n gobee get pods`
+   - `kubectl -n gobee get ingress`
+   - `kubectl -n gobee get svc`
    - Confirm ingress hosts == `sbx.gobee.io`, paths `/api/...`, health `/health`.
 4. **Prepare manifests**
    - Update image digests in k8s manifests (never use floating tags).
    - Run `pwsh -File tools\New-ResultsSnapshot.ps1` to capture pre-deploy evidence.
 5. **Deploy**
    - Apply manifests with `kubectl apply -f <manifest>` (one manifest per command).
-   - Wait for rollout: `kubectl -n magistrala rollout status deployment/<name>`.
+   - Wait for rollout: `kubectl -n gobee rollout status deployment/<name>`.
 6. **Verify**
-   - `kubectl -n magistrala get pods -o wide`
-   - `kubectl -n magistrala describe ingress <name>`
+   - `kubectl -n gobee get pods -o wide`
+   - `kubectl -n gobee describe ingress <name>`
    - `Invoke-WebRequest https://sbx.gobee.io/api/health -UseBasicParsing`
    - For adapters: exercise smoke tests via `/api/bootstrap/...`.
    - Skip ChirpStack checks unless LoRa adapter change; if included, run tests in `docs/CHIRPSTACK_STATUS.md`.
