@@ -1,0 +1,12 @@
+# Phase B Checkpoint — SBX
+- Account: 595443389404
+- Region: us-west-2
+- Residual AWS resources (EKS-related): none
+- ECR repos: 18 total; 13 expected service repos present with tags
+- Guardrails for Phase C:
+  - Fresh VPC via eksctl-managed cluster (no reuse)
+  - Nodegroup: t3.medium x1 (dev/test only)
+  - Public+Private endpoint (default), NAT egress (no VPCE)
+  - Addons via AWS EKS add-ons API
+  - ALB Controller via official manifests (no Helm)
+  - App deploy remains Kustomize-only
