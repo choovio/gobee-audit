@@ -5,6 +5,12 @@ SPDX-License-Identifier: Apache-2.0
 
 # GoBee Platform — STATUS
 
+## 2025-10-17 (SBX)
+- Phase B (purge) COMPLETE. Region: us-west-2; VPCs/LBs/VPCEs/SGs from prior EKS removed.
+- ECR intact: 18 repos present; 13 service repos have tagged images (v0.15.1-sbx).
+- Deleted 5 empty legacy repos: infra/nats, processing/rules, data/readers, data/writers, core/things.
+- Next: Phase C — create fresh EKS (single t3.medium nodegroup), OIDC+addons, then Phase D deploy via kustomize.
+
 ## SBX Status — 2025-10-14
 
 - **Namespace:** `gobee`
