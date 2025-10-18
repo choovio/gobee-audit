@@ -1,0 +1,10 @@
+# Source of truth for sbx.gobee.io (managed in Cloudflare)
+# Update "value" once the NLB/ALB DNS is known.
+records:
+  - type: CNAME
+    name: sbx
+    value: a-placeholder.us-west-2.elb.amazonaws.com   # <-- replace after LB provisions
+    proxy: "dns-only"
+notes:
+  managed_by: "Cloudflare (manual)"
+  reason: "Public DNS is outside Route53; ExternalDNS disabled for public records."
