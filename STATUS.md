@@ -157,3 +157,11 @@ Branch: `main` (default). Pushed and recorded in checkpoints.
 - Kept **14** canonical SBX digests exactly as pinned in the overlay and recorded in audit.
 - Post-verification confirms **0 tags** and **0 extra digests** remain.
 
+
+## EKS Ingress (SBX)
+- Controller: **aws-load-balancer-controller (EKS Managed Add-on)**
+- IRSA Policy: `AWSLoadBalancerControllerIAMPolicy`
+- IRSA Role: `AmazonEKSLoadBalancerControllerRole` (to be created/applied)
+- Subnets (public, tagged for ALB): subnet-00046e6fb3fe51db5 (us-west-2a), subnet-0a3cd87cc01477c73 (us-west-2b)
+- DNS: Manual Cloudflare CNAME → ALB DNS (set after Ingress is created)
+
