@@ -25,3 +25,8 @@ No guessing; always verify live state before changes
 Namespace gobee for k8s resources (deployment steps live in gobee-source)
 
 SPDX header: Choovio
+
+## Public DNS (SBX)
+SBX (sandbox) public DNS is managed in **Cloudflare**, not Route53.
+- Intended record is tracked in `config/dns/sbx.gobee.io.yml`.
+- Follow `checklists/EXPOSURE-SBX.md` to update the CNAME after the load balancer provisions.
