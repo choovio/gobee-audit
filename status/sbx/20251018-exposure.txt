@@ -1,0 +1,4 @@
+SBX exposure OK
+LB: a691507c663ff4b539180aea0c75bf56-c07c51e731b92339.elb.us-west-2.amazonaws.com
+DNS: CNAME sbx -> LB (Cloudflare)
+Check: curl -I http://sbx.gobee.io/  => 200 OK
